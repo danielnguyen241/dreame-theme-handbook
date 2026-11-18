@@ -24,8 +24,8 @@
           <option value="">Jump to section...</option>
         </select>
         <div class="hb-seg" role="group" aria-label="Viewport">
-          <button type="button" class="is-active" data-vp="desktop">Desktop</button>
-          <button type="button" data-vp="mobile">Mobile</button>
+          <button type="button" class="is-active" data-vp="desktop" aria-pressed="true">Desktop</button>
+          <button type="button" data-vp="mobile" aria-pressed="false">Mobile</button>
         </div>
         <button type="button" id="hb-pin" class="hb-btn">Show All Sizes</button>
       </div>
@@ -71,7 +71,11 @@
     <div class="dpdp-sticky-nav__brand">
       L60 Pro Ultra
     </div>
-    <ul class="dpdp-sticky-nav__links" role="list"><li >
+    <button type="button" class="dpdp-sticky-nav__menu" data-nav-menu aria-expanded="false" aria-controls="pdp-nav-links">
+      L60 Pro Ultra
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+    <ul class="dpdp-sticky-nav__links" id="pdp-nav-links" role="list"><li >
           <a
             href="#pdp-overview"
             class="dpdp-sticky-nav__link is-active"
@@ -97,9 +101,9 @@
           </a>
         </li><li >
           <a
-            href="#shopify-section-product-recommendations"
+            href="#g2-28-reviews-auto"
             class="dpdp-sticky-nav__link"
-            data-nav-target="shopify-section-product-recommendations"
+            data-nav-target="g2-28-reviews-auto"
           >
             Reviews
           </a>
@@ -189,11 +193,11 @@
   </picture></div><div class="dpdp-album__caption">
                 <h3 class="dpdp-album__title">3.47in (8.8cm)* Obstacle Crossing</h3>
               </div></article><article
-            class="dpdp-album__tile dpdp-album__tile--2"
+            class="dpdp-album__tile dpdp-album__tile--4"
             
-          ><div class="dpdp-album__media"><picture class=""><source media="(max-width: 850px)" srcset="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-self-cleaning-mob_2400x.webp?v=1775573596"><img src="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-self-cleaning-pc_2400x.webp?v=1775573596" alt="212°F (100°C) Mop Self-Cleaning" loading="eager" decoding="async">
+          ><div class="dpdp-album__media"><picture class=""><source media="(max-width: 850px)" srcset="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-vormax-suction-mob_2400x.webp?v=1775573596"><img src="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-vormax-suction-pc_2400x.webp?v=1775573596" alt="35,000Pa* Vormax Suction" loading="eager" decoding="async">
   </picture></div><div class="dpdp-album__caption">
-                <h3 class="dpdp-album__title">212°F (100°C) Mop Self-Cleaning</h3>
+                <h3 class="dpdp-album__title">35,000Pa* Vormax Suction</h3>
               </div></article><article
             class="dpdp-album__tile dpdp-album__tile--3"
             
@@ -201,11 +205,11 @@
   </picture></div><div class="dpdp-album__caption">
                 <h3 class="dpdp-album__title">VersaLift Navigation under Low-Profile Furniture</h3>
               </div></article><article
-            class="dpdp-album__tile dpdp-album__tile--4"
+            class="dpdp-album__tile dpdp-album__tile--2"
             
-          ><div class="dpdp-album__media"><picture class=""><source media="(max-width: 850px)" srcset="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-vormax-suction-mob_2400x.webp?v=1775573596"><img src="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-vormax-suction-pc_2400x.webp?v=1775573596" alt="35,000Pa* Vormax Suction" loading="eager" decoding="async">
+          ><div class="dpdp-album__media"><picture class=""><source media="(max-width: 850px)" srcset="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-self-cleaning-mob_2400x.webp?v=1775573596"><img src="https://www.dreametech.com/cdn/shop/files/dreame-pdp-l60-pro-ultra-black-feature-self-cleaning-pc_2400x.webp?v=1775573596" alt="212°F (100°C) Mop Self-Cleaning" loading="eager" decoding="async">
   </picture></div><div class="dpdp-album__caption">
-                <h3 class="dpdp-album__title">35,000Pa* Vormax Suction</h3>
+                <h3 class="dpdp-album__title">212°F (100°C) Mop Self-Cleaning</h3>
               </div></article><article
             class="dpdp-album__tile dpdp-album__tile--5"
             
@@ -446,7 +450,7 @@
   "
 >
   <div class="dpdp-m18__stage">
-    <div class="dpdp-m18__media"><div class="dpdp-media-wrap" data-dpdp-vid-wrap><video
+    <div class="dpdp-m18__media"><div class="dpdp-media-wrap" data-dpdp-vid-wrap><video width="2560" height="1080"
         class="dpdp-only-pc"
         src="https://www.dreametech.com/cdn/shop/videos/c/vp/d04d870cc8b443eeb018cc7f6ed1df30/d04d870cc8b443eeb018cc7f6ed1df30.HD-1080p-7.2Mbps-81049375.mp4?v=0"
         poster="https://www.dreametech.com/cdn/shop/files/preview_images/d04d870cc8b443eeb018cc7f6ed1df30.thumbnail.0000000000.jpg?v=1775815609&width=1800"
@@ -455,10 +459,10 @@
         muted
         playsinline
         preload="metadata"
-      ></video><video
+      ></video><video width="710" height="720"
         class="dpdp-only-mob"
         src="https://www.dreametech.com/cdn/shop/videos/c/vp/4f71af7f911147838c0db9312ba680f0/4f71af7f911147838c0db9312ba680f0.HD-720p-4.5Mbps-81049371.mp4?v=0"
-        poster="https://www.dreametech.com/cdn/shop/files/preview_images/d04d870cc8b443eeb018cc7f6ed1df30.thumbnail.0000000000.jpg?v=1775815609&width=1800"
+        poster="https://www.dreametech.com/cdn/shop/files/preview_images/4f71af7f911147838c0db9312ba680f0.thumbnail.0000000000.jpg?v=1775815468&amp;width=1200"
         autoplay
         loop
         muted
@@ -574,7 +578,7 @@
     --dpdp-pb: 80px;
   "
 >
-  <div class="dpdp-container"><div class="dpdp-m14__header"><h2 class="dpdp-h2 dpdp-m14__title">212°F (100°C) Mop Self-Cleaning</h2><p class="dpdp-sub dpdp-m14__sub">A built-in heating module heats water to high temperature to deep clean the mop pads, ready for the next mission.</p></div><div class="dpdp-m14__top-showcase" style="--dpdp-top-ratio: 1.88 / 1;"><div class="dpdp-media-wrap" data-dpdp-vid-wrap><video
+  <div class="dpdp-container"><div class="dpdp-m14__header"><h2 class="dpdp-h2 dpdp-m14__title">212°F (100°C) Mop Self-Cleaning</h2><p class="dpdp-sub dpdp-m14__sub">A built-in heating module heats water to high temperature to deep clean the mop pads, ready for the next mission.</p></div><div class="dpdp-m14__top-showcase" style="--dpdp-top-ratio: 1.88 / 1;"><div class="dpdp-media-wrap" data-dpdp-vid-wrap><video width="2034" height="1080"
         class="dpdp-only-pc"
         src="https://www.dreametech.com/cdn/shop/videos/c/vp/3a424c9659a34792a390a5f1d6d80e6d/3a424c9659a34792a390a5f1d6d80e6d.HD-1080p-7.2Mbps-81049373.mp4?v=0"
         poster="https://www.dreametech.com/cdn/shop/files/preview_images/3a424c9659a34792a390a5f1d6d80e6d.thumbnail.0000000000.jpg?v=1775815552&width=1800"
@@ -583,10 +587,10 @@
         muted
         playsinline
         preload="metadata"
-      ></video><video
+      ></video><video width="596" height="480"
         class="dpdp-only-mob"
         src="https://www.dreametech.com/cdn/shop/videos/c/vp/6fdabc1b63c54d248232cddd32a67f1d/6fdabc1b63c54d248232cddd32a67f1d.SD-480p-1.5Mbps-81049372.mp4?v=0"
-        poster="https://www.dreametech.com/cdn/shop/files/preview_images/3a424c9659a34792a390a5f1d6d80e6d.thumbnail.0000000000.jpg?v=1775815552&width=1800"
+        poster="https://www.dreametech.com/cdn/shop/files/preview_images/6fdabc1b63c54d248232cddd32a67f1d.thumbnail.0000000000.jpg?v=1775815442&amp;width=1200"
         autoplay
         loop
         muted
@@ -678,10 +682,11 @@
     <div class="dpdp-m16__header">
       <div class="dpdp-m16__header-copy"><h2 class="dpdp-h2">Ultimate Carpet Care</h2><p class="dpdp-sub">L60 Pro Ultra knows your carpets. It&#39;ll clean them deeply with suction boost and intensive mode or avoid them completely, your call.</p></div><div class="dpdp-m16__header-right">
           <div class="dpdp-nav-btns">
-            <button type="button" class="dpdp-circle-btn" data-m16-prev aria-label="Slide trước">
+            <button type="button" class="dpdp-circle-btn" data-m16-prev aria-label="Previous slide">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <button type="button" class="dpdp-circle-btn" data-m16-next aria-label="Slide tiếp">
+            <span class="dpdp-m16__page-count" data-m16-page-count>01 / 04</span>
+            <button type="button" class="dpdp-circle-btn" data-m16-next aria-label="Next slide">
               <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
             </button>
           </div>

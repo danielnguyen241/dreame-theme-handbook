@@ -196,6 +196,7 @@ document.querySelectorAll('[data-dpdp-m16]').forEach(function(sec) {
   var prev = sec.querySelector('[data-m16-prev]');
   var next = sec.querySelector('[data-m16-next]');
   var dots = Array.from(sec.querySelectorAll('[data-m16-dot]'));
+  var count = sec.querySelector('[data-m16-page-count]');
   if (!track) return;
   var slides = Array.from(track.children);
 
@@ -211,7 +212,7 @@ document.querySelectorAll('[data-dpdp-m16]').forEach(function(sec) {
     });
   });
 
-  track.addEventListener('scroll', function() {
+  function updateSlide() {
     var best = 0;
     var minD = Infinity;
     slides.forEach(function(s, i) {
@@ -219,7 +220,13 @@ document.querySelectorAll('[data-dpdp-m16]').forEach(function(sec) {
       if (dist < minD) { minD = dist; best = i; }
     });
     dots.forEach(function(d, i) { d.classList.toggle('is-active', i === best); });
-  }, { passive: true });
+    if (prev) prev.disabled = best === 0;
+    if (next) next.disabled = best === slides.length - 1;
+    if (count) count.textContent = String(best + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+  }
+
+  track.addEventListener('scroll', updateSlide, { passive: true });
+  updateSlide();
 });
 })();
 
@@ -242,12 +249,32 @@ document.querySelectorAll('[data-dpdp-m25]').forEach(function(sec) {
 });
 })();
 
+function scrollToHandbookSection(target) {
+  var toolbar = document.querySelector('.hb-topbar');
+  var sticky = document.querySelector('.dpdp-sticky-nav-host');
+  var afterNav = sticky && (sticky.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
+  var offset = (toolbar?.offsetHeight || 0) + (afterNav ? sticky.offsetHeight : 0) + 8;
+  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+}
+
 // dreame-pdp-sticky-nav.liquid
 (function(){
 document.querySelectorAll('[data-dpdp-sticky-nav]').forEach(function(nav) {
   if (nav.dataset.bound) return;
   nav.dataset.bound = 'true';
   var links = Array.from(nav.querySelectorAll('[data-nav-target]'));
+  var menu = nav.querySelector('[data-nav-menu]');
+  if (menu) {
+    menu.addEventListener('click', function() {
+      menu.setAttribute('aria-expanded', String(menu.getAttribute('aria-expanded') !== 'true'));
+    });
+    nav.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+        menu.setAttribute('aria-expanded', 'false');
+        menu.focus();
+      }
+    });
+  }
   links.forEach(function(link) {
     link.addEventListener('click', function(e) {
       var id = link.getAttribute('data-nav-target');
@@ -257,8 +284,8 @@ document.querySelectorAll('[data-dpdp-sticky-nav]').forEach(function(nav) {
         e.preventDefault();
         links.forEach(function(l) { l.classList.remove('is-active'); });
         link.classList.add('is-active');
-        var y = el.getBoundingClientRect().top + window.scrollY - 64;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        if (menu) menu.setAttribute('aria-expanded', 'false');
+        scrollToHandbookSection(el);
       }
     });
   });
@@ -269,10 +296,10 @@ document.querySelectorAll('[data-dpdp-sticky-nav]').forEach(function(nav) {
   });
 
   window.addEventListener('scroll', function() {
-    var scrollPos = window.scrollY + 140;
+    var top = nav.getBoundingClientRect().bottom + 24;
     var activeIdx = 0;
     targets.forEach(function(el, i) {
-      if (el && el.offsetTop <= scrollPos) activeIdx = i;
+      if (el && el.getBoundingClientRect().top <= top) activeIdx = i;
     });
     links.forEach(function(l, i) {
       l.classList.toggle('is-active', i === activeIdx);
@@ -289,18 +316,52 @@ document.querySelectorAll('[data-dpdp-m11]').forEach(function(sec) {
   var tabs = Array.from(sec.querySelectorAll('[data-m11-tab]'));
   var panels = Array.from(sec.querySelectorAll('[data-m11-panel]'));
   var descs = Array.from(sec.querySelectorAll('[data-m11-desc]'));
+  var tabList = sec.querySelector('.dpdp-m11__tabs');
+  var stage = sec.querySelector('.dpdp-m11__stage');
+  var mobile = window.matchMedia('(max-width: 850px)');
+  var active = 0;
+  if (!stage || !tabList || !panels.length || !tabs.length) return;
+
+  function select(index) {
+    active = index;
+    tabs.forEach(function(tab, i) {
+      var on = i === index;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', String(on));
+    });
+    panels.forEach(function(panel, i) {
+      panel.classList.toggle('is-active', i === index);
+      panel.setAttribute('aria-hidden', String(i !== index));
+    });
+    descs.forEach(function(desc, i) { desc.classList.toggle('is-active', i === index); });
+    if (mobile.matches) {
+      tabList.scrollTo({ left: tabs[index].offsetLeft - tabs[0].offsetLeft, behavior: 'smooth' });
+    }
+  }
+
+  function scrollToPanel(index, behavior) {
+    stage.scrollTo({ left: panels[index].offsetLeft - panels[0].offsetLeft, behavior: behavior });
+  }
 
   tabs.forEach(function(tab, idx) {
     tab.addEventListener('click', function() {
-      tabs.forEach(function(t, i) {
-        var on = i === idx;
-        t.classList.toggle('is-active', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      panels.forEach(function(p, i) { p.classList.toggle('is-active', i === idx); });
-      descs.forEach(function(d, i) { d.classList.toggle('is-active', i === idx); });
+      select(idx);
+      if (mobile.matches) scrollToPanel(idx, 'smooth');
     });
   });
+
+  stage.addEventListener('scroll', function() {
+    if (!mobile.matches) return;
+    var step = panels[1] ? panels[1].offsetLeft - panels[0].offsetLeft : stage.clientWidth;
+    if (!step) return;
+    var index = Math.max(0, Math.min(panels.length - 1, Math.round(stage.scrollLeft / step)));
+    if (index !== active) select(index);
+  }, { passive: true });
+
+  mobile.addEventListener('change', function() {
+    if (mobile.matches) scrollToPanel(active, 'instant');
+  });
+  select(0);
 });
 })();
 
@@ -417,9 +478,9 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
       sel: '.dpdp-m21--image_left', id: 'G2-15', name: 'M21 · Image Left + Icon List', req: false, meta: 'Image + 3 icons',
       specs: [
         { sel: '.dpdp-m21__side-media', slot: 'Left image', pc: '2160 × 1800', mb: '1050 × 840', fmt: 'Image' },
-        { sel: '.dpdp-m21__icon-row:nth-child(1) .dpdp-m21__icon', slot: 'Battery icon', pc: '173 × 97', mb: '173 × 97', fmt: 'Image', sm: true },
-        { sel: '.dpdp-m21__icon-row:nth-child(2) .dpdp-m21__icon', slot: 'Runtime icon', pc: '159 × 159', mb: '159 × 159', fmt: 'Image', sm: true },
-        { sel: '.dpdp-m21__icon-row:nth-child(3) .dpdp-m21__icon', slot: 'Coverage icon', pc: '162 × 158', mb: '162 × 158', fmt: 'Image', sm: true }
+        { sel: '.dpdp-m21__icon-row:nth-child(1)', slot: 'Battery icon', pc: '173 × 97', mb: '173 × 97', fmt: 'Image', sm: true },
+        { sel: '.dpdp-m21__icon-row:nth-child(2)', slot: 'Runtime icon', pc: '159 × 159', mb: '159 × 159', fmt: 'Image', sm: true },
+        { sel: '.dpdp-m21__icon-row:nth-child(3)', slot: 'Coverage icon', pc: '162 × 158', mb: '162 × 158', fmt: 'Image', sm: true }
       ]
     },
     {
@@ -455,7 +516,7 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
     {
       sel: '.dpdp-m11', id: 'G2-21', name: 'M11 · Tabbed Media (4 Tabs)', req: false, meta: '3600×1800 / 960×840',
       specs: [
-        { sel: '.dpdp-m11__stage', slot: 'Tab image (×4)', pc: '3600 × 1800', mb: '960 × 840', fmt: 'Image' }
+        { sel: '.dpdp-m11__panel', slot: 'Tab image (×4)', pc: '3600 × 1800', mb: '960 × 840', fmt: 'Image' }
       ]
     },
     {
@@ -608,12 +669,13 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
 
   if (isEmbed) {
     window.addEventListener('message', function (ev) {
+      if (ev.origin !== location.origin || ev.source !== window.parent) return;
       if (!ev.data || typeof ev.data !== 'object') return;
       if (ev.data.type === 'hb-pin') {
         document.body.classList.toggle('hb-show-all', !!ev.data.on);
       } else if (ev.data.type === 'hb-jump' && ev.data.id) {
         var t = document.getElementById(ev.data.id);
-        if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 8, behavior: 'smooth' });
+        if (t) scrollToHandbookSection(t);
       }
     });
     return;
@@ -621,18 +683,29 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
 
   var mobileShell = document.getElementById('hb-mobile-shell');
   var mobileIframe = document.getElementById('hb-mobile-iframe');
+  var viewportButtons = document.querySelectorAll('[data-vp]');
+  var phoneWidth = window.matchMedia('(max-width: 850px)');
 
-  if (jumpSelect) {
-    jumpSelect.addEventListener('change', function () {
-      if (!jumpSelect.value) return;
-      if (document.body.classList.contains('hb-vp-mobile') && mobileIframe && mobileIframe.contentWindow) {
-        mobileIframe.contentWindow.postMessage({ type: 'hb-jump', id: jumpSelect.value }, '*');
-      } else {
-        var t = document.getElementById(jumpSelect.value);
-        if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 52, behavior: 'smooth' });
-      }
-    });
+  function sendToPreview(message) {
+    mobileIframe?.contentWindow?.postMessage(message, location.origin);
   }
+
+  function jumpToSelection() {
+    if (!jumpSelect?.value) return;
+    if (document.body.classList.contains('hb-vp-mobile')) {
+      sendToPreview({ type: 'hb-jump', id: jumpSelect.value });
+    } else {
+      var target = document.getElementById(jumpSelect.value);
+      if (target) scrollToHandbookSection(target);
+    }
+  }
+
+  jumpSelect?.addEventListener('change', jumpToSelection);
+  mobileIframe?.addEventListener('load', function () {
+    if (!document.body.classList.contains('hb-vp-mobile')) return;
+    sendToPreview({ type: 'hb-pin', on: document.body.classList.contains('hb-show-all') });
+    jumpToSelection();
+  });
 
   var pinBtn = document.getElementById('hb-pin');
   if (pinBtn) {
@@ -640,28 +713,31 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
       var on = document.body.classList.toggle('hb-show-all');
       pinBtn.classList.toggle('is-active', on);
       pinBtn.textContent = on ? 'Hide All Sizes' : 'Show All Sizes';
-      if (mobileIframe && mobileIframe.contentWindow) {
-        mobileIframe.contentWindow.postMessage({ type: 'hb-pin', on: on }, '*');
-      }
+      sendToPreview({ type: 'hb-pin', on: on });
     });
   }
 
-  document.querySelectorAll('[data-vp]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var isMob = btn.getAttribute('data-vp') === 'mobile';
-      document.body.classList.toggle('hb-vp-mobile', isMob);
-      if (mobileShell) mobileShell.hidden = !isMob;
-      if (isMob && mobileIframe && !mobileIframe.getAttribute('src')) {
-        mobileIframe.setAttribute('src', '/?embed=1');
-        mobileIframe.addEventListener('load', function () {
-          if (document.body.classList.contains('hb-show-all') && mobileIframe.contentWindow) {
-            mobileIframe.contentWindow.postMessage({ type: 'hb-pin', on: true }, '*');
-          }
-        }, { once: true });
-      }
-      document.querySelectorAll('[data-vp]').forEach(function (b) {
-        b.classList.toggle('is-active', b === btn);
-      });
+  function switchViewport(isMobile) {
+    document.body.classList.toggle('hb-vp-mobile', isMobile);
+    if (mobileShell) mobileShell.hidden = !isMobile;
+    if (isMobile && mobileIframe && !mobileIframe.hasAttribute('src')) {
+      mobileIframe.src = '/?embed=1';
+    } else {
+      jumpToSelection();
+    }
+    viewportButtons.forEach(function (button) {
+      var active = (button.dataset.vp === 'mobile') === isMobile;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
     });
+  }
+
+  viewportButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      switchViewport(button.dataset.vp === 'mobile');
+    });
+  });
+  phoneWidth.addEventListener('change', function (event) {
+    if (event.matches && document.body.classList.contains('hb-vp-mobile')) switchViewport(false);
   });
 })();
