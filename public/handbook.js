@@ -511,6 +511,33 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
     toastTimer = setTimeout(function () { toast.classList.remove('is-visible'); }, 1600);
   }
 
+  function formatAspectRatio(dimensions) {
+    var parts = dimensions.split(' × ').map(Number);
+    var width = parts[0];
+    var height = parts[1];
+    var a = width;
+    var b = height;
+    while (b) {
+      var remainder = a % b;
+      a = b;
+      b = remainder;
+    }
+
+    var horizontal = width / a;
+    var vertical = height / a;
+    if (Math.max(horizontal, vertical) <= 21) return horizontal + ':' + vertical;
+
+    return width >= height
+      ? '≈' + (width / height).toFixed(2) + ':1'
+      : '≈1:' + (height / width).toFixed(2);
+  }
+
+  function specLine(label, dimensions, ratio) {
+    return '<div class="hb-spec-line"><span>' + label + '</span>' +
+      '<div class="hb-spec-value"><strong>' + dimensions + ' px</strong>' +
+      '<span class="hb-spec-ratio">' + ratio + '</span></div></div>';
+  }
+
   function decorateItem(el, slot, pc, mb, fmt, sm) {
     if (!el || el.querySelector(':scope > .hb-spec-box')) return;
     if (window.getComputedStyle(el).position === 'static') {
@@ -519,14 +546,18 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
     el.setAttribute('data-hb-item', '1');
     var box = document.createElement('div');
     box.className = 'hb-spec-box' + (sm ? ' hb-spec-box--sm' : '');
-    box.title = 'Click to copy size';
+    var desktopRatio = formatAspectRatio(pc);
+    var mobileRatio = formatAspectRatio(mb);
+    box.title = 'Click to copy US source sizes and aspect ratios';
     box.innerHTML =
-      '<div class="hb-spec-slot"><span>' + slot + '</span>' + (sm ? '' : '<span class="hb-spec-fmt">' + (fmt || '') + '</span>') + '</div>' +
-      '<div class="hb-spec-line"><span>Desktop</span><strong>' + pc + ' px</strong></div>' +
-      '<div class="hb-spec-line"><span>Mobile</span><strong>' + mb + ' px</strong></div>';
+      '<div class="hb-spec-slot"><span>' + slot + '</span><span class="hb-spec-fmt">US source' +
+      (sm ? '' : ' · ' + fmt) + '</span></div>' +
+      specLine('Desktop', pc, desktopRatio) +
+      specLine('Mobile', mb, mobileRatio);
     box.addEventListener('click', function (e) {
       e.stopPropagation();
-      var txt = slot + ' — Desktop: ' + pc + ' px | Mobile: ' + mb + ' px';
+      var txt = slot + ' — Desktop: ' + pc + ' px (' + desktopRatio + ')' +
+        ' | Mobile: ' + mb + ' px (' + mobileRatio + ')';
       if (navigator.clipboard) navigator.clipboard.writeText(txt);
       showToast('Copied: ' + txt);
     });

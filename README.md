@@ -3,15 +3,15 @@
 > **Live Interactive Handbook:** [dreame-theme-handbook-demo.vercel.app](https://dreame-theme-handbook-demo.vercel.app/)  
 > **Applies to:** G2 PDP Template (`L Series · D Series · H Series`)
 
-The handbook uses the [Dreame US L60 Pro Ultra PDP](https://www.dreametech.com/products/l60-pro-ultra-robot-vacuum) as the media reference. Sizes are width × height in pixels from the US source images and selected MP4 streams. The preview may use smaller CDN variants of those files.
+The handbook uses the [Dreame US L60 Pro Ultra PDP](https://www.dreametech.com/products/l60-pro-ultra-robot-vacuum) as the media reference. Sizes are width × height in pixels from the US source images and selected MP4 streams. The preview may use smaller CDN variants of those files. Aspect ratios are width to height. The ≈ symbol marks ratios rounded to two decimal places.
 
 - Use **Jump to section** and **Desktop / Mobile** to preview the layout.
-- Use **Show All Sizes** or click a media badge to copy the source dimensions.
-- See [SPEC_SUMMARY.csv](SPEC_SUMMARY.csv) for the complete media size list, including slots with distinct sizes in the same section.
+- Use **Show All Sizes** to view each source size and ratio. Click a badge to copy both.
+- See [SPEC_SUMMARY.csv](SPEC_SUMMARY.csv) for the complete list of source sizes and aspect ratios, including slots with distinct sizes in the same section.
 
 | Section | Desktop source | Mobile source |
 | --- | --- | --- |
-| G2-04 Hero | 5120 × 1680 | 1170 × 1740 |
+| G2-04 Hero | 5120 × 1680 (≈3.05:1) | 1170 × 1740 (≈1:1.49) |
 | G2-06 Tile 3 | 1184 × 640 | 960 × 960 |
 | G2-06 Tile 4 | 1776 × 960 | 960 × 960 |
 | G2-18 Card image | 2295 × 1353 | 1026 × 840 |

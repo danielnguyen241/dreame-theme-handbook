@@ -3112,9 +3112,11 @@ body.hb-show-all [data-hb-item]::after {
 }
 
 .hb-spec-box--sm {
-  min-width: 0;
-  width: calc(100% - 14px);
-  max-width: calc(100% - 14px);
+  inset-inline: 50% auto;
+  translate: -50% 0;
+  width: max-content;
+  min-width: 112px;
+  max-width: 152px;
   padding: 6px 8px;
 }
 
@@ -3135,7 +3137,8 @@ body.hb-show-all [data-hb-item] > .hb-spec-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 2px 8px;
 }
 
 .hb-spec-box--sm .hb-spec-slot {
@@ -3146,11 +3149,12 @@ body.hb-show-all [data-hb-item] > .hb-spec-box {
 .hb-spec-fmt {
   color: rgba(255, 255, 255, 0.48);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .hb-spec-line {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -3174,6 +3178,21 @@ body.hb-show-all [data-hb-item] > .hb-spec-box {
 .hb-spec-line strong {
   color: #ffffff;
   font-weight: 700;
+}
+
+.hb-spec-value {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  column-gap: 8px;
+}
+
+.hb-spec-line .hb-spec-ratio {
+  color: #e6ca99;
+}
+
+.hb-spec-box--sm .hb-spec-value {
+  column-gap: 4px;
 }
 
 /* Toast */
