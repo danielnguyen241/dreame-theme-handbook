@@ -1,6 +1,6 @@
 # Dreame G2 PDP — Visual Media & Section Handbook
 
-> **Live Interactive Handbook:** [https://dreame-theme-handbook.vercel.app](https://dreame-theme-handbook.vercel.app)  
+> **Live Interactive Handbook:** [dreame-theme-handbook-demo.vercel.app](https://dreame-theme-handbook-demo.vercel.app/)  
 > **Applies to:** G2 PDP Template (`L Series · D Series · H Series`)
 
 The handbook uses the [Dreame US L60 Pro Ultra PDP](https://www.dreametech.com/products/l60-pro-ultra-robot-vacuum) as the media reference. Sizes are width × height in pixels from the US source images and selected MP4 streams. The preview may use smaller CDN variants of those files.
