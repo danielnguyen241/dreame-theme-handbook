@@ -307,7 +307,7 @@ document.querySelectorAll('[data-dpdp-m24]').forEach(function(sec) {
   }
 
   var SECTIONS = [
-    { sel: '#g2-02-gallery-demo', id: 'G2-02', name: 'M02 · Product Gallery', req: true, meta: '13 Images · 1600×1600', specs: [] },
+    { sel: '#g2-02-gallery', id: 'G2-02', name: 'M02 · Product Gallery', req: true, meta: '13 Images · 1600×1600', specs: [] },
     { sel: '.dpdp-sticky-nav-host', id: 'G2-03', name: 'M03 · Sticky Nav', req: true, meta: 'Text Only', specs: [] },
     {
       sel: '.dpdp-hero', id: 'G2-04', name: 'M04 · Hero Banner', req: true, meta: 'Desktop 1920×630 · Mobile 1080×1350',

@@ -666,20 +666,39 @@
     border-radius: 12px;
     margin-bottom: 24px;
   }
-  .dpdp-m14--carousel .dpdp-m14__card,
-  .dpdp-m14--grid_3 .dpdp-m14__card {
-    flex: 0 0 84%;
-    scroll-snap-align: start;
-  }
-  .dpdp-m14--grid_3 .dpdp-m14__track {
+  /* Carousel mode (G2-18): cards snap dead center with equal symmetrical peek */
+  .dpdp-m14--carousel .dpdp-m14__track {
     display: flex;
-    gap: 14px;
+    gap: 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    padding-inline: calc((100% - 84%) / 2);
+    scroll-padding-inline: calc((100% - 84%) / 2);
   }
-  .dpdp-m14--grid_3 .dpdp-m14__track::-webkit-scrollbar {
+  .dpdp-m14--carousel .dpdp-m14__track::-webkit-scrollbar {
     display: none;
+  }
+  .dpdp-m14--carousel .dpdp-m14__card {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+  }
+  /* 3-col grid mode (G2-23): stacks vertically into 1 column on mobile (exact US layout, 100% centered, zero cut-off) */
+  .dpdp-m14--grid_3 .dpdp-m14__track {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    overflow-x: visible;
+  }
+  .dpdp-m14--grid_3 .dpdp-m14__card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  .dpdp-m14--grid_3 .dpdp-m14__card-img {
+    width: 100%;
+    margin-inline: auto;
   }
 }
 
@@ -1899,8 +1918,18 @@
   .dpdp-m16__header-right {
     align-items: flex-start;
   }
+  .dpdp-m16__track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-inline: calc((100% - 88%) / 2);
+    scroll-padding-inline: calc((100% - 88%) / 2);
+  }
   .dpdp-m16__slide {
     flex: 0 0 88%;
+    scroll-snap-align: center;
   }
   .dpdp-m16__caption {
     font-size: 16px;
@@ -2831,7 +2860,7 @@ body.hb-vp-mobile .hb-stage-wrap {
 }
 
 /* Gallery strip (G2-02) */
-.hb-gallery-demo {
+.hb-gallery {
   padding: 28px 0 36px;
   background: #ffffff;
 }

@@ -1,6 +1,6 @@
 # Dreame G2 PDP — Visual Media & Section Handbook
 
-> **Live Interactive Handbook:** [https://dreame-theme-handbook-demo.vercel.app](https://dreame-theme-handbook-demo.vercel.app)  
+> **Live Interactive Handbook:** [https://dreame-theme-handbook.vercel.app](https://dreame-theme-handbook.vercel.app)  
 > **Applies to:** G2 PDP Template (`L Series · D Series · H Series`)
 
 Interactive visual spec reference for Design & Content teams:
