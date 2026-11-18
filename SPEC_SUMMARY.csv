@@ -1,36 +1,47 @@
-Section ID,Module,Status,Media Slot,Desktop (px),Mobile (px),Format / Ratio
-G2-02,M02 Product Gallery,Keep,Gallery G1-G13 (x13),1600 x 1600,1600 x 1600,1:1 PNG/JPG/WebP
-G2-03,M03 Sticky Nav,Keep,Text Only,-,-,-
-G2-04,M04 Hero Banner,Keep,Hero KV,1920 x 630,1080 x 1350,JPG/WebP
-G2-05,M05 Intro Video Pill,Keep,Video Pill + Modal MP4,1920 x 1080 (Pill 790 x 320),1920 x 1080,MP4 <8MB
-G2-06,M06 Highlight Album Grid,Keep,Tile 1 (Wide),1216 x 626,960 x 960,1.94:1 Desktop / 1:1 Mobile
-G2-06,M06 Highlight Album Grid,Keep,Tile 2,718 x 640,960 x 960,1.12:1 Desktop / 1:1 Mobile
-G2-06,M06 Highlight Album Grid,Keep,Tile 3-4,968 x 698,960 x 960,1.39:1 Desktop / 1:1 Mobile
-G2-06,M06 Highlight Album Grid,Keep,Tile 5-8,940 x 1040,960 x 960,0.9:1 Desktop / 1:1 Mobile
-G2-07,M10 Scroll Statement,Optional,Text Only,-,-,-
-G2-08,M19 Full-Width + Stat,Keep,Feature Banner,1920 x 810,1170 x 1971,2.37:1
-G2-09,M19 BG + 2 Sub-Cards,Optional,Main BG,2400 x 1174,1170 x 2958,2:1
-G2-09,M19 BG + 2 Sub-Cards,Optional,Sub-Card (x2),1400 x 803,1026 x 588,1.74:1
-G2-10,M17 Title + Image + Stat,Keep,Feature Image,1960 x 980,1023 x 945,2:1
-G2-11,M22 Feature Slider,Optional,Slide 1 Full BG (+2 Icons 64x64),1920 x 1080,776 x 2168,16:9
-G2-11,M22 Feature Slider,Optional,Slide 2-3 Card,1920 x 960,1028 x 514,2:1
-G2-12,M18 Full-Width Video,Optional,Full-Width Video,2560 x 1080,720 x 720,MP4 <10MB
-G2-13,M20 Two-Column Grid,Keep,Left Main Card,1600 x 1187,1049 x 840,1.35:1
-G2-13,M20 Two-Column Grid,Keep,Right Card (x2),1156 x 881,510 x 534,1.31:1
-G2-14,M21 Stats + Wide Image,Keep,Wide Image,1920 x 965,900 x 720,2:1
-G2-15,M21 Image Left + Icon List,Optional,Left Image (+3 Icons 64x64),1920 x 1600,900 x 720,1.2:1
-G2-16,M18 Chapter Divider,Optional,Chapter Banner,1920 x 810,1170 x 1170,2.37:1
-G2-17,M17 Feature Video Showcase,Keep,Feature Video,2034 x 1080,596 x 480,MP4 <10MB
-G2-18,M14 Feature Cards Carousel,Keep,Carousel Card (x5),2295 x 1353,1026 x 840,1.7:1
-G2-19,M18 Lifestyle Divider,Optional,Lifestyle Banner,1920 x 810,1170 x 1170,2.37:1
-G2-20,M16 Slide Carousel,Optional,Carousel Slide (x4),2400 x 1440,960 x 840,5:3
-G2-21,M11 Tabbed Media,Optional,Tab Image (x4),3600 x 1800,960 x 840,2:1
-G2-22,M17 Wide Feature Banner,Optional,Wide Banner,2400 x 1200,1026 x 1032,2:1
-G2-23,M14 3-Column Feature Cards,Optional,Feature Card (x3),800 x 760,1026 x 1140,~1:1
-G2-24,M23 Badge Banner,Optional,Banner (+ Badge 200x200),2400 x 818,1026 x 840,2.93:1
-G2-25,M24 What's in the Box,Keep,Box Hero,1000 x 1000,1000 x 1000,1:1 PNG/JPG
-G2-25,M24 What's in the Box,Keep,Accessory Item,600 x 600,600 x 600,1:1 PNG/JPG
-G2-26,M25 Specifications,Keep,Dimension Drawing (mm),2712 x 1348,607 x 898,2:1 PNG
-G2-27,M27 FAQ Accordion,Keep,Text Only,-,-,-
-G2-28,M29 Customer Reviews,Keep,Auto App (Judge.me),-,-,-
-G2-29,M28 Disclaimers,Keep,Text Only,-,-,-
+Section ID,Module,Status,Media Slot,Desktop source (px),Mobile source (px),Media
+G2-02,M02 · Product Gallery,Keep,Gallery image (6 shown),2000 x 2000,2000 x 2000,Image
+G2-03,M03 · Sticky Nav,Keep,Text Only,–,–,–
+G2-04,M04 · Hero Banner,Keep,Hero KV,5120 x 1680,1170 x 1740,Image
+G2-05,M05 · Intro Video Pill,Keep,Pill cover,790 x 320,790 x 320,Image
+G2-05,M05 · Intro Video Pill,Keep,Modal video,1920 x 1080,1920 x 1080,MP4
+G2-06,M06 · Highlight Album Grid,Keep,Tile 1,2247 x 1161,960 x 960,Image
+G2-06,M06 · Highlight Album Grid,Keep,Tile 2,1302 x 1161,960 x 960,Image
+G2-06,M06 · Highlight Album Grid,Keep,Tile 3,1184 x 640,960 x 960,Image
+G2-06,M06 · Highlight Album Grid,Keep,Tile 4,1776 x 960,960 x 960,Image
+G2-06,M06 · Highlight Album Grid,Keep,"Tiles 5, 7–8",870 x 960,960 x 960,Image
+G2-06,M06 · Highlight Album Grid,Keep,Tile 6,876 x 960,960 x 960,Image
+G2-07,M10 · Scroll Statement,Optional,Text Only,–,–,–
+G2-08,M19 · Full-Width + Stat,Keep,Feature banner,7680 x 3240,1170 x 1971,Image
+G2-09,M19 · BG + 2 Sub-Cards,Optional,Main background,5120 x 2504,1170 x 2958,Image
+G2-09,M19 · BG + 2 Sub-Cards,Optional,Open spaces,1752 x 1005,1026 x 588,Image
+G2-09,M19 · BG + 2 Sub-Cards,Optional,Low spaces,1752 x 1005,1026 x 585,Image
+G2-10,M17 · Title + Image + Stat,Keep,Feature image,3600 x 1800,1023 x 945,Image
+G2-11,M22 · Feature Slider (3 Slides),Optional,Slide 1 background,5120 x 2160,776 x 2168,Image
+G2-11,M22 · Feature Slider (3 Slides),Optional,Slides 2–3,3600 x 1800,1028 x 514,Image
+G2-11,M22 · Feature Slider (3 Slides),Optional,SideReach icon,264 x 264,264 x 264,Image
+G2-11,M22 · Feature Slider (3 Slides),Optional,MopExtend icon,272 x 248,272 x 248,Image
+G2-12,M18 · Full-Width Video,Optional,Full-width video,2560 x 1080,710 x 720,MP4
+G2-13,M20 · Two-Column Grid,Keep,Left main,2427 x 1800,1049 x 840,Image
+G2-13,M20 · Two-Column Grid,Keep,Hair detangling,1156 x 881,507 x 534,Image
+G2-13,M20 · Two-Column Grid,Keep,Side brush,1156 x 881,513 x 534,Image
+G2-14,M21 · Stats + Wide Image,Keep,Wide image,3582 x 1800,1050 x 840,Image
+G2-15,M21 · Image Left + Icon List,Optional,Left image,2160 x 1800,1050 x 840,Image
+G2-15,M21 · Image Left + Icon List,Optional,Battery icon,173 x 97,173 x 97,Image
+G2-15,M21 · Image Left + Icon List,Optional,Runtime icon,159 x 159,159 x 159,Image
+G2-15,M21 · Image Left + Icon List,Optional,Coverage icon,162 x 158,162 x 158,Image
+G2-16,M18 · Chapter Divider,Optional,Chapter banner,5120 x 2158,1170 x 1170,Image
+G2-17,M17 · Feature Video Showcase,Keep,Feature video,2034 x 1080,596 x 480,MP4
+G2-18,M14 · Feature Cards Carousel (5 Cards),Keep,Card image (×5),2295 x 1353,1026 x 840,Image
+G2-19,M18 · Lifestyle Divider,Optional,Lifestyle banner,5120 x 2160,1170 x 1170,Image
+G2-20,M16 · Slide Carousel (4 Slides),Optional,Slide image (×4),2400 x 1440,960 x 840,Image
+G2-21,M11 · Tabbed Media (4 Tabs),Optional,Tab image (×4),3600 x 1800,960 x 840,Image
+G2-22,M17 · Wide Feature Banner,Optional,Matter banner,3600 x 1800,1026 x 1032,Image
+G2-23,M14 · 3-Column Feature Cards,Optional,Card image (×3),1136 x 1080,1026 x 1140,Image
+G2-24,M23 · Badge Banner,Optional,Privacy banner with built-in badge,3636 x 1239,1026 x 840,Image
+G2-25,M24 · What’s in the Box,Keep,Box hero,1088 x 1088,1088 x 1088,Image
+G2-25,M24 · What’s in the Box,Keep,Accessory (×14),600 x 600,600 x 600,Image
+G2-25,M24 · What’s in the Box,Keep,Washboard filter,639 x 643,639 x 643,Image
+G2-26,M25 · Specifications,Keep,Dimension drawing,2712 x 1348,607 x 898,Image
+G2-27,M27 · FAQ Accordion,Keep,Text Only,–,–,–
+G2-28,M29 · Customer Reviews (Judge.me),Keep,Auto App,–,–,–
+G2-29,M28 · Disclaimers,Keep,Text Only,–,–,–
