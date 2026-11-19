@@ -2943,6 +2943,12 @@ body {
   white-space: nowrap;
 }
 
+.hb-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .hb-btn:hover,
 .hb-btn.is-active {
   background: linear-gradient(90deg, #e6ca99, #bf9c65);
