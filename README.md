@@ -7,7 +7,7 @@
 
 ## G3 · Dreame Z30
 
-G3 covers the 21 sections in the Z30 layout and 63 image and video slots. Use **Jump to section**, **Mobile · 390 px**, and **Show sizes** to review dimensions and placement. The Media specs table includes the original Desktop image URL and a Desktop thumbnail. Versions counts one shared file or two device-specific files.
+G3 covers 21 Z30 sections and 63 image and video slots. Both handbooks use the same toolbar, hover badges, and 390 px Mobile preview. Use **Show All Sizes** to pin the badges and click a badge to copy its source sizes and aspect ratios. Select **Media specs** under **Jump to section** for Desktop thumbnails, original image URLs, and the CSV.
 
 The size badges use source dimensions. The preview may load a smaller CDN variant. [Dreame US Z30](https://www.dreametech.com/products/z30-cordless-stick-vacuum)
 
@@ -37,9 +37,11 @@ The source dimensions provide a canvas reference. A smaller export can use the s
 ```text
 ├── public/
 │   ├── index.html      # Full standalone G2 PDP layout (G2-02 → G2-29)
-│   ├── styles.css      # G2 design system + minimal hover spec UI
-│   ├── handbook.js     # G2 carousels, tabs, viewport switcher and copyable sizes
-│   └── g3/            # Z30 section preview, responsive styles and media CSV
+│   ├── styles.css       # G2 product preview styles
+│   ├── handbook.js      # G2 section data and product preview interactions
+│   ├── handbook-ui.css  # Shared toolbar, section labels and media badges
+│   ├── handbook-ui.js   # Shared hover, copy, section jump and viewport controls
+│   └── g3/             # Z30 preview, section data and media CSV
 ├── SPEC_SUMMARY.csv    # Spreadsheet-ready export of all G2 media dimensions
 └── vercel.json         # Static hosting config (noindex, nofollow)
 ```
