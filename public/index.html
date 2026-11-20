@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/handbook-ui.css">
+  <script src="/handbook-vi.js" defer></script>
+  <script src="/handbook-language.js" defer></script>
   <script src="/handbook-ui.js" defer></script>
   <script src="/handbook.js" defer></script>
 </head>
@@ -30,7 +32,11 @@
           <button type="button" data-vp="mobile" aria-pressed="false">Mobile</button>
         </div>
         <button type="button" id="hb-pin" class="hb-btn">Show All Sizes</button>
-        <a href="/g3/" class="hb-btn hb-link" aria-label="Dreame G3 layout handbook">G3</a>
+        <a data-hb-layout-link href="/g3/" class="hb-btn hb-link" aria-label="Dreame G3 layout handbook">G3</a>
+      </div>
+      <div class="hb-seg hb-language" role="group" aria-label="Language">
+        <button type="button" data-hb-language="vi" aria-pressed="false" lang="vi" aria-label="Tiếng Việt">VI</button>
+        <button type="button" class="is-active" data-hb-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
       </div>
     </div>
   </header>
@@ -393,10 +399,10 @@
     <div class="dpdp-m22__header">
       <div class="dpdp-m22__header-copy"><h2 class="dpdp-h2">Corner-to-Crevice Cleaning System</h2><div class="dpdp-sub"><p>With the side brush extending into hidden spaces and mop pad tightly hugging edges, every corner and crevice receives a thorough clean.</p></div></div><div class="dpdp-m22__controls">
           <div class="dpdp-nav-btns">
-            <button type="button" class="dpdp-circle-btn" data-m22-prev disabled aria-label="Slide trước">
+            <button type="button" class="dpdp-circle-btn" data-m22-prev disabled aria-label="Previous slide">
               <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <button type="button" class="dpdp-circle-btn" data-m22-next aria-label="Slide tiếp">
+            <button type="button" class="dpdp-circle-btn" data-m22-next aria-label="Next slide">
               <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
             </button>
           </div>
@@ -649,10 +655,10 @@
               aria-label="Card 5"
             ></button></div>
         <div class="dpdp-nav-btns">
-          <button type="button" class="dpdp-circle-btn" data-m14-prev aria-label="Trước">
+          <button type="button" class="dpdp-circle-btn" data-m14-prev aria-label="Previous slide">
             <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
-          <button type="button" class="dpdp-circle-btn" data-m14-next aria-label="Tiếp">
+          <button type="button" class="dpdp-circle-btn" data-m14-next aria-label="Next slide">
             <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
           </button>
         </div>

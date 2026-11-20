@@ -53,6 +53,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: 13px;
   letter-spacing: -0.01em;
 }
@@ -77,10 +79,13 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
+  min-width: 0;
 }
 
 .hb-select {
   height: 30px;
+  min-width: 0;
   padding: 0 10px;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -99,6 +104,7 @@ body {
 
 .hb-seg {
   display: inline-flex;
+  flex-shrink: 0;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 2px;
@@ -122,8 +128,13 @@ body {
   color: #111111;
 }
 
+.hb-language button {
+  min-inline-size: 32px;
+}
+
 .hb-btn {
   height: 30px;
+  flex-shrink: 0;
   padding: 0 12px;
   border-radius: 6px;
   border: 1px solid rgba(230, 202, 153, 0.4);
@@ -140,6 +151,11 @@ body {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+}
+
+.hb-actions .hb-link {
+  min-inline-size: 34px;
+  justify-content: center;
 }
 
 .hb-btn:hover,
@@ -468,7 +484,7 @@ body.hb-show-all [data-hb-item] > .hb-spec-box,
 }
 
 @media (max-width: 850px) {
-  .hb-seg {
+  .hb-seg:not(.hb-language) {
     display: none;
   }
   .hb-pill-meta {
@@ -515,9 +531,16 @@ body.hb-show-all [data-hb-item] > .hb-spec-box,
 }
 
 @media (max-width: 700px) {
+  :root {
+    --hb-bar-height: 83px;
+  }
+
   .hb-topbar__inner {
-    gap: 8px;
-    padding-inline: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 30px 36px;
+    gap: 5px 8px;
+    padding: 5px 12px;
   }
 
   .hb-brand__sep,
@@ -526,8 +549,14 @@ body.hb-show-all [data-hb-item] > .hb-spec-box,
   }
 
   .hb-actions {
-    flex: 1;
-    min-width: 0;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+  }
+
+  .hb-language {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .hb-select {

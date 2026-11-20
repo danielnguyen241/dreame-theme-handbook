@@ -71,7 +71,12 @@ function initHandbook(sections) {
   const compactObserver = new ResizeObserver((entries) => {
     entries.forEach(({ target }) => fitCompactBadge(target, compactBadges.get(target)));
   });
-  window.addEventListener('resize', () => compactBadges.forEach((box, item) => fitCompactBadge(item, box)), { passive: true });
+  const fitAllCompactBadges = () => compactBadges.forEach((box, item) => fitCompactBadge(item, box));
+  window.addEventListener('resize', fitAllCompactBadges, { passive: true });
+  document.addEventListener('hb-language-change', () => {
+    toast.classList.remove('is-visible');
+    fitAllCompactBadges();
+  });
 
   function decorateItem(el, { slot, pc, mb, fmt, sm, pcRatio, mbRatio }) {
     if (!el || el.querySelector(':scope > .hb-spec-box')) return;
@@ -91,11 +96,12 @@ function initHandbook(sections) {
       specLine('Mobile', mb, mobileRatio);
     box.addEventListener('click', async function (e) {
       e.stopPropagation();
-      var txt = slot + ' — Desktop: ' + pc + ' px (' + desktopRatio + ')' +
-        ' | Mobile: ' + mb + ' px (' + mobileRatio + ')';
+      const t = handbookLanguage.translate;
+      var txt = t(slot) + ' — ' + t('Desktop') + ': ' + pc + ' px (' + desktopRatio + ')' +
+        ' | ' + t('Mobile') + ': ' + mb + ' px (' + mobileRatio + ')';
       try {
         await navigator.clipboard.writeText(txt);
-        showToast('Copied: ' + txt);
+        showToast(t('Copied') + ': ' + txt);
       } catch {
         showToast('Could not copy source sizes');
       }
@@ -166,6 +172,8 @@ function initHandbook(sections) {
       if (!ev.data || typeof ev.data !== 'object') return;
       if (ev.data.type === 'hb-pin') {
         document.body.classList.toggle('hb-show-all', !!ev.data.on);
+      } else if (ev.data.type === 'hb-language') {
+        handbookLanguage.set(ev.data.lang);
       } else if (ev.data.type === 'hb-jump' && ev.data.id) {
         var t = document.getElementById(ev.data.id);
         if (t) scrollToHandbookSection(t);
@@ -193,9 +201,14 @@ function initHandbook(sections) {
     }
   }
 
+  document.addEventListener('hb-language-change', function () {
+    sendToPreview({ type: 'hb-language', lang: handbookLanguage.current() });
+  });
+
   jumpSelect?.addEventListener('change', jumpToSelection);
   mobileIframe?.addEventListener('load', function () {
     if (!document.body.classList.contains('hb-vp-mobile')) return;
+    sendToPreview({ type: 'hb-language', lang: handbookLanguage.current() });
     sendToPreview({ type: 'hb-pin', on: document.body.classList.contains('hb-show-all') });
     jumpToSelection();
   });
@@ -214,7 +227,7 @@ function initHandbook(sections) {
     document.body.classList.toggle('hb-vp-mobile', isMobile);
     if (mobileShell) mobileShell.hidden = !isMobile;
     if (isMobile && mobileIframe && !mobileIframe.hasAttribute('src')) {
-      mobileIframe.src = location.pathname + '?embed=1';
+      mobileIframe.src = location.pathname + '?embed=1&lang=' + handbookLanguage.current();
     } else {
       jumpToSelection();
     }
