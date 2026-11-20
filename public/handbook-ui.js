@@ -9,9 +9,12 @@ function scrollToHandbookSection(target) {
 }
 
 function initHandbook(sections) {
-  var isEmbed = new URLSearchParams(location.search).get('embed') === '1';
+  const params = new URLSearchParams(location.search);
+  const startWithSizes = params.get('sizes') === '1';
+  var isEmbed = params.get('embed') === '1';
   if (isEmbed) {
     document.body.classList.add('is-embed');
+    document.body.classList.toggle('hb-show-all', startWithSizes);
   }
 
   // Ensure toast element exists
@@ -206,6 +209,11 @@ function initHandbook(sections) {
   });
 
   jumpSelect?.addEventListener('change', jumpToSelection);
+  document.querySelector('[data-hb-table-link]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    jumpSelect.value = event.currentTarget.hash.slice(1);
+    jumpToSelection();
+  });
   mobileIframe?.addEventListener('load', function () {
     if (!document.body.classList.contains('hb-vp-mobile')) return;
     sendToPreview({ type: 'hb-language', lang: handbookLanguage.current() });
@@ -215,19 +223,38 @@ function initHandbook(sections) {
 
   var pinBtn = document.getElementById('hb-pin');
   if (pinBtn) {
-    pinBtn.addEventListener('click', function () {
-      var on = document.body.classList.toggle('hb-show-all');
+    function setSizes(on, share) {
+      document.body.classList.toggle('hb-show-all', on);
       pinBtn.classList.toggle('is-active', on);
-      pinBtn.textContent = on ? 'Hide All Sizes' : 'Show All Sizes';
+      pinBtn.setAttribute('aria-pressed', String(on));
+      pinBtn.textContent = on ? 'Hide Media Sizes' : 'Show Media Sizes';
+      for (const link of document.querySelectorAll('[data-hb-layout-link]')) {
+        const url = new URL(link.href);
+        if (on) url.searchParams.set('sizes', '1');
+        else url.searchParams.delete('sizes');
+        link.href = url.href;
+      }
+      if (share) {
+        const url = new URL(location.href);
+        if (on) url.searchParams.set('sizes', '1');
+        else url.searchParams.delete('sizes');
+        history.replaceState(history.state, '', url);
+      }
       sendToPreview({ type: 'hb-pin', on: on });
-    });
+    }
+    if (startWithSizes) setSizes(true, false);
+    pinBtn.addEventListener('click', () => setSizes(!document.body.classList.contains('hb-show-all'), true));
   }
 
   function switchViewport(isMobile) {
     document.body.classList.toggle('hb-vp-mobile', isMobile);
     if (mobileShell) mobileShell.hidden = !isMobile;
     if (isMobile && mobileIframe && !mobileIframe.hasAttribute('src')) {
-      mobileIframe.src = location.pathname + '?embed=1&lang=' + handbookLanguage.current();
+      const url = new URL(location.href);
+      url.hash = '';
+      url.searchParams.set('embed', '1');
+      url.searchParams.set('lang', handbookLanguage.current());
+      mobileIframe.src = url.href;
     } else {
       jumpToSelection();
     }

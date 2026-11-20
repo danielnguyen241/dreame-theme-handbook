@@ -22,24 +22,44 @@
     <div class="hb-topbar__inner">
       <div class="hb-brand">
         <strong>DREAME</strong>
-        <span class="hb-brand__sep">/</span>
-        <span class="hb-brand__sub">G3 Layout · US source sizes</span>
+        <span class="hb-brand__sub">Media Handbook</span>
       </div>
-      <div class="hb-actions">
+      <div class="hb-field hb-layout-field">
+        <span class="hb-field-label">Layout</span>
+        <nav class="hb-seg hb-layout" aria-label="Layout">
+          <a href="/" data-hb-layout-link aria-label="Dreame L60 Pro Ultra G2 handbook">G2</a>
+          <span class="is-active" aria-current="page">G3</span>
+        </nav>
+      </div>
+      <div class="hb-field hb-language-field">
+        <span class="hb-field-label">Language</span>
+        <div class="hb-seg hb-language" role="group" aria-label="Language">
+          <button type="button" data-hb-language="vi" aria-pressed="false" lang="vi" aria-label="Tiếng Việt">VI</button>
+          <button type="button" class="is-active" data-hb-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
+        </div>
+      </div>
+      <label class="hb-field hb-jump-field">
+        <span class="hb-field-label">Section</span>
         <select id="hb-jump" class="hb-select" aria-label="Jump to section">
           <option value="">Jump to section...</option>
           <option data-hb-extra value="media-specs">Media specs</option>
         </select>
+      </label>
+      <div class="hb-field hb-viewport-field">
+        <span class="hb-field-label">Preview on</span>
         <div class="hb-seg" role="group" aria-label="Viewport">
           <button type="button" class="is-active" data-vp="desktop" aria-pressed="true">Desktop</button>
           <button type="button" data-vp="mobile" aria-pressed="false">Mobile</button>
         </div>
-        <button type="button" id="hb-pin" class="hb-btn">Show All Sizes</button>
-        <a data-hb-layout-link href="/" class="hb-btn hb-link" aria-label="Dreame L60 Pro Ultra G2 handbook">G2</a>
       </div>
-      <div class="hb-seg hb-language" role="group" aria-label="Language">
-        <button type="button" data-hb-language="vi" aria-pressed="false" lang="vi" aria-label="Tiếng Việt">VI</button>
-        <button type="button" class="is-active" data-hb-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
+      <button type="button" id="hb-pin" class="hb-btn hb-primary" aria-pressed="false" aria-describedby="hb-use-tip">Show Media Sizes</button>
+      <div class="hb-tip">
+        <span id="hb-use-tip">
+          <span class="hb-tip__desktop">Hover over media for source sizes. Click a badge to copy.</span>
+          <span class="hb-tip__touch">Show media sizes, then tap a badge to copy.</span>
+          <span class="hb-tip__pinned">Choose a badge to copy the size and ratio.</span>
+        </span>
+        <a class="hb-media-link" href="#media-specs" data-hb-table-link>Media specs</a>
       </div>
     </div>
   </header>
