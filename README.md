@@ -5,9 +5,9 @@
 | G2 | L60 Pro Ultra | [G2 handbook](https://dreame-theme-handbook-demo.vercel.app/) | [G2 media CSV](SPEC_SUMMARY.csv) |
 | G3 | Z30 | [G3 handbook](https://dreame-theme-handbook-demo.vercel.app/g3/) | [G3 media CSV](public/g3/media.csv) |
 
-## G3 · Dreame Z30
+## G3 layout
 
-G3 covers 21 Z30 sections and 63 image and video slots. Both handbooks use the same toolbar, hover badges, and 390 px Mobile preview. Use **Show All Sizes** to pin the badges and click a badge to copy its source sizes and aspect ratios. Select **Media specs** under **Jump to section** for Desktop thumbnails, original image URLs, and the CSV.
+G3 has 21 reusable sections named by layout or interaction. Dreame Z30 supplies the 63 reference media slots. Both handbooks use the same toolbar, hover badges, and 390 px Mobile preview. Use **Show All Sizes** to pin the badges and click a badge to copy its source sizes and aspect ratios. Select **Media specs** under **Jump to section** for Desktop thumbnails, original image URLs, and the CSV.
 
 The size badges use source dimensions. The preview may load a smaller CDN variant. [Dreame US Z30](https://www.dreametech.com/products/z30-cordless-stick-vacuum)
 
@@ -41,7 +41,7 @@ The source dimensions provide a canvas reference. A smaller export can use the s
 │   ├── handbook.js      # G2 section data and product preview interactions
 │   ├── handbook-ui.css  # Shared toolbar, section labels and media badges
 │   ├── handbook-ui.js   # Shared hover, copy, section jump and viewport controls
-│   └── g3/             # Z30 preview, section data and media CSV
+│   └── g3/             # G3 layout with Z30 reference media
 ├── SPEC_SUMMARY.csv    # Spreadsheet-ready export of all G2 media dimensions
 └── vercel.json         # Static hosting config (noindex, nofollow)
 ```

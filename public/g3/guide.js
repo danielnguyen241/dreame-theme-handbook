@@ -13,13 +13,13 @@ initHandbook([
       { sel: '[data-g3-media="gallery_9"]', slot: "Package overview", pc: "800 × 800", mb: "800 × 800", pcRatio: "1:1", mbRatio: "1:1", fmt: "Image" }
     ]
   },
-  { sel: "[data-hb-sticky-nav]", id: 'G3-03', name: "M03 · Section Navigation", req: true, meta: "Navigation", specs: [] },
+  { sel: "[data-hb-sticky-nav]", id: 'G3-03', name: "M03 · Sticky Nav", req: true, meta: "Navigation", specs: [] },
   { sel: "#g3-04", id: 'G3-04', name: "M04 · Hero Banner", req: true, meta: "Banner",
     specs: [
       { sel: '[data-g3-media="hero"]', slot: "Hero key visual", pc: "1920 × 1080", mb: "768 × 1272", pcRatio: "16:9", mbRatio: "≈1:1.66", fmt: "Image" }
     ]
   },
-  { sel: "#g3-05", id: 'G3-05', name: "M06 · Highlight Album", req: true, meta: "Image grid",
+  { sel: "#g3-05", id: 'G3-05', name: "M06 · Highlight Grid", req: true, meta: "Image grid",
     specs: [
       { sel: '[data-g3-media="highlight_1"]', slot: "310 AW suction", pc: "445 × 581", mb: "727 × 400", pcRatio: "≈1:1.31", mbRatio: "≈1.82:1", fmt: "Image" },
       { sel: '[data-g3-media="highlight_2"]', slot: "HEPA filtration", pc: "587 × 279", mb: "361 × 396", pcRatio: "≈2.10:1", mbRatio: "≈1:1.10", fmt: "Image" },
@@ -37,19 +37,19 @@ initHandbook([
       { sel: '[data-g3-media="press_2"]', slot: "Media logo 02", pc: "700 × 700", mb: "700 × 700", pcRatio: "1:1", mbRatio: "1:1", fmt: "Logo", sm: true }
     ]
   },
-  { sel: "#g3-07", id: 'G3-07', name: "M17 · TurboMotor", req: true, meta: "Video + icon",
+  { sel: "#g3-07", id: 'G3-07', name: "M17 · Video + Stat", req: true, meta: "Video + icon",
     specs: [
       { sel: '[data-g3-media="motor_icon"]', slot: "TurboMotor icon", pc: "77 × 77", mb: "77 × 77", pcRatio: "1:1", mbRatio: "1:1", fmt: "Icon", sm: true },
       { sel: '[data-g3-media="motor_video"]', slot: "TurboMotor demonstration", pc: "1920 × 900", mb: "664 × 634", pcRatio: "≈2.13:1", mbRatio: "≈1.05:1", fmt: "MP4" }
     ]
   },
-  { sel: "#g3-08", id: 'G3-08', name: "M19 · HEPA Filtration", req: true, meta: "Banner + icon",
+  { sel: "#g3-08", id: 'G3-08', name: "M19 · Banner + Stats", req: true, meta: "Banner + icon",
     specs: [
       { sel: '[data-g3-media="hepa"]', slot: "HEPA filtration background", pc: "1920 × 1376", mb: "768 × 1200", pcRatio: "≈1.40:1", mbRatio: "≈1:1.56", fmt: "Image" },
       { sel: '[data-g3-media="hepa_badge"]', slot: "HEPA 14 badge", pc: "132 × 113", mb: "132 × 113", pcRatio: "≈1.17:1", mbRatio: "≈1.17:1", fmt: "Icon", sm: true }
     ]
   },
-  { sel: "#g3-09", id: 'G3-09', name: "M17 · Smart Detection", req: true, meta: "Image grid",
+  { sel: "#g3-09", id: 'G3-09', name: "M17 · Feature Grid", req: true, meta: "Image grid",
     specs: [
       { sel: '[data-g3-media="dirt_3"]', slot: "Light dirt gauge", pc: "120 × 62", mb: "120 × 62", pcRatio: "≈1.94:1", mbRatio: "≈1.94:1", fmt: "Icon", sm: true },
       { sel: '[data-g3-media="dirt_1"]', slot: "Medium dirt gauge", pc: "120 × 60", mb: "120 × 60", pcRatio: "2:1", mbRatio: "2:1", fmt: "Icon", sm: true },
@@ -60,31 +60,31 @@ initHandbook([
       { sel: '[data-g3-media="present"]', slot: "Presentation card", pc: "458 × 245", mb: "237 × 229", pcRatio: "≈1.87:1", mbRatio: "≈1.03:1", fmt: "Image", sm: true }
     ]
   },
-  { sel: "#g3-10", id: 'G3-10', name: "M17 · Runtime", req: true, meta: "Image + icons",
+  { sel: "#g3-10", id: 'G3-10', name: "M17 · Image + Stats", req: true, meta: "Image + icons",
     specs: [
       { sel: '[data-g3-media="time_icon"]', slot: "Runtime icon", pc: "59 × 59", mb: "59 × 59", pcRatio: "1:1", mbRatio: "1:1", fmt: "Icon", sm: true },
       { sel: '[data-g3-media="area_icon"]', slot: "Coverage icon", pc: "63 × 58", mb: "63 × 58", pcRatio: "≈1.09:1", mbRatio: "≈1.09:1", fmt: "Icon", sm: true },
       { sel: '[data-g3-media="runtime"]', slot: "Whole-house cleaning", pc: "1397 × 775", mb: "669 × 676", pcRatio: "≈1.80:1", mbRatio: "≈1:1.01", fmt: "Image" }
     ]
   },
-  { sel: "#g3-11", id: 'G3-11', name: "M17 · CelesTect", req: true, meta: "Image switcher",
+  { sel: "#g3-11", id: 'G3-11', name: "M17 · Image Switcher", req: true, meta: "Image switcher",
     specs: [
       { sel: '[data-g3-media="light_1"]', slot: "CelesTect · state 01", pc: "1920 × 992", mb: "768 × 776", pcRatio: "≈1.94:1", mbRatio: "≈1:1.01", fmt: "Image" },
       { sel: '[data-g3-media="light_2"]', slot: "CelesTect · state 02", pc: "1920 × 992", mb: "768 × 776", pcRatio: "≈1.94:1", mbRatio: "≈1:1.01", fmt: "Image" }
     ]
   },
-  { sel: "#g3-12", id: 'G3-12', name: "M14 · Brush Feature Cards", req: true, meta: "Image grid",
+  { sel: "#g3-12", id: 'G3-12', name: "M14 · Feature Cards", req: true, meta: "Image grid",
     specs: [
       { sel: '[data-g3-media="surface_card"]', slot: "Multi-surface capabilities", pc: "689 × 664", mb: "326 × 367", pcRatio: "≈1.04:1", mbRatio: "≈1:1.13", fmt: "Image" },
       { sel: '[data-g3-media="ridges_card"]', slot: "Anti-tangle ridges", pc: "689 × 664", mb: "326 × 367", pcRatio: "≈1.04:1", mbRatio: "≈1:1.13", fmt: "Image" }
     ]
   },
-  { sel: "#g3-13", id: 'G3-13', name: "M17 · Edge Cleaning", req: false, meta: "Single image",
+  { sel: "#g3-13", id: 'G3-13', name: "M17 · Text + Image", req: false, meta: "Single image",
     specs: [
       { sel: '[data-g3-media="edge"]', slot: "Clean-to-Edge soft roller", pc: "1397 × 775", mb: "768 × 743", pcRatio: "≈1.80:1", mbRatio: "≈1.03:1", fmt: "Image" }
     ]
   },
-  { sel: "#g3-14", id: 'G3-14', name: "M15 · Pet & Versatile Tools", req: true, meta: "Video + carousel",
+  { sel: "#g3-14", id: 'G3-14', name: "M15 · Video + Carousel", req: true, meta: "Video + carousel",
     specs: [
       { sel: '[data-g3-media="pet_video"]', slot: "Pet deshedding demonstration", pc: "1400 × 656", mb: "680 × 700", pcRatio: "≈2.13:1", mbRatio: "≈1:1.03", fmt: "MP4" },
       { sel: '[data-g3-media="tool_1"]', slot: "Motorized mini-brush", pc: "690 × 664", mb: "680 × 700", pcRatio: "≈1.04:1", mbRatio: "≈1:1.03", fmt: "Image" },
@@ -94,7 +94,7 @@ initHandbook([
       { sel: '[data-g3-media="tool_5"]', slot: "Flexible adapter", pc: "690 × 664", mb: "680 × 700", pcRatio: "≈1.04:1", mbRatio: "≈1:1.03", fmt: "Image" }
     ]
   },
-  { sel: "#g3-15", id: 'G3-15', name: "M21 · Maintenance", req: true, meta: "Image + text rows",
+  { sel: "#g3-15", id: 'G3-15', name: "M21 · Image + Text Rows", req: true, meta: "Image + text rows",
     specs: [
       { sel: '[data-g3-media="empty"]', slot: "One-press dirt release", pc: "689 × 528", mb: "383 × 317", pcRatio: "≈1.30:1", mbRatio: "≈1.21:1", fmt: "Image" },
       { sel: '[data-g3-media="empty_icon"]', slot: "Dirt release indicator", pc: "378 × 378", mb: "378 × 378", pcRatio: "1:1", mbRatio: "1:1", fmt: "Icon", sm: true },
@@ -102,7 +102,7 @@ initHandbook([
       { sel: '[data-g3-media="wash"]', slot: "Washable components", pc: "689 × 528", mb: "383 × 317", pcRatio: "≈1.30:1", mbRatio: "≈1.21:1", fmt: "Image" }
     ]
   },
-  { sel: "#g3-16", id: 'G3-16', name: "M17 · Storage", req: false, meta: "Banner",
+  { sel: "#g3-16", id: 'G3-16', name: "M17 · Full-Width Image", req: false, meta: "Banner",
     specs: [
       { sel: '[data-g3-media="storage"]', slot: "Ground base storage", pc: "1920 × 1214", mb: "768 × 848", pcRatio: "≈1.58:1", mbRatio: "≈1:1.10", fmt: "Image" }
     ]
