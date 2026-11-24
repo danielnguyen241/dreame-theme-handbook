@@ -2,14 +2,14 @@
 
 ## G3 Layout v2
 
-- [Vietnamese preview](https://dreame-theme-handbook-demo.vercel.app/g3/?lang=vi)
+- [Vietnamese handbook](https://dreame-theme-handbook.vercel.app/g3/?lang=vi)
 - [Handbook source](public/g3)
 - [Compare the first G3 handbook with v2](../../compare/9248cef...a000c9f)
 
 | Layout | US reference | Handbook | Download |
 | --- | --- | --- | --- |
-| G2 | L60 Pro Ultra | [G2 handbook](https://dreame-theme-handbook-demo.vercel.app/) | [G2 media CSV](SPEC_SUMMARY.csv) |
-| G3 | Z30 | [G3 handbook](https://dreame-theme-handbook-demo.vercel.app/g3/) | [G3 media CSV](public/g3/media.csv) |
+| G2 | L60 Pro Ultra | [G2 handbook](https://dreame-theme-handbook.vercel.app/) | [G2 media CSV](SPEC_SUMMARY.csv) |
+| G3 | Z30 | [G3 handbook](https://dreame-theme-handbook.vercel.app/g3/) | [G3 media CSV](public/g3/media.csv) |
 
 Choose **VI** or **EN** in either handbook. The language follows the layout links and the 390 px Mobile preview. Append `?lang=vi` to a handbook link to share the Vietnamese view. Add &sizes=1 to open a shared link with source-size badges visible. The G3 **Download CSV** button uses the selected language.
 
@@ -19,7 +19,7 @@ The size badges use source dimensions. The preview may load a smaller CDN varian
 
 ## G2 · Dreame L60 Pro Ultra
 
-> **Live Interactive Handbook:** [dreame-theme-handbook-demo.vercel.app](https://dreame-theme-handbook-demo.vercel.app/)  
+> **Live Interactive Handbook:** [dreame-theme-handbook.vercel.app](https://dreame-theme-handbook.vercel.app/)  
 > **Applies to:** G2 PDP Template (`L Series · D Series · H Series`)
 
 The handbook uses the [Dreame US L60 Pro Ultra PDP](https://www.dreametech.com/products/l60-pro-ultra-robot-vacuum) as the media reference. Sizes are width × height in pixels from the US source images and selected MP4 streams. The preview may use smaller CDN variants of those files. Aspect ratios are width to height. The ≈ symbol marks ratios rounded to two decimal places.
