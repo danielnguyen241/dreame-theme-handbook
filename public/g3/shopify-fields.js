@@ -5,6 +5,17 @@ function initG3ShopifyFields(sections) {
   const picker = document.getElementById('g3-fields-section');
   const content = document.getElementById('g3-fields-content');
   const source = document.getElementById('g3-fields-source');
+  const inspected = document.getElementById('g3-fields-inspected');
+  const deviceButtons = dialog.querySelectorAll('[data-g3-field-viewport]');
+  const preview = createG3FieldPreview(
+    document.getElementById('g3-fields-preview'),
+    inspect,
+    () => dialog.close()
+  );
+  const rows = new Map();
+  let inspectedId;
+  let renderedLanguage;
+  let viewport;
   const themeRoot = 'https://github.com/danielnguyen241/dreame-shopify-g2/blob/' + g3ShopifyFieldSource + '/';
   const buyBoxFields = [
     { label: 'Product title', id: 'product.title', example: 'Products → Title' },
@@ -26,7 +37,45 @@ function initG3ShopifyFields(sections) {
     return node;
   }
 
-  function fieldTable(fields, mediaSpecs) {
+  function fieldName(field) {
+    return field.group ? field.group + ' › ' + field.label : field.label;
+  }
+
+  function inspect(id) {
+    if (id === inspectedId) return;
+    rows.get(inspectedId)?.row.classList.remove('is-inspected');
+    inspectedId = id;
+    const match = rows.get(id);
+    if (!match) {
+      inspected.replaceChildren(element('span', 'Hover or tap text or media to find its Shopify field.'));
+      return;
+    }
+
+    const { row, field } = match;
+    row.classList.add('is-inspected');
+    inspected.replaceChildren(element('strong', fieldName(field), !!field.type), element('code', id, true));
+
+    const visible = content.getBoundingClientRect();
+    const position = row.getBoundingClientRect();
+    const headerHeight = row.closest('table').tHead.getBoundingClientRect().height;
+    if (position.top < visible.top + headerHeight) {
+      content.scrollTop += position.top - visible.top - headerHeight;
+    } else if (position.bottom > visible.bottom) {
+      content.scrollTop += position.bottom - visible.bottom;
+    }
+  }
+
+  function selectViewport(next) {
+    viewport = next;
+    for (const button of deviceButtons) {
+      const selected = button.dataset.g3FieldViewport === next;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('is-active', selected);
+    }
+    preview.setViewport(next);
+  }
+
+  function fieldTable(fields, mediaSpecs, fieldIds) {
     const table = element('table');
     const headers = table.createTHead().insertRow();
     for (const label of ['Theme Editor label and ID', 'Z30 example or source']) {
@@ -40,8 +89,22 @@ function initG3ShopifyFields(sections) {
       const row = body.insertRow();
       const heading = element('th', null);
       heading.scope = 'row';
-      heading.append(element('strong', field.group ? field.group + ' › ' + field.label : field.label, !!field.type));
-      if (field.id) heading.append(element('code', field.id, true));
+      const hasPreview = field.media || fieldIds.has(field.id);
+      const label = element(hasPreview ? 'button' : 'strong', fieldName(field), !!field.type);
+      if (hasPreview) {
+        label.type = 'button';
+        label.className = 'g3-fields__reveal';
+        label.addEventListener('click', () => {
+          const device = g3FieldViewport(field);
+          if (device && device !== viewport) selectViewport(device);
+          preview.reveal(field.id);
+        });
+      }
+      heading.append(label);
+      if (field.id) {
+        heading.append(element('code', field.id, true));
+        rows.set(field.id, { row, field });
+      }
       row.append(heading);
 
       const reference = row.insertCell();
@@ -59,6 +122,7 @@ function initG3ShopifyFields(sections) {
   }
 
   function render() {
+    renderedLanguage = handbookLanguage.current();
     const key = picker.value;
     const section = sections.find(({ id }) => id.toLowerCase() === key);
     const mapping = g3ShopifyFields[key];
@@ -67,27 +131,35 @@ function initG3ShopifyFields(sections) {
       : key === 'g3-02' ? galleryFields
       : reviewFields;
     const media = new Map(section.specs.map(spec => [spec.sel.match(/"([^"]+)"/)?.[1], spec]));
+    rows.clear();
+    inspectedId = null;
+    inspect();
     const heading = element('p');
     if (mapping) {
       heading.append(element('span', 'Theme Editor section'), ' · ', element('strong', mapping.name, true));
     } else {
       heading.append(element('strong', section.name));
     }
-    content.replaceChildren(heading, fieldTable(fields, media));
+    content.replaceChildren(heading, fieldTable(fields, media, section.fieldIds));
 
     for (const block of mapping?.blocks ?? []) {
       const label = element('h3');
       label.append(element('span', 'Block'), ' · ', element('strong', block.name, true), ' ', element('code', block.type, true));
-      content.append(label, element('p', 'Repeat for each item.'), fieldTable(block.fields, media));
+      content.append(label, element('p', 'Repeat for each item.'), fieldTable(block.fields, media, section.fieldIds));
     }
     source.href = themeRoot + (mapping?.path ?? 'sections/main-product.liquid');
     content.scrollTop = 0;
+    preview.mount(section, fields.concat((mapping?.blocks ?? []).flatMap(block => block.fields)));
   }
 
   function open(key = picker.value) {
     picker.value = key;
+    if (!dialog.open) {
+      const mobile = document.body.matches('.is-embed, .hb-vp-mobile') || window.matchMedia('(max-width: 850px)').matches;
+      selectViewport(mobile ? 'mobile' : 'desktop');
+      dialog.showModal();
+    }
     render();
-    if (!dialog.open) dialog.showModal();
   }
 
   for (const { id, name } of sections) {
@@ -106,10 +178,19 @@ function initG3ShopifyFields(sections) {
 
   picker.value = 'g3-04';
   picker.addEventListener('change', render);
+  for (const button of deviceButtons) {
+    button.addEventListener('click', () => selectViewport(button.dataset.g3FieldViewport));
+  }
+  dialog.addEventListener('close', () => {
+    if (!dialog.open) preview.clear();
+  });
+  document.addEventListener('hb-language-change', () => {
+    if (dialog.open && renderedLanguage !== handbookLanguage.current()) render();
+  });
   document.querySelector('[data-g3-open-fields]').addEventListener('click', () => open());
 
   const requested = new URLSearchParams(location.search).get('fields');
   if ([...picker.options].some(option => option.value === requested) && !document.body.classList.contains('is-embed')) {
-    open(requested);
+    document.addEventListener('DOMContentLoaded', () => open(requested), { once: true });
   }
 }

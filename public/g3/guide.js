@@ -130,5 +130,14 @@ const g3HandbookSections = [
   { sel: "#g3-21", id: 'G3-21', name: "M29 · Customer Reviews", req: true, meta: "App block", specs: [] }
 ];
 
+const g3FieldSections = g3HandbookSections.map(section => {
+  const preview = document.querySelector(section.sel);
+  return {
+    ...section,
+    markup: preview.outerHTML,
+    fieldIds: new Set(Array.from(preview.querySelectorAll('[data-g3-field]'), node => node.dataset.g3Field)),
+  };
+});
+
 initHandbook(g3HandbookSections);
-initG3ShopifyFields(g3HandbookSections);
+initG3ShopifyFields(g3FieldSections);

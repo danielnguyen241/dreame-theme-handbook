@@ -129,5 +129,5 @@ const handbookLanguage = (() => {
     observer.observe(document.body, { subtree: true, childList: true, attributeFilter: attributes });
   });
 
-  return { current: () => language, translate, set };
+  return { current: () => language, translate, localize: localizeTree, set };
 })();
