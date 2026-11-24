@@ -1,4 +1,4 @@
-initHandbook([
+const g3HandbookSections = [
   { sel: "#g3-01", id: 'G3-01', name: "M01 · Buy Box", req: true, meta: "Buy box", specs: [] },
   { sel: "#g3-02", id: 'G3-02', name: "M02 · Product Gallery", req: true, meta: "Gallery", inlineTag: true,
     specs: [
@@ -128,4 +128,7 @@ initHandbook([
   { sel: "#g3-19", id: 'G3-19', name: "M27 · FAQ", req: true, meta: "Accordion", specs: [] },
   { sel: "#g3-20", id: 'G3-20', name: "M28 · Disclaimers", req: true, meta: "Text", specs: [] },
   { sel: "#g3-21", id: 'G3-21', name: "M29 · Customer Reviews", req: true, meta: "App block", specs: [] }
-]);
+];
+
+initHandbook(g3HandbookSections);
+initG3ShopifyFields(g3HandbookSections);

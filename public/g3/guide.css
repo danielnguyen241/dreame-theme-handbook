@@ -189,3 +189,157 @@
     padding-inline: 12px;
   }
 }
+
+.g3-guide-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 12px;
+}
+
+.g3-fields-link {
+  background: transparent;
+  border: 0;
+  padding: 2px 0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.g3-fields {
+  box-sizing: border-box;
+  width: min(760px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #dcd4c8;
+  border-radius: 12px;
+  background: #fff;
+  color: #292016;
+  box-shadow: 0 16px 56px #23180f35;
+}
+
+.g3-fields[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.g3-fields::backdrop {
+  background: #21180e80;
+}
+
+.g3-fields__header,
+.g3-fields__section,
+.g3-fields__intro,
+.g3-fields__content,
+.g3-fields__footer {
+  padding-inline: clamp(12px, 3vw, 24px);
+}
+
+.g3-fields__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 14px;
+  background: #f5f0e8;
+}
+
+.g3-fields__header h2 {
+  margin: 0;
+  font-size: clamp(18px, 4vw, 25px);
+}
+
+.g3-fields__section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block: 14px 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.g3-fields__section select {
+  min-width: 0;
+  max-width: 100%;
+  flex: 1;
+}
+
+.g3-fields__intro {
+  margin: 8px 0 12px;
+  font-size: 13px;
+}
+
+.g3-fields__content {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.g3-fields__content p,
+.g3-fields__content h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.g3-fields__content h3 {
+  margin-top: 16px;
+}
+
+.g3-fields__content table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.g3-fields__content th,
+.g3-fields__content td {
+  padding: 8px;
+  border-bottom: 1px solid #eee8df;
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.g3-fields__content th {
+  width: 52%;
+  font-weight: 500;
+}
+
+.g3-fields__content thead th {
+  position: sticky;
+  top: 0;
+  background: #f5f0e8;
+  font-weight: 700;
+}
+
+.g3-fields__content code,
+.g3-fields__content small {
+  display: block;
+  margin-top: 3px;
+  color: #684820;
+  font-size: 12px;
+}
+
+.g3-fields__content h3 code {
+  display: inline;
+}
+
+.g3-fields__footer {
+  padding-block: 10px;
+  border-top: 1px solid #eee8df;
+  font-size: 13px;
+}
+
+.g3-fields__footer a {
+  color: #684820;
+}
+
+@media (max-width: 480px) {
+  .hb-sec-tag__right:has(.g3-fields-link) .hb-pill-meta {
+    display: none;
+  }
+}

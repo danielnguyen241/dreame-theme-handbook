@@ -14,6 +14,8 @@
   <script src="/handbook-vi.js" defer></script>
   <script src="/handbook-language.js" defer></script>
   <script src="/handbook-ui.js" defer></script>
+  <script src="/g3/shopify-fields-data.js" defer></script>
+  <script src="/g3/shopify-fields.js" defer></script>
   <script src="/g3/guide.js" defer></script>
   <script src="/g3/dreame-g3.js" defer></script>
 </head>
@@ -59,7 +61,10 @@
           <span class="hb-tip__touch">Show media sizes, then tap a badge to copy.</span>
           <span class="hb-tip__pinned">Choose a badge to copy the size and ratio.</span>
         </span>
-        <a class="hb-media-link" href="#media-specs" data-hb-table-link>Media specs</a>
+        <div class="g3-guide-links">
+          <button type="button" class="hb-media-link g3-fields-link" data-g3-open-fields>Shopify fields</button>
+          <a class="hb-media-link" href="#media-specs" data-hb-table-link>Media specs</a>
+        </div>
       </div>
     </div>
   </header>
@@ -1311,6 +1316,20 @@
       <iframe id="hb-mobile-iframe" title="Mobile Preview"></iframe>
     </div>
   </div>
+
+  <dialog id="shopify-fields" class="g3-fields" aria-labelledby="g3-fields-heading">
+    <div class="g3-fields__header">
+      <h2 id="g3-fields-heading">Shopify fields</h2>
+      <form method="dialog"><button class="hb-btn" type="submit">Close</button></form>
+    </div>
+    <label class="g3-fields__section">
+      <span>Section</span>
+      <select class="hb-select" id="g3-fields-section"></select>
+    </label>
+    <p class="g3-fields__intro">Find the exact Theme Editor label and field ID for each text or media slot.</p>
+    <div id="g3-fields-content" class="g3-fields__content"></div>
+    <div class="g3-fields__footer"><a id="g3-fields-source" target="_blank" rel="noopener">Shopify source</a></div>
+  </dialog>
 
   <div id="hb-toast" class="hb-toast" role="status" aria-live="polite"></div>
 </body>

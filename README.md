@@ -4,6 +4,7 @@
 
 - [Vietnamese handbook](https://dreame-theme-handbook.vercel.app/g3/?lang=vi)
 - [Handbook source](public/g3)
+- [Shopify field map](https://dreame-theme-handbook.vercel.app/g3/?lang=vi&fields=g3-04) · [Mapping data](public/g3/shopify-fields-data.js)
 - [Compare the first G3 handbook with v2](../../compare/9248cef...a000c9f)
 
 | Layout | US reference | Handbook | Download |
@@ -14,6 +15,8 @@
 Choose **VI** or **EN** in either handbook. The language follows the layout links and the 390 px Mobile preview. Append `?lang=vi` to a handbook link to share the Vietnamese view. Add &sizes=1 to open a shared link with source-size badges visible. The G3 **Download CSV** button uses the selected language.
 
 G3 has 21 reusable sections named by layout or interaction. Dreame Z30 supplies the 63 reference media slots. Both handbooks use the same toolbar, hover badges, and 390 px Mobile preview. Use **Show Media Sizes** to pin the badges and click a badge to copy its source sizes and aspect ratios. Select **Media specs** under **Jump to section** for Desktop thumbnails, original image URLs, and the CSV.
+
+Use **Shopify fields** in the toolbar or **Fields** beside a section to find the exact Theme Editor labels, Liquid IDs, and Z30 examples for text and media. The map links to the Shopify schema revision it uses.
 
 The size badges use source dimensions. The preview may load a smaller CDN variant. [Dreame US Z30](https://www.dreametech.com/products/z30-cordless-stick-vacuum)
 

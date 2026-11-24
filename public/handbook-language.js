@@ -17,7 +17,7 @@ const handbookLanguage = (() => {
   const textSources = new WeakMap();
   const attributeSources = new WeakMap();
   const attributes = ['alt', 'aria-label', 'title'];
-  const excluded = 'script, style, svg, noscript';
+  const excluded = 'script, style, svg, noscript, [translate="no"]';
   const csv = document.querySelector('[data-hb-csv]');
   const englishCsv = csv?.getAttribute('href');
 
