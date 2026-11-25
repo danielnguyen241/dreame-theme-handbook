@@ -22,6 +22,7 @@
 
   const videoObserver = new IntersectionObserver((entries) => {
     for (const { target: video, isIntersecting, intersectionRatio } of entries) {
+      if (!video.isConnected) continue;
       if (isIntersecting && intersectionRatio >= 0.15) {
         activeVideos.add(video);
         playVideo(video);

@@ -13,8 +13,10 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
   let viewport = 'desktop';
   let inspectedTarget;
   let pendingField;
+  let pendingSection;
   let fields = [];
   const targets = new Map();
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let enabledFields = new Set();
 
   function fit() {
@@ -30,7 +32,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
 
   new ResizeObserver(fit).observe(canvas);
 
-  function inspect(target) {
+  function inspect(target, hover = false) {
     const id = target?.dataset.g3PreviewField;
     if (!enabledFields.has(id)) return;
     if (inspectedTarget !== target) {
@@ -38,7 +40,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       target.setAttribute('data-g3-preview-active', '');
       inspectedTarget = target;
     }
-    onInspect(id);
+    onInspect(id, hover);
   }
 
   function bindTargets() {
@@ -81,15 +83,34 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
     if (details) details.open = true;
     const nav = target.closest('.g3-nav__links');
     if (nav && !visible(target)) nav.previousElementSibling.click();
-    target.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+    target.scrollIntoView({
+      block: 'center',
+      inline: 'nearest',
+      behavior: reducedMotion.matches ? 'instant' : 'smooth',
+    });
     inspect(target);
   }
 
-  function mount(section, nextFields) {
-    clear();
-    fields = nextFields;
+  function sectionEvent(root, action) {
+    root.dispatchEvent(new previewDocument.defaultView.CustomEvent('shopify:section:' + action, { bubbles: true }));
+  }
+
+  function unmountSection() {
+    const root = previewDocument?.body.firstElementChild;
+    if (!root) return;
+    sectionEvent(root, 'unload');
+    root.querySelectorAll('[data-g3-video]').forEach(video => {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    });
+  }
+
+  function renderSection() {
+    if (!pendingSection || !previewDocument) return;
     const template = document.createElement('template');
-    template.innerHTML = section.markup;
+    template.innerHTML = pendingSection.markup;
+    pendingSection = null;
     const root = template.content.firstElementChild;
     handbookLanguage.localize(root);
     root.querySelectorAll('[data-g3-story]').forEach(story => story.removeAttribute('data-g3-story'));
@@ -99,40 +120,61 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       link.rel = 'noopener';
     }
 
-    // Keep the nav's real labels visible in the isolated preview.
+    // Keep navigation labels visible even when their destination sections are not mounted.
     const navAnchors = Array.from(root.querySelectorAll('.g3-nav__links a'), link => {
-      const anchor = document.createElement('span');
+      const anchor = previewDocument.createElement('span');
       anchor.id = link.getAttribute('href').slice(1);
       anchor.hidden = true;
-      return anchor.outerHTML;
-    }).join('');
+      return anchor;
+    });
 
-    const nextFrame = document.createElement('iframe');
-    nextFrame.title = 'Section preview';
-    nextFrame.className = 'g3-fields__frame';
-    nextFrame.srcdoc = [
-      '<!doctype html><html lang="' + handbookLanguage.current() + '"><head><meta charset="utf-8">',
+    unmountSection();
+    previewDocument.documentElement.lang = handbookLanguage.current();
+    previewDocument.body.replaceChildren(root, ...navAnchors);
+    previewDocument.defaultView.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    sectionEvent(previewDocument.body, 'load');
+    bindTargets();
+    if (pendingField) {
+      reveal(pendingField);
+      pendingField = null;
+    }
+  }
+
+  function mount(section, nextFields) {
+    pendingSection = section;
+    pendingField = null;
+    inspectedTarget = null;
+    fields = nextFields;
+    if (frame) {
+      renderSection();
+      return;
+    }
+
+    frame = document.createElement('iframe');
+    frame.title = 'Section preview';
+    frame.className = 'g3-fields__frame';
+    frame.srcdoc = [
+      '<!doctype html><html><head><meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1">',
       '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">',
       '<link rel="stylesheet" href="/g3/dreame-g3.css">',
       '<link rel="stylesheet" href="/handbook-ui.css">',
       '<link rel="stylesheet" href="/g3/guide.css">',
       '<script src="/g3/dreame-g3.js" defer></script></head>',
-      '<body class="g3-field-preview">', root.outerHTML, navAnchors, '</body></html>',
+      '<body class="g3-field-preview"></body></html>',
     ].join('');
-    nextFrame.addEventListener('load', () => {
-      if (frame !== nextFrame || !nextFrame.contentDocument?.body.classList.contains('g3-field-preview')) return;
-      previewDocument = nextFrame.contentDocument;
+    frame.addEventListener('load', () => {
+      if (!frame.contentDocument?.body.classList.contains('g3-field-preview')) return;
+      previewDocument = frame.contentDocument;
       fit();
-      bindTargets();
 
       const targetFor = event => event.target.closest?.('[data-g3-preview-field]');
       previewDocument.addEventListener('pointerover', event => {
-        if (event.pointerType !== 'touch') inspect(targetFor(event));
+        if (event.pointerType !== 'touch') inspect(targetFor(event), true);
       });
       previewDocument.addEventListener('focusin', event => inspect(targetFor(event)));
       previewDocument.addEventListener('click', event => {
-        if (event.target.closest('a[href^="#"]')) {
+        if (event.target.closest?.('a[href^="#"]')) {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -141,14 +183,9 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       previewDocument.addEventListener('keydown', event => {
         if (event.key === 'Escape') onClose();
       });
-
-      if (pendingField) {
-        reveal(pendingField);
-        pendingField = null;
-      }
+      renderSection();
     });
-    frame = nextFrame;
-    canvas.replaceChildren(frame);
+    canvas.append(frame);
     fit();
   }
 
@@ -167,10 +204,10 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
   }
 
   function clear() {
-    frame?.remove();
-    frame = null;
-    previewDocument = null;
+    unmountSection();
+    previewDocument?.body.replaceChildren();
     inspectedTarget = null;
+    pendingSection = null;
     pendingField = null;
     targets.clear();
   }

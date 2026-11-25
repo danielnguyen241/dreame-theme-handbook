@@ -17,6 +17,8 @@ function initG3ShopifyFields(sections) {
   const query = new URLSearchParams(location.search);
   let team = query.get('team') === 'content' ? 'content' : 'design';
   let inspectedId;
+  let scrollTimer;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let renderedLanguage;
   let viewport;
   const themeRoot = 'https://github.com/danielnguyen241/dreame-shopify-g2/blob/' + g3ShopifyFieldSource + '/';
@@ -63,8 +65,29 @@ function initG3ShopifyFields(sections) {
     content.scrollTop = 0;
   }
 
-  function inspect(id) {
-    if (id && id === inspectedId) return;
+  function scrollToField(row, smooth) {
+    const visible = content.getBoundingClientRect();
+    const position = row.getBoundingClientRect();
+    const headerHeight = row.closest('table').tHead.getBoundingClientRect().height;
+    const offset = position.top < visible.top + headerHeight
+      ? position.top - visible.top - headerHeight
+      : Math.max(0, position.bottom - visible.bottom);
+    if (!offset) return;
+    content.scrollTo({
+      top: content.scrollTop + offset,
+      behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant',
+    });
+  }
+
+  function inspect(id, hover = false) {
+    if (id && id === inspectedId) {
+      if (!hover) {
+        clearTimeout(scrollTimer);
+        scrollToField(rows.get(id).row, false);
+      }
+      return;
+    }
+    clearTimeout(scrollTimer);
     rows.get(inspectedId)?.row.classList.remove('is-inspected');
     inspectedId = id;
     const match = rows.get(id);
@@ -80,13 +103,10 @@ function initG3ShopifyFields(sections) {
     row.classList.add('is-inspected');
     inspected.replaceChildren(element('strong', fieldName(field), !!field.type), element('code', id, true));
 
-    const visible = content.getBoundingClientRect();
-    const position = row.getBoundingClientRect();
-    const headerHeight = row.closest('table').tHead.getBoundingClientRect().height;
-    if (position.top < visible.top + headerHeight) {
-      content.scrollTop += position.top - visible.top - headerHeight;
-    } else if (position.bottom > visible.bottom) {
-      content.scrollTop += position.bottom - visible.bottom;
+    if (hover) {
+      scrollTimer = setTimeout(() => scrollToField(row, true), 140);
+    } else {
+      scrollToField(row, false);
     }
   }
 
@@ -230,7 +250,10 @@ function initG3ShopifyFields(sections) {
     button.addEventListener('click', () => selectViewport(button.dataset.g3FieldViewport));
   }
   dialog.addEventListener('close', () => {
-    if (!dialog.open) preview.clear();
+    if (!dialog.open) {
+      clearTimeout(scrollTimer);
+      preview.clear();
+    }
   });
   document.addEventListener('hb-language-change', () => {
     if (dialog.open && renderedLanguage !== handbookLanguage.current()) render();
