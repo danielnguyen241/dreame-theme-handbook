@@ -2,6 +2,7 @@
 const handbookVietnamese = {
   "Shopify fields": "Trường Shopify",
   "Fields": "Trường",
+  "Details": "Chi tiết",
   "Close": "Đóng",
   "Section preview": "Xem trước section",
   "Theme Editor fields": "Các ô trong Theme Editor",
