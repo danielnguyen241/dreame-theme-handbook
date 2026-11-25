@@ -4,11 +4,17 @@ const g1Reference = 'https://www.dreametech.com/products/x50-ultra-robot-vacuum'
 const g1Stage = document.getElementById('g1-preview');
 const g1Table = document.getElementById('g1-media-table');
 const g1Tabs = new Map([
-  [9, ['Climb over ledges', 'Lower noise']],
-  [11, ['360° scanning', 'Low-profile cleaning']],
+  [9, [
+    ['Climb over ledges', 'The retractable legs raise the chassis to cross stepped thresholds.'],
+    ['Lower noise', 'The shock-absorbing mechanism helps reduce noise when crossing obstacles.'],
+  ]],
+  [11, [
+    ['360° scanning', 'The DToF sensor scans around the robot to map the room.'],
+    ['Low-profile cleaning', 'The sensor retracts so the robot can reach under low furniture.'],
+  ]],
 ]);
 const g1FeatureTitles = {
-  5: 'X50 Ultra highlights', 8: 'ProLeap™ obstacle clearing', 9: 'Conquer ledges',
+  5: 'X50 Ultra highlights', 6: 'What the Pros Say', 7: 'Trusted Media Recognition', 8: 'ProLeap™ obstacle clearing', 9: 'Conquer ledges',
   10: 'With Dreame vs. others', 11: 'VersaLift™ navigation', 12: 'Obstacle avoidance',
   13: 'HyperStream™ Detangling DuoBrush', 14: 'SideReach™ and MopExtend™',
   15: 'TripleUp cleaning', 16: 'Adaptive Intelligent PowerDock™', 17: 'PowerDock features',
@@ -34,9 +40,15 @@ function g1Size(source) {
   return source.size.join(' × ');
 }
 
+function g1Thumbnail(url, width) {
+  if (new URL(url).hostname === 'i.ytimg.com') return url;
+  return url + (url.includes('?') ? '&' : '?') + 'width=' + width;
+}
+
 function g1MediaElement(asset, key) {
   const slot = g1Node('div', '', 'g3-media');
   slot.dataset.g1Media = key;
+  slot.dataset.g3Media = key;
   const { desktop, mobile } = asset;
   if (asset.type === 'Video') {
     const video = g1Node('video');
@@ -93,7 +105,7 @@ function g1Switcher(items, key, gallery = false) {
     if (gallery) {
       button.setAttribute('aria-label', item.label);
       const thumb = g1Node('img');
-      thumb.src = item.asset.desktop.url + (item.asset.desktop.url.includes('?') ? '&' : '?') + 'width=120';
+      thumb.src = g1Thumbnail(item.asset.desktop.url, 120);
       thumb.alt = '';
       thumb.loading = 'lazy';
       button.append(thumb);
@@ -105,7 +117,7 @@ function g1Switcher(items, key, gallery = false) {
     panel.setAttribute('aria-labelledby', id);
     panel.hidden = index !== 0;
     if (item.asset) panel.append(g1MediaElement(item.asset, key + '-' + item.index));
-    else panel.append(g1Node('p', 'Open the US PDP for this tab’s media.', 'g1-unavailable'), g1Link('Dreame US X50 Ultra', g1Reference));
+    if (item.copy) panel.append(g1Node('p', item.copy, 'g1-tab-copy'));
     tabs.append(button);
     panels.append(panel);
   }
@@ -115,12 +127,20 @@ function g1Switcher(items, key, gallery = false) {
 
 function g1Cards(assets, key, mode = '') {
   const deck = g1Node('div', '', 'g1-cards ' + mode);
-  const reviews = ['https://www.youtube.com/watch?v=Q8yIdW3uoTE', 'https://www.youtube.com/watch?v=39OtFmiLcsM', 'https://www.youtube.com/watch?v=9nuiowaPHzQ'];
   for (const [index, asset] of assets.entries()) {
     const card = g1Node('article', '', 'g1-card');
     card.append(g1MediaElement(asset, key + '-' + index));
-    if (key === 6) card.append(g1Link('Watch expert review', reviews[index]));
-    else card.append(g1Node('h3', asset.label));
+    card.append(g1Node('h3', asset.label));
+    if (key === 21) {
+      const context = [
+        'Detect pets and clean around them.',
+        'Locate your pet from the app.',
+        'Use the robot camera to check on your pet.',
+        'Set cleaning behavior around pet areas.',
+        'Increase suction where more pickup is needed.',
+      ];
+      card.append(g1Node('p', context[index]));
+    }
     deck.append(card);
   }
   if (mode === 'g1-carousel') {
@@ -141,8 +161,84 @@ function g1Cards(assets, key, mode = '') {
   return deck;
 }
 
+function g1PressCards(assets) {
+  const quotes = [
+    'Retractable legs lift the robot to cross raised thresholds.',
+    'ProLeap™ helps it climb and VersaLift™ helps it reach low spaces.',
+    'The robot can negotiate small obstructions and slopes.',
+    'The lifting system helps it cross steps and ledges.',
+    'The robot can continue cleaning across obstacles.',
+    'The robot can cross short steps between rooms.',
+  ];
+  const group = g1Node('div', '', 'g1-press-grid');
+  for (const [index, asset] of assets.entries()) {
+    const card = g1Node('article', '', 'g3-quote');
+    const copy = g1Node('div');
+    copy.append(g1Node('h3', asset.label), g1Node('p', quotes[index]));
+    card.append(g1MediaElement(asset, '7-' + index), copy);
+    group.append(card);
+  }
+  return group;
+}
+
+function g1ExpertCards(assets) {
+  const ids = ['Q8yIdW3uoTE', '39OtFmiLcsM', '9nuiowaPHzQ'];
+  const channels = ['Max Tech', 'Digital Trends', 'Expert review 3'];
+  const group = g1Node('div', '', 'g1-expert-grid');
+  for (const [index, video] of ids.entries()) {
+    const card = g1Node('article', '', 'g1-expert-card');
+    const link = g1Link('Watch expert review', 'https://www.youtube.com/watch?v=' + video);
+    link.className = 'g1-review-link';
+    const logo = g1Node('div', '', 'g1-expert-channel');
+    logo.append(g1MediaElement(assets[index * 2 + 1], '6-' + (index * 2 + 1)), g1Node('h3', channels[index]));
+    card.append(g1MediaElement(assets[index * 2], '6-' + (index * 2)), logo, link);
+    group.append(card);
+  }
+  return group;
+}
+
+function g1PackList(assets) {
+  const layout = g1Node('div', '', 'g1-pack-layout');
+  const hero = g1Node('figure', '', 'g1-pack-hero');
+  hero.append(g1MediaElement(assets[0], '24-0'), g1Node('figcaption', assets[0].label));
+  const items = g1Node('div', '', 'g1-pack-items');
+  for (const [index, asset] of assets.slice(1).entries()) {
+    const card = g1Node('figure');
+    card.append(g1MediaElement(asset, '24-' + (index + 1)), g1Node('figcaption', asset.label));
+    items.append(card);
+  }
+  layout.append(hero, items);
+  return layout;
+}
+
+function g1SideReach(asset) {
+  const layout = g1Node('div', '', 'g1-side-reach');
+  const copy = g1Node('div');
+  copy.append(g1Node('h3', 'Reach edges and corners with SideReach™'), g1Node('p', 'The side brush extends into edges. MopExtend™ reaches into spaces along furniture.'));
+  const stats = g1Node('dl', '', 'g1-sidereach-stats');
+  for (const [label, value] of [['Edge and corner coverage', '99%*'], ['Along the edge', '<1 mm*']]) {
+    stats.append(g1Node('dt', label), g1Node('dd', value));
+  }
+  layout.append(copy, g1MediaElement(asset, '14-0'), stats);
+  return layout;
+}
+
+function g1ConnectedRows(assets) {
+  const list = g1Node('div', '', 'g1-connected-rows');
+  const description = ['Control cleaning from a supported Apple Watch.', 'Start cleaning with a compatible voice assistant.', 'Open the controls from phone widgets.'];
+  for (const [index, asset] of assets.entries()) {
+    const row = g1Node('article');
+    const copy = g1Node('div');
+    copy.append(g1Node('h3', asset.label), g1Node('p', description[index]));
+    row.append(copy, g1MediaElement(asset, '23-' + index));
+    list.append(row);
+  }
+  return list;
+}
+
 function g1Accordion(assets, key) {
   const accordion = g1Node('div', '', 'g1-accordion');
+  accordion.dataset.g1Accordion = '';
   const controls = g1Node('div', '', 'g1-accordion__controls');
   const visuals = g1Node('div');
   for (const [index, asset] of assets.entries()) {
@@ -153,15 +249,26 @@ function g1Accordion(assets, key) {
     visual.id = 'g1-accordion-' + key + '-' + index;
     visual.hidden = index !== 0;
     button.setAttribute('aria-controls', visual.id);
-    button.addEventListener('click', () => {
-      for (const tab of controls.children) tab.setAttribute('aria-expanded', String(tab === button));
-      for (const panel of visuals.children) panel.hidden = panel !== visual;
-    });
     controls.append(button);
     visuals.append(visual);
   }
   accordion.append(controls, visuals);
   return accordion;
+}
+
+function mountG1Controls(root) {
+  for (const accordion of root.querySelectorAll('[data-g1-accordion]')) {
+    accordion.addEventListener('click', event => {
+      const button = event.target.closest('button[aria-controls]');
+      if (!button || !accordion.contains(button)) return;
+      const target = accordion.ownerDocument.getElementById(button.getAttribute('aria-controls'));
+      if (!target) return;
+      for (const tab of accordion.querySelectorAll('button[aria-controls]')) {
+        tab.setAttribute('aria-expanded', String(tab === button));
+      }
+      for (const panel of target.parentElement.children) panel.hidden = panel !== target;
+    });
+  }
 }
 
 function g1Nav() {
@@ -193,7 +300,7 @@ function g1Nav() {
 
 function g1TextSection(key, body) {
   if (key === 25) {
-    const specs = g1Node('dl', '', 'g3-spec-table');
+    const specs = g1Node('dl', '', 'g3-spec-table g3-specs');
     for (const [label, value] of [['Robot weight', '4.53 kg'], ['Base station dimensions', '457 × 340 × 590 mm'], ['Base station weight', '9.09 kg'], ['Maximum suction', '20,000 Pa'], ['Battery capacity', '6,400 mAh'], ['Dust box capacity', '395 mL']]) {
       const row = g1Node('div');
       row.append(g1Node('dt', label), g1Node('dd', value));
@@ -257,18 +364,28 @@ function g1BuildPreview() {
       scene.append(g1MediaElement(assets[0], '4-0'), copy);
       block.append(scene);
     } else {
-      if ([6, 7, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
+      if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
       const body = g1Node('div', '', 'g3-wrap g1-block__inner');
       body.append(g1Node('h2', title, 'g3-group-heading'));
-      if ([17, 18].includes(key)) {
+      if (key === 6) {
+        body.append(g1ExpertCards(assets));
+      } else if (key === 7) {
+        body.append(g1PressCards(assets));
+      } else if (key === 14) {
+        body.append(g1SideReach(assets[0]));
+      } else if (key === 23) {
+        body.append(g1ConnectedRows(assets));
+      } else if (key === 24) {
+        body.append(g1PackList(assets));
+      } else if ([17, 18].includes(key)) {
         body.append(g1Accordion(assets, key));
-      } else if ([9, 11, 13, 20].includes(key)) {
-        const start = key === 11 ? 1 : 0;
-        if (start) body.append(g1MediaElement(assets[0], '11-0'));
-        const labels = g1Tabs.get(key) ?? assets.map(asset => asset.label);
-        const items = labels.map((label, index) => ({ label, index: index + start, asset: assets[index + start] }));
+      } else if (g1Tabs.has(key)) {
+        for (const [index, asset] of assets.entries()) body.append(g1MediaElement(asset, key + '-' + index));
+        body.append(g1Switcher(g1Tabs.get(key).map(([label, copy]) => ({ label, copy })), key));
+      } else if ([13, 20].includes(key)) {
+        const items = assets.map((asset, index) => ({ label: asset.label, index, asset }));
         body.append(g1Switcher(items, key));
-      } else if ([8, 12, 14, 16, 19, 22, 25].includes(key)) {
+      } else if ([8, 12, 16, 19, 22, 25].includes(key)) {
         for (const [index, asset] of assets.entries()) body.append(g1MediaElement(asset, key + '-' + index));
       } else if (assets.length) {
         const mode = key === 21 ? 'g1-carousel' : key === 5 ? 'g1-bento' : [10, 15].includes(key) ? 'g1-pair' : '';
@@ -310,7 +427,7 @@ function g1BuildTable() {
         const preview = g1Node('img');
         preview.alt = asset.label;
         preview.loading = 'lazy';
-        preview.src = asset.desktop.url + (asset.desktop.url.includes('?') ? '&' : '?') + 'width=200';
+        preview.src = g1Thumbnail(asset.desktop.url, 200);
         row.insertCell().append(preview);
       } else {
         row.insertCell().textContent = 'MP4';
@@ -320,6 +437,7 @@ function g1BuildTable() {
 }
 
 g1BuildPreview();
+mountG1Controls(g1Stage);
 const g1Configs = g1Sections.map((section, index) => {
   const key = index + 1;
   const specs = (g1Media[key] ?? []).flatMap((asset, slot) => {
@@ -329,8 +447,8 @@ const g1Configs = g1Sections.map((section, index) => {
       slot: asset.label,
       pc: g1Size(asset.desktop), mb: g1Size(asset.mobile),
       pcRatio: asset.desktop.ratio, mbRatio: asset.mobile.ratio,
-      fmt: asset.type === 'Video' ? 'MP4' : 'Image',
-      sm: [2, 5, 6, 7, 24].includes(key),
+      fmt: asset.type === 'Video' ? 'MP4' : key === 7 || (key === 6 && slot % 2) ? 'Logo' : 'Image',
+      sm: [2, 5, 7, 24].includes(key) || (key === 6 && slot % 2 === 1),
     }];
   });
   return {
@@ -344,7 +462,16 @@ const g1Configs = g1Sections.map((section, index) => {
   };
 });
 g1BuildTable();
+const g1Browser = prepareG1FieldBrowser(g1Configs);
 initHandbook(g1Configs);
+const g1FieldBrowser = initG3ShopifyFields(g1Browser.sections, {
+  sectionData: g1Browser.sectionData,
+  defaultSection: 'g1-04',
+  previewStylesheet: '/g1/guide.css',
+  mountControls: mountG1Controls,
+  sourceURL: g1Reference,
+  inline: false,
+});
 
 const g1Query = new URLSearchParams(location.search);
 let g1Detail;
@@ -480,7 +607,12 @@ function g1OpenDetail(button, panel, section, key) {
     content.append(panes[role]);
   }
   select(g1Team);
-  panel.append(teams, content);
+  const footer = g1Node('div', '', 'g3-fields__footer');
+  const browserButton = g1Node('button', 'Shopify fields', 'g3-fields__reveal');
+  browserButton.type = 'button';
+  browserButton.addEventListener('click', () => g1FieldBrowser.open(section.id.toLowerCase()));
+  footer.append(browserButton);
+  panel.append(teams, content, footer);
   panel.hidden = false;
   button.setAttribute('aria-expanded', 'true');
   g1Detail = { button, panel };
@@ -516,7 +648,7 @@ for (const [index, section] of g1Sections.entries()) {
     if (g1Detail?.button === button) g1CloseDetail();
     else g1OpenDetail(button, panel, section, index + 1);
   });
-  if (g1Query.get('fields') === id || location.hash === '#' + id) {
+  if ((g1Query.get('fields') === id && g1Query.get('view') !== 'fields') || location.hash === '#' + id) {
     document.addEventListener('DOMContentLoaded', () => {
       const jump = document.getElementById('hb-jump');
       if (!document.body.classList.contains('is-embed')) jump.value = tag.id;

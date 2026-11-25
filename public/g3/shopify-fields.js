@@ -1,6 +1,6 @@
 'use strict';
 
-function initG3ShopifyFields(sections) {
+function initG3ShopifyFields(sections, options = {}) {
   const dialog = document.getElementById('shopify-fields');
   const picker = document.getElementById('g3-fields-section');
   const content = document.getElementById('g3-fields-content');
@@ -10,7 +10,8 @@ function initG3ShopifyFields(sections) {
   const preview = createG3FieldPreview(
     document.getElementById('g3-fields-preview'),
     inspect,
-    () => dialog.close()
+    () => dialog.close(),
+    options
   );
   const rows = new Map();
   const teamButtons = dialog.querySelectorAll('[data-g3-field-team]');
@@ -21,7 +22,7 @@ function initG3ShopifyFields(sections) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let renderedLanguage;
   let viewport;
-  const themeRoot = 'https://github.com/danielnguyen241/dreame-shopify-g2/blob/' + g3ShopifyFieldSource + '/';
+  const themeRoot = options.sourceURL ? '' : 'https://github.com/danielnguyen241/dreame-shopify-g2/blob/' + g3ShopifyFieldSource + '/';
   const buyBoxFields = [
     { label: 'Product title', id: 'product.title', example: 'Products → Title' },
     { label: 'Vendor', id: 'product.vendor', example: 'Products → Vendor' },
@@ -47,7 +48,7 @@ function initG3ShopifyFields(sections) {
   }
 
   function fieldTeam(field) {
-    return field.media || field.id === 'product.media' || field.type === 'checkbox' ? 'design' : 'content';
+    return field.team ?? (field.media || field.id === 'product.media' || field.type === 'checkbox' ? 'design' : 'content');
   }
 
   function selectTeam(next) {
@@ -101,7 +102,10 @@ function initG3ShopifyFields(sections) {
 
     const { row, field } = match;
     row.classList.add('is-inspected');
-    inspected.replaceChildren(element('strong', fieldName(field), !!field.type), element('code', id, true));
+    inspected.replaceChildren(element('strong', fieldName(field), !!field.type));
+    inspected.append(field.showId === false
+      ? element('span', 'Shopify ID unverified')
+      : element('code', id, true));
 
     if (hover) {
       scrollTimer = setTimeout(() => scrollToField(row, true), 140);
@@ -143,7 +147,7 @@ function initG3ShopifyFields(sections) {
       }
       heading.append(label);
       if (field.id) {
-        heading.append(element('code', field.id, true));
+        if (field.showId !== false) heading.append(element('code', field.id, true));
         tableRows.set(field.id, { row, field });
       }
       row.append(heading);
@@ -153,6 +157,8 @@ function initG3ShopifyFields(sections) {
       if (media) {
         reference.append(element('span', media.slot));
         if (field.info) reference.append(element('small', field.info, true));
+      } else if (field.examples) {
+        for (const value of field.examples) reference.append(element('small', value));
       } else if (field.type === 'checkbox') {
         reference.append(element('span', 'Controls the Z30 fallback media for empty slots.'));
       } else if (field.example) {
@@ -163,6 +169,7 @@ function initG3ShopifyFields(sections) {
   }
 
   function sectionData(section) {
+    if (options.sectionData) return options.sectionData(section);
     const key = section.id.toLowerCase();
     const mapping = g3ShopifyFields[key];
     const fields = mapping?.fields.length ? mapping.fields
@@ -182,6 +189,7 @@ function initG3ShopifyFields(sections) {
       heading.append(element('strong', section.name));
     }
     target.replaceChildren(heading);
+    if (data.note) target.append(element('p', data.note, false));
     for (const button of teamButtons) {
       const targetTeam = button.dataset.g3FieldTeam;
       const panel = element('div');
@@ -223,7 +231,7 @@ function initG3ShopifyFields(sections) {
       if (device && device !== viewport) selectViewport(device);
       preview.reveal(field.id);
     });
-    source.href = themeRoot + (mapping?.path ?? 'sections/main-product.liquid');
+    source.href = options.sourceURL ?? themeRoot + (mapping?.path ?? 'sections/main-product.liquid');
     preview.mount(section, fields.concat((mapping?.blocks ?? []).flatMap(block => block.fields)));
     selectTeam(team);
   }
@@ -326,6 +334,7 @@ function initG3ShopifyFields(sections) {
     const option = element('option', id + ' · ' + name);
     option.value = key;
     picker.append(option);
+    if (options.inline === false) continue;
 
     const tag = document.getElementById('sec-' + key);
     const toggle = element('button');
@@ -381,7 +390,7 @@ function initG3ShopifyFields(sections) {
     root.addEventListener('click', inspectInline);
   }
 
-  picker.value = 'g3-04';
+  picker.value = options.defaultSection ?? 'g3-04';
   picker.addEventListener('change', render);
   for (const button of teamButtons) {
     button.addEventListener('click', () => selectTeam(button.dataset.g3FieldTeam));
@@ -398,7 +407,15 @@ function initG3ShopifyFields(sections) {
   document.addEventListener('hb-language-change', () => {
     if (dialog.open && renderedLanguage !== handbookLanguage.current()) render();
   });
-  document.querySelector('[data-g3-open-fields]').addEventListener('click', () => open());
+  document.querySelector('[data-g3-open-fields]').addEventListener('click', () => {
+    const current = document.getElementById('hb-jump')?.value.replace(/^sec-/, '');
+    const selected = sections.find(section => section.id.toLowerCase() === current);
+    open(selected?.id.toLowerCase());
+  });
+  if (options.inline === false && query.get('view') === 'fields' && !document.body.classList.contains('is-embed')) {
+    const section = sections.find(item => item.id.toLowerCase() === query.get('fields'));
+    document.addEventListener('DOMContentLoaded', () => open(section?.id.toLowerCase()), { once: true });
+  }
 
   const requested = inlineSections.get(query.get('fields'));
   if (requested) {
@@ -408,4 +425,5 @@ function initG3ShopifyFields(sections) {
       requestAnimationFrame(() => openDetails(requested, true));
     }, { once: true });
   }
+  return { open };
 }

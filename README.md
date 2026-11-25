@@ -13,7 +13,7 @@
 | G2 | L60 Pro Ultra | [G2 handbook](https://dreame-theme-handbook.vercel.app/) | [G2 media CSV](SPEC_SUMMARY.csv) |
 | G3 | Z30 | [G3 handbook](https://dreame-theme-handbook.vercel.app/g3/) | [G3 media CSV](public/g3/media.csv) |
 
-G1 uses the shared Media Handbook toolbar, responsive views and source-size badges. The X50 Ultra preview follows the 27 sections in **G1 Layout**. Section Details lists the VN module, **Media Order** export brief and **Content Input** fields. Media specs links to X50 Ultra US files and lists their original sizes. G1-09 and G1-11 link to the US PDP for their alternate video tabs.
+G1 uses the shared Media Handbook toolbar, responsive views and source-size badges. The X50 Ultra preview follows the 27 sections in **G1 Layout**. Section Details lists the VN module, **Media Order** export brief and **Content Input** fields. Media specs links to X50 Ultra US files and lists their original sizes. G1-09 and G1-11 reproduce the US pattern of a shared clip and separate tab copy. Use **Shopify fields** for the same interactive field browser as G3. The browser displays verified Liquid IDs from the available source schemas and identifies workbook entries whose Shopify schema is unverified.
 
 Choose **VI** or **EN** in G2 and G3. The language follows the layout links and the 390 px Mobile preview. Append `?lang=vi` to a handbook link to share the Vietnamese view. Add &sizes=1 to open a shared link with source-size badges visible. The G3 **Download CSV** button uses the selected language.
 

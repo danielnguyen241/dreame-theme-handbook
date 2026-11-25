@@ -1,7 +1,7 @@
 const g1Media = {
   "2": [
     {
-      "label": "Dreame X50 Ultra robot vacuum and mop shown with a white docking station for the spring sale offer.",
+      "label": "White X50 Ultra packshot",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/X50-W_1.webp?v=1767170718",
@@ -23,7 +23,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "Black X50 Ultra packshot",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/X50-B_1.webp?v=1767170679",
@@ -45,7 +45,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "ProLeap infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/2-ProLeapSystem6cm_08c02e40-02e4-49ce-87fe-0ebe0776dfaa.jpg?v=1772789393",
@@ -67,7 +67,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "DuoBrush infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/4-HyperStreamDetanglingDuoBrush.jpg?v=1772789393",
@@ -89,7 +89,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "VersaLift infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/4-VersaLiftNavigation.jpg?v=1772789393",
@@ -111,7 +111,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "Suction infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/6-upto20_000PaVormaxSuction.jpg?v=1772789393",
@@ -133,7 +133,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "Mop washing infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/7-AutomaticMop-WashingwithLessResidue.jpg?v=1772789393",
@@ -155,7 +155,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Dreame X50 Ultra Robot Vacuum",
+      "label": "Package infographic",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/10-What_sintheBox.jpg?v=1772789393",
@@ -403,7 +403,29 @@ const g1Media = {
   ],
   "6": [
     {
-      "label": "Expert profile 1",
+      "label": "Max Tech video cover",
+      "type": "Image",
+      "desktop": {
+        "url": "https://i.ytimg.com/vi/Q8yIdW3uoTE/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/Q8yIdW3uoTE/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      },
+      "mobile": {
+        "url": "https://i.ytimg.com/vi/Q8yIdW3uoTE/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/Q8yIdW3uoTE/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      }
+    },
+    {
+      "label": "Max Tech channel logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-swiper-icon1.png?v=1738983316",
@@ -425,7 +447,29 @@ const g1Media = {
       }
     },
     {
-      "label": "Expert profile 2",
+      "label": "Digital Trends video cover",
+      "type": "Image",
+      "desktop": {
+        "url": "https://i.ytimg.com/vi/39OtFmiLcsM/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/39OtFmiLcsM/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      },
+      "mobile": {
+        "url": "https://i.ytimg.com/vi/39OtFmiLcsM/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/39OtFmiLcsM/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      }
+    },
+    {
+      "label": "Digital Trends channel logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-swiper-icon.png?v=1738980176",
@@ -447,7 +491,29 @@ const g1Media = {
       }
     },
     {
-      "label": "Expert profile 3",
+      "label": "Expert review 3 video cover",
+      "type": "Image",
+      "desktop": {
+        "url": "https://i.ytimg.com/vi/9nuiowaPHzQ/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/9nuiowaPHzQ/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      },
+      "mobile": {
+        "url": "https://i.ytimg.com/vi/9nuiowaPHzQ/hqdefault.jpg",
+        "preview": "https://i.ytimg.com/vi/9nuiowaPHzQ/hqdefault.jpg",
+        "size": [
+          480,
+          360
+        ],
+        "ratio": "4:3"
+      }
+    },
+    {
+      "label": "Expert review 3 channel logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-swiper-icon3.png?v=1745545603",
@@ -471,7 +537,7 @@ const g1Media = {
   ],
   "7": [
     {
-      "label": "\"ProLeap uses retractable legs that lift the chassis of the machine, and allow it to climb over small steps up to 6cm high.\"",
+      "label": "Trusted Reviews logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_5.webp?v=1739156233",
@@ -493,7 +559,7 @@ const g1Media = {
       }
     },
     {
-      "label": "\"This clever robot is surprisingly nimble, with its industry-first ProLeap™ System allowing it to reach new heights — literally, up to a two-inch incline! — and VersaLift Navigation, helping it explore the lowest lows.\"",
+      "label": "The Kitchn logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_1.webp?v=1739156233",
@@ -515,7 +581,7 @@ const g1Media = {
       }
     },
     {
-      "label": "\"It can climb over small obstructions and slight changes in incline to keep its suction power going on all sorts of surfaces.\"",
+      "label": "Apartment Therapy logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_2.webp?v=1739156233",
@@ -537,7 +603,7 @@ const g1Media = {
       }
     },
     {
-      "label": "\"Oh, and it can climb up small steps and ledges. Yes, robotic vacuum cleaners now have legs thanks to Dreame.\"",
+      "label": "Mark Ellis Reviews logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_6.webp?v=1739156233",
@@ -559,7 +625,7 @@ const g1Media = {
       }
     },
     {
-      "label": "\"Dreame’s X50 Ultra won’t let obstacles get in the way of cleaning.\"",
+      "label": "Android Headlines logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_3.webp?v=1739156233",
@@ -581,7 +647,7 @@ const g1Media = {
       }
     },
     {
-      "label": "\"Robot vacuums have one major obstacle, which is steps. The Dreame X50 Ultra, though, can actually climb over short steps, making it the ideal vacuum for cleaning your entire home.\"",
+      "label": "Android Authority logo",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/lp-update-frame_4.webp?v=1739156233",
@@ -839,7 +905,7 @@ const g1Media = {
   ],
   "15": [
     {
-      "label": "TripleUp card 1",
+      "label": "Keep brushes dry",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_11.webp?v=1735005776",
@@ -861,7 +927,7 @@ const g1Media = {
       }
     },
     {
-      "label": "TripleUp card 2",
+      "label": "Protect your carpets",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_12.webp?v=1735005788",
@@ -1339,7 +1405,7 @@ const g1Media = {
   ],
   "23": [
     {
-      "label": "App",
+      "label": "Apple Watch compatibility",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_41.webp?v=1735005571",
@@ -1361,7 +1427,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Voice",
+      "label": "Voice assistant integration",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_46.webp?v=1735005595",
@@ -1383,7 +1449,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Watch",
+      "label": "Phone widgets",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_47.webp?v=1734401888",

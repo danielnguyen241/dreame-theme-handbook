@@ -1,13 +1,14 @@
 'use strict';
 
 function g3FieldViewport(field) {
+  if (field.viewport !== undefined) return field.viewport;
   if (!field.media) return null;
   if (field.label.startsWith('Desktop ')) return 'desktop';
   if (field.label.startsWith('Mobile ')) return 'mobile';
   return null;
 }
 
-function createG3FieldPreview(canvas, onInspect, onClose) {
+function createG3FieldPreview(canvas, onInspect, onClose, { previewStylesheet, mountControls } = {}) {
   let frame;
   let previewDocument;
   let viewport = 'desktop';
@@ -50,7 +51,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
     const knownFields = new Set(fields.map(field => field.id));
     const mediaBySlot = new Map(
       fields.filter(field => field.media && (g3FieldViewport(field) ?? viewport) === viewport)
-        .map(field => [field.media, field])
+        .flatMap(field => (field.slots ?? [field.media]).map(slot => [slot, field]))
     );
     for (const target of previewDocument.querySelectorAll('[data-g3-media], [data-g3-field]')) {
       const media = mediaBySlot.get(target.dataset.g3Media);
@@ -79,6 +80,9 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       ?? matches[0];
     const panel = target.closest('[data-g3-panel][hidden]');
     if (panel) previewDocument.getElementById(panel.getAttribute('aria-labelledby'))?.click();
+    if (target.hidden && target.id) {
+      previewDocument.querySelector('[aria-controls="' + target.id + '"]')?.click();
+    }
     const details = target.closest('details');
     if (details) details.open = true;
     const nav = target.closest('.g3-nav__links');
@@ -133,6 +137,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
     previewDocument.body.replaceChildren(root, ...navAnchors);
     previewDocument.defaultView.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     sectionEvent(previewDocument.body, 'load');
+    mountControls?.(root);
     bindTargets();
     if (pendingField) {
       reveal(pendingField);
@@ -160,6 +165,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       '<link rel="stylesheet" href="/g3/dreame-g3.css">',
       '<link rel="stylesheet" href="/handbook-ui.css">',
       '<link rel="stylesheet" href="/g3/guide.css">',
+      previewStylesheet ? '<link rel="stylesheet" href="' + previewStylesheet + '">' : '',
       '<script src="/g3/dreame-g3.js" defer></script></head>',
       '<body class="g3-field-preview"></body></html>',
     ].join('');

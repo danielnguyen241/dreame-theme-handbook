@@ -1,5 +1,12 @@
 // Vietnamese translations for the English copy in both handbooks.
 const handbookVietnamese = {
+  "Tab label": "Tên tab",
+  "Card title": "Tiêu đề thẻ",
+  "Section heading": "Tiêu đề section",
+  "Trusted Media Recognition": "Trích dẫn báo chí",
+  "Workbook fields and US media reference. Shopify schema unverified.": "Dữ liệu từ workbook và media US. Schema Shopify của section này chưa được xác minh.",
+  "Verified Shopify IDs are shown below each matching field.": "ID đã đối chiếu với Shopify hiện dưới tên field tương ứng.",
+  "Shopify ID unverified": "Chưa xác minh ID Shopify",
   "G1 media table": "Bảng media G1",
   "Design brief": "Brief thiết kế",
   "X50 Ultra reference media specs": "Thông số media tham chiếu X50 Ultra",
