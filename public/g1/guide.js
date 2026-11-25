@@ -420,12 +420,11 @@ function g1TextSection(key, body) {
 }
 
 function g1BuildPreview() {
-  const buy = g1Node('section', '', 'g3 g3-light-panel guide-buybox g1-compact');
+  const buy = g1Node('section', '', 'g3 g3-light-panel guide-buybox');
   buy.id = 'g1-01';
   const buyInner = g1Node('div', '', 'g3-wrap guide-buybox__inner');
-  const gallery = g1Node('div', '', 'g1-slot-grid');
+  const gallery = g1Switcher((g1Media[2] || []).map((asset, index) => ({ asset, label: asset.label, index })), 2, true);
   gallery.id = 'g1-02';
-  (g1Media[2] || []).forEach((asset, index) => gallery.append(g1MediaElement(asset, '2-' + index)));
   const column = g1Node('div', '', 'guide-gallery-column');
   column.append(gallery);
   const text = g1Node('div', '', 'guide-buybox__text');
@@ -437,12 +436,11 @@ function g1BuildPreview() {
   for (let key = 4; key <= 27; key++) {
     const section = g1Sections[key - 1];
     const assets = g1Media[key] ?? [];
-    const block = g1Node('section', '', 'g3 g3-section g1-block g1-compact');
+    const block = g1Node('section', '', 'g3 g3-section g1-block');
     block.id = section.id.toLowerCase();
-    if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
+    if ([1, 21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
     const body = g1Node('div', '', 'g3-wrap g1-block__inner');
-    if (key === 4) block.classList.add('g1-compact--banner');
-    g1Compact(key, body, assets);
+    g1UsLayout(key, body, assets);
     block.append(body);
     g1Stage.append(block);
   }
