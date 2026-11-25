@@ -24,7 +24,7 @@ const handbookLanguage = (() => {
   function translate(source) {
     if (language === 'en') return source;
     const clean = source.trim().replace(/\s+/gu, ' ');
-    const prefix = clean.match(/^(?:(?:G[23]-\d+|M\d+) · )*/u)[0];
+    const prefix = clean.match(/^(?:(?:G[123]-\d+|M\d+) · )*/u)[0];
     const key = clean.slice(prefix.length);
     let value = Object.hasOwn(handbookVietnamese, key) ? handbookVietnamese[key] : null;
     const copyPrefix = 'Copy source sizes for ';

@@ -1,41 +1,95 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Dreame G1 Layout · Design Handbook</title>
+  <title>Dreame G1 Layout · Media Handbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/g3/dreame-g3.css">
+  <link rel="stylesheet" href="/handbook-ui.css">
+  <link rel="stylesheet" href="/g3/guide.css">
+  <script src="/handbook-vi.js" defer></script>
+  <script src="/handbook-language.js" defer></script>
+  <script src="/handbook-ui.js" defer></script>
   <link rel="stylesheet" href="/g1/guide.css">
   <script src="/g1/sections.js" defer></script>
+  <script src="/g1/media.js" defer></script>
+  <script src="/g1/shopify-fields-data.js" defer></script>
   <script src="/g1/guide.js" defer></script>
+  <script src="/g3/dreame-g3.js" defer></script>
 </head>
 <body>
-  <header class="toolbar">
-    <div class="shell toolbar-inner">
-      <a class="brand" href="/g1/" aria-label="Dreame G1 handbook">DREAME</a>
-      <nav aria-label="PDP layout"><a href="/g1/" aria-current="page">G1</a><a href="/?lang=vi">G2</a><a href="/g3/?lang=vi">G3</a></nav>
-      <label class="jump"><span>Section</span><select id="sections"><option value="">Chọn section</option></select></label>
-      <a class="download" href="/g1/design-brief.csv" download>Tải brief CSV</a>
+  <header class="hb-topbar" data-g3-handbook-bar>
+    <div class="hb-topbar__inner">
+      <div class="hb-brand">
+        <strong>DREAME</strong>
+        <span class="hb-brand__sub">Media Handbook</span>
+      </div>
+      <div class="hb-field hb-layout-field">
+        <span class="hb-field-label">Layout</span>
+        <nav class="hb-seg hb-layout" aria-label="Layout">
+          <span class="is-active" aria-current="page">G1</span>
+          <a href="/" data-hb-layout-link aria-label="Dreame L60 Pro Ultra G2 handbook">G2</a>
+          <a href="/g3/" data-hb-layout-link aria-label="Dreame G3 media handbook">G3</a>
+        </nav>
+      </div>
+      <div class="hb-field hb-language-field">
+        <span class="hb-field-label">Language</span>
+        <div class="hb-seg hb-language" role="group" aria-label="Language">
+          <button type="button" data-hb-language="vi" aria-pressed="false" lang="vi" aria-label="Tiếng Việt">VI</button>
+          <button type="button" class="is-active" data-hb-language="en" aria-pressed="true" lang="en" aria-label="English">EN</button>
+        </div>
+      </div>
+      <label class="hb-field hb-jump-field">
+        <span class="hb-field-label">Section</span>
+        <select id="hb-jump" class="hb-select" aria-label="Jump to section">
+          <option value="">Jump to section...</option>
+          <option data-hb-extra value="media-specs">Media specs</option>
+        </select>
+      </label>
+      <div class="hb-field hb-viewport-field">
+        <span class="hb-field-label">Preview on</span>
+        <div class="hb-seg" role="group" aria-label="Viewport">
+          <button type="button" class="is-active" data-vp="desktop" aria-pressed="true">Desktop</button>
+          <button type="button" data-vp="mobile" aria-pressed="false">Mobile</button>
+        </div>
+      </div>
+      <button type="button" id="hb-pin" class="hb-btn hb-primary" aria-pressed="false" aria-describedby="hb-use-tip">Show Media Sizes</button>
+      <div class="hb-tip">
+        <span id="hb-use-tip">
+          <span class="hb-tip__desktop">Hover over media for source sizes. Click a badge to copy.</span>
+          <span class="hb-tip__touch">Show media sizes, then tap a badge to copy.</span>
+          <span class="hb-tip__pinned">Choose a badge to copy the size and ratio.</span>
+        </span>
+        <div class="g3-guide-links">
+          <a class="hb-media-link" href="/g1/design-brief.csv" download>Design brief</a>
+          <a class="hb-media-link" href="#media-specs" data-hb-table-link>Media specs</a>
+        </div>
+      </div>
     </div>
   </header>
-  <main class="shell">
-    <header class="intro">
-      <div>
-        <p class="group">X Series · Matrix</p>
-        <h1>G1 Design Handbook</h1>
-        <p>X50 Ultra là mẫu tham chiếu. Bấm vào từng section để xem bố cục, khổ xuất file và phần chữ Content sẽ nhập.</p>
-        <a href="https://www.dreametech.com/products/x50-ultra-robot-vacuum">Xem PDP X50 Ultra trên Dreame US</a>
+
+  <main class="hb-stage-wrap">
+    <div id="g1-preview"></div>
+    <section id="media-specs" class="guide-inventory" aria-labelledby="g1-inventory-heading">
+      <div class="guide-inventory__heading">
+        <h2 id="g1-inventory-heading">X50 Ultra reference media specs</h2>
+        <a class="hb-btn hb-link" href="/g1/media.csv" download data-hb-csv="/g1/media.vi.csv">Download CSV</a>
       </div>
-      <img src="/g1/reference/g1-04-us.webp" width="1098" height="427" alt="Banner Dreame X50 Ultra trên PDP Mỹ" fetchpriority="high">
-    </header>
-    <section aria-labelledby="layout-heading">
-      <div class="layout-heading">
-        <h2 id="layout-heading">Bố cục PDP</h2>
-        <span>27 section · 5 tùy chọn</span>
-      </div>
-      <p class="production-note">Dùng khổ trong tab <strong>Ảnh &amp; video</strong> khi xuất file. Ảnh chụp màn hình minh họa bố cục. Giữ vùng chữ trống theo brief và chỉ đưa chữ vào ảnh khi section cho phép.</p>
-      <div id="layout"></div>
+      <p>Dimensions below describe the original US files. Open a section’s Details for the VN export brief.</p>
+      <div class="guide-table" tabindex="0" role="region" aria-label="G1 media table"><table id="g1-media-table"></table></div>
     </section>
   </main>
+  <div id="hb-mobile-shell" class="hb-mobile-shell" hidden>
+    <div class="hb-phone-frame">
+      <div class="hb-phone-notch"><span>Mobile · 390px</span></div>
+      <iframe id="hb-mobile-iframe" title="Mobile Preview"></iframe>
+    </div>
+  </div>
+
+  <div id="hb-toast" class="hb-toast" role="status" aria-live="polite"></div>
 </body>
 </html>
