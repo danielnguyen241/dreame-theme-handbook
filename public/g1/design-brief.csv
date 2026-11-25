@@ -1,0 +1,28 @@
+﻿Section,Module for VN,Priority,Asset,Export size / ratio,Text allowed in artwork,Keep clear for typed text,Source type,Notes
+G1-01,M01,Keep,Buy box + gallery,,,,,Gallery = M02 (infographics with text in image).
+G1-02,M02,Keep,Gallery,"1:1, 1600 x 1600","YES: infographics G3+ carry title, numbers, caption band",Caption band 15% (gallery),KV / TVC cut,Same rule as group 2.
+G1-03,M03,Keep,Section nav,,,,,"Overview, Clear Reaches, Powerful Cleaning, PowerDock, Intelligence, Package List & Specs."
+G1-04,M04,Keep,Hero banner,"About 2.4:1, 1920 x 800 + mobile 1080 x 1350",Award logos only,Area for title + subtitle,KV / TVC cut,Award logos row allowed in image.
+G1-05,M06,Keep,Album grid,"Tile ratios per layout, export 2x","Technical callouts only (numbers, lines)",Top-left of each tile for the title,KV / TVC cut,"9 tiles; titles typed; 20,000Pa graphic in image is OK."
+G1-06,M07,Optional,Expert video reviews,YouTube links (no production),No,-,YouTube links,Only with VN reviewer videos.
+G1-07,M08,Optional,Media quotes grid,Logos PNG 200 x 200,Logos only,-,Logo files,Only with VN press quotes.
+G1-08,M18,Keep,Scroll story: obstacle clearing,"2.37:1, 1920 x 810; video 21:9",No,Centre for the title,KV / TVC cut,Heavy motion video. For VN use M18 (full-width video + title) unless the global scroll video is available.
+G1-09,M11,Keep,Tabbed video: conquer ledges,"16:9, 1920 x 1080 per tab",Technical callouts only,Bottom band for tab labels,KV / TVC cut,2 tabs.
+G1-10,M12,Keep,Comparison: with Dreame vs others,"About 1.2:1, 1200 x 1000 x 2",No,Top-left for the label,KV / TVC cut,
+G1-11,M11,Keep,"Stat image + tabbed video: legs, 360 mapping","16:9, 1920 x 1080 per tab",Technical callouts only,Bottom band for tab labels,KV / TVC cut,"Big number graphic (30,000) in image is OK."
+G1-12,M17,Keep,Scroll story: obstacle avoidance,"Wide 2.2:1, 1920 x 870 or 16:9",No,-,KV / TVC cut,Heavy. Use M17 (title + text + image) for VN.
+G1-13,M11,Keep,Tabbed media: double brushes,"16:9, 1920 x 1080 per tab",Technical callouts only,Bottom band for tab labels,KV / TVC cut,
+G1-14,M13,Keep,Text + image + stats: SideReach,"About 1.3:1, 1400 x 1080",No,-,KV / TVC cut,
+G1-15,M14,Keep,Two cards: TripleUp,"About 1.4:1, 1400 x 1000 per card",No,-,KV / TVC cut,
+G1-16,M18,Keep,Scroll story: dock,"2.37:1, 1920 x 810; video 21:9",No,Centre for the title,KV / TVC cut,Heavy.
+G1-17,M15,Keep,Accordion + image: dock features,"About 1:1, 1200 x 1160 per item",No,-,KV / TVC cut,5 items.
+G1-18,M15,Optional,Accordion + image: rewashing,"About 1:1, 1200 x 1160 per item",No,-,KV / TVC cut,
+G1-19,M17,Keep,Scroll story: carpet app,"Wide 2.2:1, 1920 x 870 or 16:9",No,-,KV / TVC cut,Heavy.
+G1-20,M11,Keep,Tabbed image: carpet modes,"16:9, 1920 x 1080 per tab",Technical callouts only,Bottom band for tab labels,KV / TVC cut,4 tabs.
+G1-21,M16,Keep,Card carousel: pets,"About 1.67:1, 1600 x 960 per card",No,-,KV / TVC cut,
+G1-22,M17,Optional,Text + image: curtains,"Wide 2.2:1, 1920 x 870 or 16:9",No,-,KV / TVC cut,
+G1-23,M21,Optional,Feature cards: connected clean,"About 1.45:1, 1200 x 820 per row",Graphic number only,-,KV / TVC cut,"App, voice, watch."
+G1-24,M24,Keep,What is in the box,1:1 hero 1000 + items 600 x 600,No,-,KV / TVC cut,
+G1-25,M25 + M26 + M28,Keep,Specs + drawing + comparison table + remarks,"Drawing 2:1, 2712 x 1348",YES: dimension drawing in mm,-,KV / TVC cut,"Custom on US. Use common_spec, common disclaimers; comparison table needs a decision (tab 7)."
+G1-26,M27,Keep,FAQ,,,,,
+G1-27,M29,Keep,Customer reviews,,,,,
