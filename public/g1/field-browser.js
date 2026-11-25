@@ -51,7 +51,7 @@ function prepareG1FieldBrowser(configs) {
       slots = indices.filter(i => (assets[i].type === 'Video') === name.startsWith('video'));
       viewport = name.endsWith('mobile') ? mobile : desktop;
     } else if (key === 24 && ['hero_image', 'icon'].includes(name)) {
-      slots = name === 'hero_image' ? [0] : indices.slice(1);
+      slots = name === 'hero_image' ? [0] : indices.filter(i => assets[i].role === 'Grid thumbnail');
     } else if (key === 25 && ['diagram', 'diagram_mobile'].includes(name)) {
       slots = [0];
       viewport = name.endsWith('mobile') ? mobile : desktop;
@@ -112,7 +112,9 @@ function prepareG1FieldBrowser(configs) {
       const slot = key + '-' + i;
       const covered = device => fields.some(field => field.slots?.includes(slot) && (!field.viewport || field.viewport === device));
       const media = { media: slot, team: 'design', showId: false };
-      if (!covered('desktop') && !covered('mobile') && asset.desktop.url === asset.mobile.url) {
+      if (asset.role === 'Desktop feature art') {
+        fields.push({ ...media, label: asset.label + ' · Desktop', id: 'g1-ref-' + slot + '-desktop', viewport: 'desktop', info: mediaInfo(slot, 'desktop') });
+      } else if (!covered('desktop') && !covered('mobile') && asset.desktop.url === asset.mobile.url) {
         fields.push({ ...media, label: asset.label, id: 'g1-ref-' + slot, viewport: null, info: mediaInfo(slot, null) });
       } else {
         for (const device of ['desktop', 'mobile']) {

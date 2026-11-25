@@ -1,5 +1,16 @@
 // Vietnamese translations for the English copy in both handbooks.
 const handbookVietnamese = {
+  "Desktop only": "Chỉ có trên Desktop",
+  "US Hero mobile artwork is 945 × 1450. Retain that ratio when matching the US layout; the workbook mobile size is 1080 × 1350.": "Ảnh Hero mobile US là 945 × 1450. Giữ tỷ lệ này khi bám layout US. Khổ 1080 × 1350 trong workbook sẽ đổi vùng crop.",
+  "VN workbook export size": "Khổ xuất ghi trong workbook VN",
+  "US design order": "Order ảnh theo US",
+  "Original file sizes and the rendered frames measured on the live US PDP at 1440 × 900 and 390 × 844. A dash means the frame was not measured in the captured state.": "Kích thước file gốc và khung đo trên PDP US live ở 1440 × 900 và 390 × 844. Dấu gạch ngang là khung chưa đo được ở trạng thái ghi nhận.",
+  "View this section on Dreame US": "Xem section này trên Dreame US",
+  "US frame · Mobile": "Khung US · Điện thoại",
+  "US frame · Desktop": "Khung US · Máy tính",
+  "US reference checked on": "Ngày đối chiếu trang US",
+  "Desktop file (px)": "File gốc máy tính (px)",
+  "Mobile file (px)": "File gốc điện thoại (px)",
   "Tab label": "Tên tab",
   "Card title": "Tiêu đề thẻ",
   "Section heading": "Tiêu đề section",

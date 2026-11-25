@@ -96,12 +96,12 @@ function initHandbook(sections) {
       '<div class="hb-spec-slot"><span>' + slot + '</span><span class="hb-spec-fmt">US source' +
       (sm ? '' : ' · ' + fmt) + '</span></div>' +
       specLine('Desktop', pc, desktopRatio) +
-      specLine('Mobile', mb, mobileRatio);
+      (mb ? specLine('Mobile', mb, mobileRatio) : '');
     box.addEventListener('click', async function (e) {
       e.stopPropagation();
       const t = handbookLanguage.translate;
       var txt = t(slot) + ' — ' + t('Desktop') + ': ' + pc + ' px (' + desktopRatio + ')' +
-        ' | ' + t('Mobile') + ': ' + mb + ' px (' + mobileRatio + ')';
+        (mb ? ' | ' + t('Mobile') + ': ' + mb + ' px (' + mobileRatio + ')' : '');
       try {
         await navigator.clipboard.writeText(txt);
         showToast(t('Copied') + ': ' + txt);

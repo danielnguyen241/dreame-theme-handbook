@@ -80,8 +80,9 @@ function createG3FieldPreview(canvas, onInspect, onClose, { previewStylesheet, m
       ?? matches[0];
     const panel = target.closest('[data-g3-panel][hidden]');
     if (panel) previewDocument.getElementById(panel.getAttribute('aria-labelledby'))?.click();
-    if (target.hidden && target.id) {
-      previewDocument.querySelector('[aria-controls="' + target.id + '"]')?.click();
+    const collapsed = target.closest('[hidden][id]');
+    if (collapsed) {
+      previewDocument.querySelector('[aria-controls="' + collapsed.id + '"]')?.click();
     }
     const details = target.closest('details');
     if (details) details.open = true;

@@ -20,6 +20,11 @@
     video.pause();
   }
 
+  function updatePoster(video) {
+    const poster = phone.matches ? video.dataset.posterMobile : video.dataset.posterDesktop;
+    if (poster) video.poster = poster;
+  }
+
   const videoObserver = new IntersectionObserver((entries) => {
     for (const { target: video, isIntersecting, intersectionRatio } of entries) {
       if (!video.isConnected) continue;
@@ -34,6 +39,7 @@
   }, { threshold: 0.15 });
 
   function initVideo(video) {
+    updatePoster(video);
     video.addEventListener('pause', () => {
       if (video.dataset.autoPaused === 'true') {
         delete video.dataset.autoPaused;
@@ -200,7 +206,10 @@
   window.addEventListener('resize', scheduleMeasure, { passive: true });
   header?.addEventListener('transitionend', scheduleMeasure);
   if (header) new ResizeObserver(scheduleMeasure).observe(header);
-  phone.addEventListener('change', () => activeVideos.forEach(playVideo));
+  phone.addEventListener('change', () => {
+    document.querySelectorAll('[data-g3-video][data-poster-desktop]').forEach(updatePoster);
+    activeVideos.forEach(playVideo);
+  });
   reducedMotion.addEventListener('change', () => activeVideos.forEach(reducedMotion.matches ? pauseVideo : playVideo));
   document.addEventListener('shopify:section:load', (event) => init(event.target));
   document.addEventListener('shopify:section:unload', (event) => {

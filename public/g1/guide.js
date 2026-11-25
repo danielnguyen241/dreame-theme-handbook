@@ -80,8 +80,14 @@ function g1MediaElement(asset, key) {
     picture.append(image);
     slot.append(picture);
   }
-  if (desktop.size.length) slot.style.setProperty('--g1-desktop-ratio', desktop.size.join('/'));
-  if (mobile.size.length) slot.style.setProperty('--g1-mobile-ratio', mobile.size.join('/'));
+  for (const [device, source] of Object.entries({ desktop, mobile })) {
+    if (source.size.length) slot.style.setProperty('--g1-' + device + '-ratio', source.size.join('/'));
+    if (source.usFrame) slot.style.setProperty('--g1-us-' + device + '-ratio', source.usFrame.join('/'));
+  }
+  if (asset.role === 'Desktop feature art') slot.classList.add('g1-desktop-art');
+  for (const [device, width] of [['desktop', 1440], ['mobile', 390]]) {
+    if (asset[device].usFrame?.[0] === width) slot.classList.add('g1-full-' + device);
+  }
   return slot;
 }
 
@@ -143,22 +149,26 @@ function g1Cards(assets, key, mode = '') {
     }
     deck.append(card);
   }
-  if (mode === 'g1-carousel') {
-    const group = g1Node('div', '', 'g3-scroll-group');
-    group.dataset.g3Scroll = '';
-    deck.dataset.g3Track = '';
-    const controls = g1Node('div', '', 'g3-controls');
-    for (const [action, arrow] of [['previous', '‹'], ['next', '›']]) {
-      const button = g1Node('button', arrow);
-      button.type = 'button';
-      button.setAttribute('data-g3-' + action, '');
-      button.setAttribute('aria-label', action === 'previous' ? 'Previous card' : 'Next card');
-      controls.append(button);
-    }
-    group.append(deck, controls);
-    return group;
-  }
+  if (mode === 'g1-carousel') return g1ScrollCards(deck);
+  if (mode === 'g1-bento') return g1ScrollCards(deck, 'g1-bento-scroll');
   return deck;
+}
+
+function g1ScrollCards(deck, className) {
+  const group = g1Node('div', '', 'g3-scroll-group');
+  group.dataset.g3Scroll = '';
+  if (className) group.classList.add(className);
+  deck.dataset.g3Track = '';
+  const controls = g1Node('div', '', 'g3-controls');
+  for (const [action, arrow] of [['previous', '‹'], ['next', '›']]) {
+    const button = g1Node('button', arrow);
+    button.type = 'button';
+    button.setAttribute('data-g3-' + action, '');
+    button.setAttribute('aria-label', action === 'previous' ? 'Previous card' : 'Next card');
+    controls.append(button);
+  }
+  group.append(deck, controls);
+  return group;
 }
 
 function g1PressCards(assets) {
@@ -173,12 +183,10 @@ function g1PressCards(assets) {
   const group = g1Node('div', '', 'g1-press-grid');
   for (const [index, asset] of assets.entries()) {
     const card = g1Node('article', '', 'g3-quote');
-    const copy = g1Node('div');
-    copy.append(g1Node('h3', asset.label), g1Node('p', quotes[index]));
-    card.append(g1MediaElement(asset, '7-' + index), copy);
+    card.append(g1MediaElement(asset, '7-' + index), g1Node('p', quotes[index]));
     group.append(card);
   }
-  return group;
+  return g1ScrollCards(group, 'g1-press-scroll');
 }
 
 function g1ExpertCards(assets) {
@@ -200,14 +208,38 @@ function g1ExpertCards(assets) {
 function g1PackList(assets) {
   const layout = g1Node('div', '', 'g1-pack-layout');
   const hero = g1Node('figure', '', 'g1-pack-hero');
+  hero.id = 'g1-pack-hero';
   hero.append(g1MediaElement(assets[0], '24-0'), g1Node('figcaption', assets[0].label));
+  const viewer = g1Node('div', '', 'g1-pack-viewer');
+  viewer.append(hero);
   const items = g1Node('div', '', 'g1-pack-items');
-  for (const [index, asset] of assets.slice(1).entries()) {
+  const slots = assets.map((asset, index) => ({ asset, index }));
+  const thumbnails = slots.filter(({ asset }) => asset.role === 'Grid thumbnail');
+  const enlargements = slots.filter(({ asset }) => asset.role === 'Accessory enlarged view');
+  for (const [position, { asset, index }] of thumbnails.entries()) {
+    const enlargement = enlargements[position];
+    const panel = g1Node('figure', '', 'g1-pack-enlarged');
+    panel.dataset.g1PackDetail = String(index);
+    panel.id = 'g1-pack-detail-' + index;
+    panel.hidden = true;
+    const close = g1Node('button', 'Close');
+    close.type = 'button';
+    close.dataset.g1PackClose = '';
+    close.setAttribute('aria-controls', hero.id);
+    panel.append(g1MediaElement(enlargement.asset, '24-' + enlargement.index), g1Node('figcaption', asset.label), close);
+    viewer.append(panel);
+
     const card = g1Node('figure');
-    card.append(g1MediaElement(asset, '24-' + (index + 1)), g1Node('figcaption', asset.label));
+    const control = g1Node('button', '+');
+    control.type = 'button';
+    control.dataset.g1PackOpen = String(index);
+    control.setAttribute('aria-controls', panel.id);
+    control.setAttribute('aria-expanded', 'false');
+    control.setAttribute('aria-label', asset.label);
+    card.append(g1MediaElement(asset, '24-' + index), control, g1Node('figcaption', asset.label));
     items.append(card);
   }
-  layout.append(hero, items);
+  layout.append(viewer, items);
   return layout;
 }
 
@@ -219,21 +251,51 @@ function g1SideReach(asset) {
   for (const [label, value] of [['Edge and corner coverage', '99%*'], ['Along the edge', '<1 mm*']]) {
     stats.append(g1Node('dt', label), g1Node('dd', value));
   }
-  layout.append(copy, g1MediaElement(asset, '14-0'), stats);
+  layout.append(g1MediaElement(asset, '14-0'), copy, stats);
   return layout;
 }
 
 function g1ConnectedRows(assets) {
   const list = g1Node('div', '', 'g1-connected-rows');
-  const description = ['Control cleaning from a supported Apple Watch.', 'Start cleaning with a compatible voice assistant.', 'Open the controls from phone widgets.'];
-  for (const [index, asset] of assets.entries()) {
+  const description = [
+    'Control cleaning from a supported Apple Watch.',
+    'Start cleaning with a compatible voice assistant.',
+    'Open the controls from phone widgets.',
+    'Battery and charging on the US X50 Ultra PDP.',
+  ];
+  for (const [index, asset] of assets.slice(0, 4).entries()) {
     const row = g1Node('article');
     const copy = g1Node('div');
     copy.append(g1Node('h3', asset.label), g1Node('p', description[index]));
+    if (index === 1) {
+      const icons = g1Node('div', '', 'g1-connected-icons');
+      assets.slice(4).forEach((icon, i) => icons.append(g1MediaElement(icon, '23-' + (i + 4))));
+      copy.append(icons);
+    }
     row.append(copy, g1MediaElement(asset, '23-' + index));
     list.append(row);
   }
   return list;
+}
+
+function g1Comparison(assets) {
+  const comparison = g1Node('div', '', 'g1-compare-pair');
+  for (const [index, asset] of assets.slice(0, 2).entries()) {
+    const card = g1Node('article');
+    const media = g1MediaElement(asset, '10-' + index);
+    const cover = assets[index + 2];
+    if (cover) {
+      const video = media.querySelector('video');
+      video.dataset.posterDesktop = cover.desktop.preview;
+      video.dataset.posterMobile = cover.mobile.preview;
+      const reference = g1MediaElement(cover, '10-' + (index + 2));
+      const details = g1Node('details', '', 'g1-video-cover');
+      details.append(g1Node('summary', 'Video cover'), reference);
+      card.append(g1Node('h3', asset.label), media, details);
+    } else card.append(g1Node('h3', asset.label), media);
+    comparison.append(card);
+  }
+  return comparison;
 }
 
 function g1Accordion(assets, key) {
@@ -257,6 +319,26 @@ function g1Accordion(assets, key) {
 }
 
 function mountG1Controls(root) {
+  for (const pack of root.querySelectorAll('.g1-pack-layout')) {
+    pack.addEventListener('click', event => {
+      const button = event.target.closest('[data-g1-pack-open], [data-g1-pack-close]');
+      if (!button) return;
+      const open = button.hasAttribute('data-g1-pack-open') && button.getAttribute('aria-expanded') === 'false';
+      const activeControl = pack.querySelector('[data-g1-pack-open][aria-expanded="true"]');
+      const hero = pack.querySelector('.g1-pack-hero');
+      const panels = pack.querySelectorAll('[data-g1-pack-detail]');
+      hero.hidden = open;
+      for (const panel of panels) panel.hidden = !open || panel.id !== button.getAttribute('aria-controls');
+      for (const control of pack.querySelectorAll('[data-g1-pack-open]')) {
+        control.setAttribute('aria-expanded', String(open && control === button));
+      }
+      const view = root.ownerDocument.defaultView;
+      if (open && view.matchMedia('(max-width: 850px)').matches) {
+        hero.parentElement.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+      if (!open) activeControl?.focus();
+    });
+  }
   for (const accordion of root.querySelectorAll('[data-g1-accordion]')) {
     accordion.addEventListener('click', event => {
       const button = event.target.closest('button[aria-controls]');
@@ -371,6 +453,8 @@ function g1BuildPreview() {
         body.append(g1ExpertCards(assets));
       } else if (key === 7) {
         body.append(g1PressCards(assets));
+      } else if (key === 10) {
+        body.append(g1Comparison(assets));
       } else if (key === 14) {
         body.append(g1SideReach(assets[0]));
       } else if (key === 23) {
@@ -378,17 +462,32 @@ function g1BuildPreview() {
       } else if (key === 24) {
         body.append(g1PackList(assets));
       } else if ([17, 18].includes(key)) {
-        body.append(g1Accordion(assets, key));
+        body.append(g1Accordion(assets.slice(0, key === 17 ? 5 : 2), key));
+        if (key === 17) {
+          const extras = g1Node('div', '', 'g1-dock-icons');
+          assets.slice(5, 7).forEach((asset, offset) => extras.append(g1MediaElement(asset, key + '-' + (offset + 5))));
+          body.append(extras);
+          if (assets[7]) body.append(g1MediaElement(assets[7], '17-7'));
+        }
       } else if (g1Tabs.has(key)) {
         for (const [index, asset] of assets.entries()) body.append(g1MediaElement(asset, key + '-' + index));
         body.append(g1Switcher(g1Tabs.get(key).map(([label, copy]) => ({ label, copy })), key));
       } else if ([13, 20].includes(key)) {
-        const items = assets.map((asset, index) => ({ label: asset.label, index, asset }));
+        const tabs = key === 20 ? assets.slice(0, 4) : assets;
+        const items = tabs.map((asset, index) => ({ label: asset.label, index, asset }));
         body.append(g1Switcher(items, key));
+        if (key === 20 && assets[4]) body.append(g1MediaElement(assets[4], '20-4'));
       } else if ([8, 12, 16, 19, 22, 25].includes(key)) {
-        for (const [index, asset] of assets.entries()) body.append(g1MediaElement(asset, key + '-' + index));
+        for (const [index, asset] of assets.entries()) {
+          if (key === 22 && index > 0) body.append(g1Node('h3', asset.label, 'g1-us-chapter-title'));
+          if (key === 25 && index > 0) {
+            const icon = g1MediaElement(asset, key + '-' + index);
+            icon.classList.add('g1-comparison-icon');
+            body.append(icon);
+          } else body.append(g1MediaElement(asset, key + '-' + index));
+        }
       } else if (assets.length) {
-        const mode = key === 21 ? 'g1-carousel' : key === 5 ? 'g1-bento' : [10, 15].includes(key) ? 'g1-pair' : '';
+        const mode = key === 21 ? 'g1-carousel' : key === 5 ? 'g1-bento' : key === 15 ? 'g1-pair' : '';
         body.append(g1Cards(assets, key, mode));
       }
       g1TextSection(key, body);
@@ -400,7 +499,7 @@ function g1BuildPreview() {
 
 function g1BuildTable() {
   const head = g1Table.createTHead().insertRow();
-  for (const text of ['ID', 'Section name', 'Image / video', 'Desktop (px)', 'Mobile (px)', 'Versions', 'Desktop source', 'Image']) {
+  for (const text of ['ID', 'Section name', 'Image / video', 'Desktop file (px)', 'Mobile file (px)', 'US frame · Desktop', 'US frame · Mobile', 'Versions', 'Desktop source', 'Image']) {
     const col = g1Node('th', text);
     col.scope = 'col';
     head.append(col);
@@ -418,8 +517,19 @@ function g1BuildTable() {
       for (const source of [asset.desktop, asset.mobile]) {
         const cell = row.insertCell();
         cell.className = 'guide-dimensions';
+        if (source === asset.mobile && asset.role === 'Desktop feature art') {
+          cell.textContent = 'Desktop only';
+          continue;
+        }
         cell.append(g1Link(g1Size(source) || 'Unverified', source.url));
         if (source.ratio) cell.append(g1Node('small', source.ratio));
+      }
+      for (const source of [asset.desktop, asset.mobile]) {
+        const cell = row.insertCell();
+        cell.className = 'guide-dimensions';
+        cell.textContent = source.usFrame?.join(' × ')
+          || (source === asset.mobile && asset.role === 'Desktop feature art' ? 'Desktop only' : '—');
+        if (source.usFrameRatio) cell.append(g1Node('small', source.usFrameRatio));
       }
       row.insertCell().textContent = asset.desktop.url === asset.mobile.url ? '1' : '2';
       row.insertCell().append(g1Link('Open source', asset.desktop.url));
@@ -445,7 +555,7 @@ const g1Configs = g1Sections.map((section, index) => {
     return [{
       sel: '[data-g1-media="' + key + '-' + slot + '"]',
       slot: asset.label,
-      pc: g1Size(asset.desktop), mb: g1Size(asset.mobile),
+      pc: g1Size(asset.desktop), mb: asset.role === 'Desktop feature art' ? '' : g1Size(asset.mobile),
       pcRatio: asset.desktop.ratio, mbRatio: asset.mobile.ratio,
       fmt: asset.type === 'Video' ? 'MP4' : key === 7 || (key === 6 && slot % 2) ? 'Logo' : 'Image',
       sm: [2, 5, 7, 24].includes(key) || (key === 6 && slot % 2 === 1),
@@ -462,6 +572,9 @@ const g1Configs = g1Sections.map((section, index) => {
   };
 });
 g1BuildTable();
+const g1AuditDate = document.getElementById('g1-audit-date');
+g1AuditDate.dateTime = g1USAudit.date;
+g1AuditDate.textContent = g1USAudit.date.split('-').reverse().join('/');
 const g1Browser = prepareG1FieldBrowser(g1Configs);
 initHandbook(g1Configs);
 const g1FieldBrowser = initG3ShopifyFields(g1Browser.sections, {
@@ -510,6 +623,12 @@ function g1Reveal(key, slot) {
   if (!target) return;
   const tab = target.closest('[data-g3-panel][hidden]');
   if (tab) document.getElementById(tab.getAttribute('aria-labelledby'))?.click();
+  const enlarged = target.closest('[data-g1-pack-detail][hidden]');
+  if (enlarged) document.querySelector('[data-g1-pack-open="' + enlarged.dataset.g1PackDetail + '"]')?.click();
+  const cover = target.closest('.g1-video-cover');
+  if (cover) cover.open = true;
+  const packageHero = target.closest('.g1-pack-hero[hidden]');
+  if (packageHero) packageHero.parentElement.querySelector('[data-g1-pack-detail]:not([hidden]) [data-g1-pack-close]')?.click();
   if (target.hidden) {
     document.querySelector('[aria-controls="' + target.id + '"]')?.click();
   }
@@ -524,19 +643,24 @@ function g1DesignDetails(section, key) {
   const assets = g1Media[key] ?? [];
   pane.append(g1Facts([
     ['VN module', section.vnModules.join(' + ')],
-    ['VN export size', media?.size],
+    ['VN workbook export size', media?.size],
     ['Text allowed in artwork', media?.imageText],
     ['Keep clear for typed text', media?.clearSpace],
     ['Notes', media?.note || section.note],
   ]));
+  if (key === 4) {
+    pane.append(g1Node('p', 'US Hero mobile artwork is 945 × 1450. Retain that ratio when matching the US layout; the workbook mobile size is 1080 × 1350.', 'g1-order-note'));
+  }
   if (assets.length) {
     const rows = assets.map((asset, slot) => {
       const button = g1Node('button', asset.label, 'g3-fields__reveal');
       button.type = 'button';
       button.addEventListener('click', () => g1Reveal(key, slot));
-      return [button, g1Size(asset.desktop), g1Size(asset.mobile)];
+      return [button, g1Size(asset.desktop), asset.role === 'Desktop feature art' ? 'Desktop only' : g1Size(asset.mobile),
+        asset.desktop.usFrame?.join(' × '),
+        asset.mobile.usFrame?.join(' × ') || (asset.role === 'Desktop feature art' ? 'Desktop only' : '')];
     });
-    pane.append(g1DetailTable(['US media slot', 'Desktop (px)', 'Mobile (px)'], rows));
+    pane.append(g1DetailTable(['US media slot', 'Desktop file (px)', 'Mobile file (px)', 'US frame · Desktop', 'US frame · Mobile'], rows));
   }
   if (section.clean) {
     const link = g1Link('Open artwork reference from workbook', '/g1/' + section.clean.path);
@@ -611,7 +735,10 @@ function g1OpenDetail(button, panel, section, key) {
   const browserButton = g1Node('button', 'Shopify fields', 'g3-fields__reveal');
   browserButton.type = 'button';
   browserButton.addEventListener('click', () => g1FieldBrowser.open(section.id.toLowerCase()));
-  footer.append(browserButton);
+  const source = g1Link('View this section on Dreame US', g1Reference + '#' + g1USAudit.sections[key]);
+  source.target = '_blank';
+  source.rel = 'noopener';
+  footer.append(browserButton, source);
   panel.append(teams, content, footer);
   panel.hidden = false;
   button.setAttribute('aria-expanded', 'true');
