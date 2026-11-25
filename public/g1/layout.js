@@ -70,44 +70,130 @@ function g1Dots(count) {
 
 function g1BuyColumn() {
   const buy = g1Copy.buy;
-  const column = g1Node('div', '', 'g1-buy g1-slot-row');
-  for (const bundle of buy.bundles) column.append(g1Img(bundle.image, '', 100, 100));
-  for (const addon of buy.addons) column.append(g1Img(addon.image, '', 72, 72));
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 72, 72));
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 120, 28));
-  for (const service of buy.services) column.append(g1Img(service.src, '', service.w, service.h));
+  const column = g1Node('div', '', 'g1-buy-images');
+  const bundles = g1Node('div', '', 'g1-us-bundles');
+  for (const bundle of buy.bundles) bundles.append(g1Img(bundle.image, '', 100, 100));
+  column.append(bundles);
+  const addons = g1Node('div', '', 'g1-us-addons');
+  for (const addon of buy.addons) addons.append(g1Img(addon.image, '', 38, 38));
+  column.append(addons);
+  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 64, 64));
+  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 144, 23));
+  const services = g1Node('ul', '', 'g1-services');
+  for (const service of buy.services) {
+    const item = g1Node('li');
+    item.append(g1Img(service.src, '', service.w, service.h));
+    services.append(item);
+  }
+  column.append(services);
   const firework = g1Node('div', '', 'g1-firework__row');
-  firework.setAttribute('aria-label', buy.firework);
-  for (let index = 0; index < 4; index += 1) firework.append(g1Node('div', '', 'g1-firework__card'));
+  firework.dataset.g1Firework = '';
+  const posters = [
+    'https://cdn7.fireworktv.com/medias/2025/4/24/1745478904-prvqygnz/transcoded/240x400/X50Ultra.jpg.62.jpg',
+    'https://cdn5.fireworktv.com/medias/2025/5/27/1748336641-zhiyptuj/transcoded/240x400/UnboxingthenewDreameX50Ultrawithlila_drila.jpg.62.jpg',
+    'https://cdn4.fireworktv.com/medias/2025/7/30/1753860229-toupylrs/transcoded/240x400/X50Ultra.jpg.62.jpg',
+  ];
+  for (const src of posters) firework.append(g1Img(src, '', 108, 168));
   column.append(firework);
   return column;
 }
 
-function g1Compact(key, body, assets) {
-  const tabs = { 5: 9, 9: 2, 11: 2, 13: 2, 17: 5, 18: 2, 20: 4, 22: 3 }[key] || 0;
-  if (!assets.length) {
-    if (key === 26) body.append(g1Dots(g1Copy.faq.items.length));
-    if (key === 27) {
-      const photos = g1Node('div', '', 'g1-slot-row');
-      const sources = [
-        'https://review-images.judgeme.com/dreame/1786840523__img_5911__original.jpeg?quality=80&width=160',
-        'https://review-images.judgeme.com/dreame/1771377529__img_9452__original.jpeg?quality=80&width=160',
-        'https://review-images.judgeme.com/dreame/1771377530__img_9451__original.jpeg?quality=80&width=160',
-        'https://review-images.judgeme.com/dreame/1763387753__image__original.jpg?quality=80&width=160',
-        'https://review-images.judgeme.com/dreame/1762748886__0__K7cRLdUP__31DGbJr-4xL._SY200__original.jpg?quality=80&width=160',
-        'https://review-images.judgeme.com/dreame/1760750294__image__original.jpg?quality=80&width=160',
-      ];
-      for (const src of sources) photos.append(g1Img(src, '', 72, 72));
-      body.append(photos);
+function g1MediaRow(assets, key, className) {
+  const row = g1Node('div', '', className);
+  assets.forEach((asset, index) => row.append(g1MediaElement(asset, key + '-' + index)));
+  return row;
+}
+
+function g1UsLayout(key, body, assets) {
+  if (key === 5) {
+    const deck = g1Node('div', '', 'g1-cards g1-bento');
+    assets.forEach((asset, index) => {
+      const card = g1Node('article', '', 'g1-card');
+      card.append(g1MediaElement(asset, '5-' + index));
+      deck.append(card);
+    });
+    body.append(deck, g1Dots(assets.length));
+    return;
+  }
+  if (key === 6) {
+    body.append(g1MediaRow(assets, 6, 'g1-expert-grid g1-media-row'));
+    return;
+  }
+  if (key === 7) {
+    body.append(g1MediaRow(assets, 7, 'g1-press-logos'));
+    return;
+  }
+  if (key === 13 || key === 20) {
+    const count = key === 20 ? 4 : assets.length;
+    body.append(g1MediaRow(assets.slice(0, count), key, 'g1-tab-frames'));
+    if (key === 20 && assets[4]) body.append(g1MediaElement(assets[4], '20-4'));
+    body.append(g1Dots(count));
+    return;
+  }
+  if (key === 17) {
+    body.append(g1MediaRow(assets.slice(0, 5), 17, 'g1-tab-frames'));
+    body.append(g1Dots(5));
+    if (assets.length > 5) {
+      const icons = g1Node('div', '', 'g1-icon-row');
+      assets.slice(5).forEach((asset, index) => icons.append(g1MediaElement(asset, '17-' + (index + 5))));
+      body.append(icons);
     }
     return;
   }
-  const wide = [4, 8, 14, 16, 19, 25].includes(key);
-  const grid = !wide && assets.length > 3;
-  const row = g1Node('div', '', grid ? 'g1-slot-grid' : 'g1-slot-row' + (wide ? ' g1-slot-row--wide' : ''));
-  assets.forEach((asset, index) => row.append(g1MediaElement(asset, key + '-' + index)));
-  body.append(row);
-  if (tabs) body.append(g1Dots(tabs));
+  if (key === 21) {
+    body.append(g1MediaRow(assets, 21, 'g1-cards g1-carousel'));
+    body.append(g1Dots(assets.length));
+    return;
+  }
+  if (key === 22) {
+    const slides = assets.slice(0, 3).map((asset, index) => {
+      const slide = g1Node('article', '', 'g1-hslide');
+      slide.append(g1MediaElement(asset, '22-' + index));
+      return slide;
+    });
+    body.append(g1HScroll(slides), g1Dots(3));
+    if (assets[3]) body.append(g1MediaElement(assets[3], '22-3'));
+    return;
+  }
+  if (key === 23) {
+    body.append(g1MediaRow(assets.slice(0, 4), 23, 'g1-connect-media'));
+    if (assets.length > 4) {
+      const icons = g1Node('div', '', 'g1-icon-row');
+      assets.slice(4).forEach((asset, index) => icons.append(g1MediaElement(asset, '23-' + (index + 4))));
+      body.append(icons);
+    }
+    return;
+  }
+  if (key === 24) {
+    const hero = assets.find(asset => asset.role === 'Package hero') || assets[0];
+    const thumbs = assets.filter(asset => asset.role === 'Grid thumbnail');
+    const enlarged = assets.filter(asset => asset.role === 'Accessory enlarged view');
+    if (hero) body.append(g1MediaElement(hero, '24-0'));
+    const grid = g1Node('div', '', 'g1-pack-grid');
+    thumbs.forEach((asset, index) => grid.append(g1MediaElement(asset, '24-' + (index + 1))));
+    body.append(grid);
+    const hidden = g1Node('div', '', 'g1-pack-zoom');
+    hidden.hidden = true;
+    enlarged.forEach((asset, index) => hidden.append(g1MediaElement(asset, '24-' + (thumbs.length + 1 + index))));
+    body.append(hidden);
+    return;
+  }
+  if (key === 26) return;
+  if (key === 27) {
+    const photos = g1Node('div', '', 'g1-review-photos');
+    const sources = [
+      'https://review-images.judgeme.com/dreame/1786840523__img_5911__original.jpeg?quality=80&width=160',
+      'https://review-images.judgeme.com/dreame/1771377529__img_9452__original.jpeg?quality=80&width=160',
+      'https://review-images.judgeme.com/dreame/1771377530__img_9451__original.jpeg?quality=80&width=160',
+      'https://review-images.judgeme.com/dreame/1763387753__image__original.jpg?quality=80&width=160',
+      'https://review-images.judgeme.com/dreame/1762748886__0__K7cRLdUP__31DGbJr-4xL._SY200__original.jpg?quality=80&width=160',
+      'https://review-images.judgeme.com/dreame/1760750294__image__original.jpg?quality=80&width=160',
+    ];
+    for (const src of sources) photos.append(g1Img(src, '', 80, 80));
+    body.append(photos);
+    return;
+  }
+  body.append(g1MediaRow(assets, key, 'g1-us-stack'));
 }
 
 function g1Highlights(assets) {
