@@ -596,6 +596,33 @@ function g1Reveal(key, slot) {
   scrollToHandbookSection(target);
 }
 
+function g1BuyCopyTable() {
+  const buy = g1Copy.buy;
+  const rows = [
+    ['Product title', buy.title],
+    ['Rating', buy.rating],
+    ['Price', buy.price + '  ' + buy.compare + '  ' + buy.off],
+    ['HSA/FSA', buy.hsa],
+    ['Bullets', buy.bullets.join('\n')],
+    ['Affirm', buy.affirm + '  ' + buy.affirmDate],
+  ];
+  buy.bundles.forEach((bundle, index) => {
+    rows.push(['Bundle ' + (index + 1), [bundle.badge, bundle.title, bundle.price, bundle.compare, bundle.text].filter(Boolean).join('\n')]);
+  });
+  rows.push(['Models', buy.models.map(model => model.name + '  ' + model.price).join('\n')]);
+  rows.push(['Colors', buy.colors.join(', ')]);
+  rows.push(['Add-ons', buy.addons.map(addon => addon.name + '  ' + addon.price).join('\n')]);
+  rows.push(['Gift tabs', buy.giftTabs.join('  ')]);
+  rows.push(['Gift message', buy.giftMessage]);
+  rows.push(['Open gift', buy.giftOpen.name + '  ' + buy.giftOpen.was + '  ' + buy.giftOpen.now]);
+  rows.push(['Buttons', buy.addToCart + '  ' + buy.buyNow]);
+  rows.push(['Services', buy.services.map(service => service.label).join('\n')]);
+  rows.push(['Share', buy.share.join('  ')]);
+  const table = g1DetailTable(['US copy', 'Text'], rows);
+  table.className = 'g1-copy-table';
+  return table;
+}
+
 function g1DetailNotes(key, team) {
   const notes = {
     1: {
@@ -658,6 +685,7 @@ function g1ContentDetails(section, key) {
   const pane = g1Node('div');
   pane.append(g1Provenance(key));
   for (const line of g1DetailNotes(key, 'content')) pane.append(g1Node('p', line, 'g1-order-note'));
+  if (key === 1) pane.append(g1BuyCopyTable());
   const rows = section.fields.map(field => [field.name, field.kind, field.location, field.limit]);
   if (rows.length) pane.append(g1DetailTable(['Content field', 'Type', 'Position', 'Limit'], rows));
   else pane.append(g1Node('p', 'No separate content fields in the workbook.'));
