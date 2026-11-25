@@ -158,7 +158,7 @@ const g1Sections = [
     "media": {
       "module": "M04",
       "asset": "Hero banner",
-      "size": "About 2.4:1, 1920 x 800 + mobile 1080 x 1350",
+      "size": "Desktop 1920 × 800. Mobile 945 × 1450.",
       "imageText": "Award logos only",
       "clearSpace": "Area for title + subtitle",
       "source": "KV / TVC cut",
@@ -190,7 +190,7 @@ const g1Sections = [
         "layout": "Full-width image, title + subtitle typed over it",
         "fields": "Title, subtitle, optional footnote",
         "imageText": "Award logos only",
-        "size": "About 2.4:1, 1920 x 800 + mobile 1080 x 1350"
+        "size": "Desktop 1920 × 800. Mobile 945 × 1450."
       }
     ]
   },
@@ -219,7 +219,7 @@ const g1Sections = [
     "media": {
       "module": "M06",
       "asset": "Album grid",
-      "size": "Tile ratios per layout, export 2x",
+      "size": "Desktop uses each US tile file. Mobile 800 × 1200 (2:3), not 1:1.",
       "imageText": "Technical callouts only (numbers, lines)",
       "clearSpace": "Top-left of each tile for the title",
       "source": "KV / TVC cut",
@@ -245,7 +245,7 @@ const g1Sections = [
         "layout": "Image tiles, each with a typed title over the image",
         "fields": "Section title (optional), tile title per tile",
         "imageText": "Technical callouts only (numbers, lines)",
-        "size": "Tile ratios per layout, export 2x"
+        "size": "Desktop uses each US tile file. Mobile 800 × 1200 (2:3), not 1:1."
       }
     ]
   },
@@ -374,7 +374,7 @@ const g1Sections = [
     "media": {
       "module": "M18",
       "asset": "Scroll story: obstacle clearing",
-      "size": "2.37:1, 1920 x 810; video 21:9",
+      "size": "Video 1920 × 1080 (16:9), not 21:9. Mobile portrait frame 390 × 842 where measured.",
       "imageText": "No",
       "clearSpace": "Centre for the title",
       "source": "KV / TVC cut",
@@ -394,7 +394,7 @@ const g1Sections = [
         "layout": "Full-width image or video, short title typed over it",
         "fields": "Title (35 chars)",
         "imageText": "No",
-        "size": "2.37:1, 1920 x 810; video 21:9"
+        "size": "Video 1920 × 1080 (16:9), not 21:9. Mobile portrait frame 390 × 842 where measured."
       }
     ]
   },
@@ -418,7 +418,7 @@ const g1Sections = [
     "media": {
       "module": "M11",
       "asset": "Tabbed video: conquer ledges",
-      "size": "16:9, 1920 x 1080 per tab",
+      "size": "Order each original US file in the slot table.",
       "imageText": "Technical callouts only",
       "clearSpace": "Bottom band for tab labels",
       "source": "KV / TVC cut",
@@ -450,7 +450,7 @@ const g1Sections = [
         "layout": "Section title, tab labels, one video or image per tab, optional text per tab",
         "fields": "Title, tab labels, text per tab",
         "imageText": "Technical callouts only",
-        "size": "16:9, 1920 x 1080 per tab"
+        "size": "Order each original US file in the slot table."
       }
     ]
   },
@@ -474,7 +474,7 @@ const g1Sections = [
     "media": {
       "module": "M12",
       "asset": "Comparison: with Dreame vs others",
-      "size": "About 1.2:1, 1200 x 1000 x 2",
+      "size": "Video 1920 × 1080. Cover desktop 870 × 720, mobile 684 × 560.",
       "imageText": "No",
       "clearSpace": "Top-left for the label",
       "source": "KV / TVC cut",
@@ -494,7 +494,7 @@ const g1Sections = [
         "layout": "\"With Dreame\" vs \"With others\", media + caption each",
         "fields": "Card labels, captions",
         "imageText": "No",
-        "size": "About 1.2:1, 1200 x 1000 x 2"
+        "size": "Video 1920 × 1080. Cover desktop 870 × 720, mobile 684 × 560."
       }
     ]
   },
@@ -523,7 +523,7 @@ const g1Sections = [
     "media": {
       "module": "M11",
       "asset": "Stat image + tabbed video: legs, 360 mapping",
-      "size": "16:9, 1920 x 1080 per tab",
+      "size": "Order each original US file in the slot table.",
       "imageText": "Technical callouts only",
       "clearSpace": "Bottom band for tab labels",
       "source": "KV / TVC cut",
@@ -555,7 +555,7 @@ const g1Sections = [
         "layout": "Section title, tab labels, one video or image per tab, optional text per tab",
         "fields": "Title, tab labels, text per tab",
         "imageText": "Technical callouts only",
-        "size": "16:9, 1920 x 1080 per tab"
+        "size": "Order each original US file in the slot table."
       }
     ]
   },
@@ -579,7 +579,7 @@ const g1Sections = [
     "media": {
       "module": "M17",
       "asset": "Scroll story: obstacle avoidance",
-      "size": "Wide 2.2:1, 1920 x 870 or 16:9",
+      "size": "Order each original US file. Videos are 1920 × 1080 (16:9).",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -611,7 +611,7 @@ const g1Sections = [
         "layout": "Centred title and text, optional icon stats, image or video below",
         "fields": "Title, body, icon labels",
         "imageText": "No",
-        "size": "Wide 2.2:1, 1920 x 870 or 16:9"
+        "size": "Order each original US file. Videos are 1920 × 1080 (16:9)."
       }
     ]
   },
@@ -635,7 +635,7 @@ const g1Sections = [
     "media": {
       "module": "M11",
       "asset": "Tabbed media: double brushes",
-      "size": "16:9, 1920 x 1080 per tab",
+      "size": "Order each original US file in the slot table.",
       "imageText": "Technical callouts only",
       "clearSpace": "Bottom band for tab labels",
       "source": "KV / TVC cut",
@@ -667,7 +667,7 @@ const g1Sections = [
         "layout": "Section title, tab labels, one video or image per tab, optional text per tab",
         "fields": "Title, tab labels, text per tab",
         "imageText": "Technical callouts only",
-        "size": "16:9, 1920 x 1080 per tab"
+        "size": "Order each original US file in the slot table."
       }
     ]
   },
@@ -696,7 +696,7 @@ const g1Sections = [
     "media": {
       "module": "M13",
       "asset": "Text + image + stats: SideReach",
-      "size": "About 1.3:1, 1400 x 1080",
+      "size": "Desktop 2560 × 1635. Mobile 780 × 2216.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -722,7 +722,7 @@ const g1Sections = [
         "layout": "Title and body left, image centre, 2 to 4 stats right",
         "fields": "Title, body, stats (number + label)",
         "imageText": "No",
-        "size": "About 1.3:1, 1400 x 1080"
+        "size": "Desktop 2560 × 1635. Mobile 780 × 2216."
       }
     ]
   },
@@ -746,7 +746,7 @@ const g1Sections = [
     "media": {
       "module": "M14",
       "asset": "Two cards: TripleUp",
-      "size": "About 1.4:1, 1400 x 1000 per card",
+      "size": "Desktop 840 × 597. Mobile 684 × 560.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -766,7 +766,7 @@ const g1Sections = [
         "layout": "2 to 4 cards side by side",
         "fields": "Card title, card text",
         "imageText": "No",
-        "size": "About 1.4:1, 1400 x 1000 per card"
+        "size": "Desktop 840 × 597. Mobile 684 × 560."
       }
     ]
   },
@@ -790,7 +790,7 @@ const g1Sections = [
     "media": {
       "module": "M18",
       "asset": "Scroll story: dock",
-      "size": "2.37:1, 1920 x 810; video 21:9",
+      "size": "Video 1920 × 1080 (16:9), not 21:9. Mobile portrait frame 390 × 842 where measured.",
       "imageText": "No",
       "clearSpace": "Centre for the title",
       "source": "KV / TVC cut",
@@ -810,7 +810,7 @@ const g1Sections = [
         "layout": "Full-width image or video, short title typed over it",
         "fields": "Title (35 chars)",
         "imageText": "No",
-        "size": "2.37:1, 1920 x 810; video 21:9"
+        "size": "Video 1920 × 1080 (16:9), not 21:9. Mobile portrait frame 390 × 842 where measured."
       }
     ]
   },
@@ -834,7 +834,7 @@ const g1Sections = [
     "media": {
       "module": "M15",
       "asset": "Accordion + image: dock features",
-      "size": "About 1:1, 1200 x 1160 per item",
+      "size": "Desktop about 620 × 600. Mobile about 684 × 560.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -854,7 +854,7 @@ const g1Sections = [
         "layout": "List of features on the left (click to open), image changes on the right",
         "fields": "Item title + text (3 to 6 items), optional chips",
         "imageText": "No",
-        "size": "About 1:1, 1200 x 1160 per item"
+        "size": "Desktop about 620 × 600. Mobile about 684 × 560."
       }
     ]
   },
@@ -878,7 +878,7 @@ const g1Sections = [
     "media": {
       "module": "M15",
       "asset": "Accordion + image: rewashing",
-      "size": "About 1:1, 1200 x 1160 per item",
+      "size": "Desktop about 620 × 600. Mobile about 684 × 560.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -898,7 +898,7 @@ const g1Sections = [
         "layout": "List of features on the left (click to open), image changes on the right",
         "fields": "Item title + text (3 to 6 items), optional chips",
         "imageText": "No",
-        "size": "About 1:1, 1200 x 1160 per item"
+        "size": "Desktop about 620 × 600. Mobile about 684 × 560."
       }
     ]
   },
@@ -922,7 +922,7 @@ const g1Sections = [
     "media": {
       "module": "M17",
       "asset": "Scroll story: carpet app",
-      "size": "Wide 2.2:1, 1920 x 870 or 16:9",
+      "size": "Order each original US file. Videos are 1920 × 1080 (16:9).",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -954,7 +954,7 @@ const g1Sections = [
         "layout": "Centred title and text, optional icon stats, image or video below",
         "fields": "Title, body, icon labels",
         "imageText": "No",
-        "size": "Wide 2.2:1, 1920 x 870 or 16:9"
+        "size": "Order each original US file. Videos are 1920 × 1080 (16:9)."
       }
     ]
   },
@@ -978,7 +978,7 @@ const g1Sections = [
     "media": {
       "module": "M11",
       "asset": "Tabbed image: carpet modes",
-      "size": "16:9, 1920 x 1080 per tab",
+      "size": "Order each original US file in the slot table.",
       "imageText": "Technical callouts only",
       "clearSpace": "Bottom band for tab labels",
       "source": "KV / TVC cut",
@@ -1010,7 +1010,7 @@ const g1Sections = [
         "layout": "Section title, tab labels, one video or image per tab, optional text per tab",
         "fields": "Title, tab labels, text per tab",
         "imageText": "Technical callouts only",
-        "size": "16:9, 1920 x 1080 per tab"
+        "size": "Order each original US file in the slot table."
       }
     ]
   },
@@ -1034,7 +1034,7 @@ const g1Sections = [
     "media": {
       "module": "M16",
       "asset": "Card carousel: pets",
-      "size": "About 1.67:1, 1600 x 960 per card",
+      "size": "Desktop 800 × 480, or 1200 × 720 for Keep an Eye. Not 2400 × 1440.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -1060,7 +1060,7 @@ const g1Sections = [
         "layout": "Title + sub, sliding cards with image, title, text",
         "fields": "Title, sub, card title + text",
         "imageText": "No",
-        "size": "About 1.67:1, 1600 x 960 per card"
+        "size": "Desktop 800 × 480, or 1200 × 720 for Keep an Eye. Not 2400 × 1440."
       }
     ]
   },
@@ -1084,7 +1084,7 @@ const g1Sections = [
     "media": {
       "module": "M17",
       "asset": "Text + image: curtains",
-      "size": "Wide 2.2:1, 1920 x 870 or 16:9",
+      "size": "Order each original US file. Videos are 1920 × 1080 (16:9).",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -1116,7 +1116,7 @@ const g1Sections = [
         "layout": "Centred title and text, optional icon stats, image or video below",
         "fields": "Title, body, icon labels",
         "imageText": "No",
-        "size": "Wide 2.2:1, 1920 x 870 or 16:9"
+        "size": "Order each original US file. Videos are 1920 × 1080 (16:9)."
       }
     ]
   },
@@ -1140,7 +1140,7 @@ const g1Sections = [
     "media": {
       "module": "M21",
       "asset": "Feature cards: connected clean",
-      "size": "About 1.45:1, 1200 x 820 per row",
+      "size": "Order each original file. Voice icons are 72 × 72.",
       "imageText": "Graphic number only",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -1160,7 +1160,7 @@ const g1Sections = [
         "layout": "Image and text side by side, rows alternate",
         "fields": "Title, body per row, optional stats",
         "imageText": "Graphic number only",
-        "size": "About 1.45:1, 1200 x 820 per row"
+        "size": "Order each original file. Voice icons are 72 × 72."
       }
     ]
   },
@@ -1184,7 +1184,7 @@ const g1Sections = [
     "media": {
       "module": "M24",
       "asset": "What is in the box",
-      "size": "1:1 hero 1000 + items 600 x 600",
+      "size": "Overview 544 × 544. Grid thumbnail 300 × 300. Enlarged view 600 × 600.",
       "imageText": "No",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -1210,7 +1210,7 @@ const g1Sections = [
         "layout": "Hero image + grid of items with name and quantity",
         "fields": "Item name + quantity ()",
         "imageText": "No",
-        "size": "1:1 hero 1000 + items 600 x 600"
+        "size": "Overview 544 × 544. Grid thumbnail 300 × 300. Enlarged view 600 × 600."
       }
     ]
   },
@@ -1236,7 +1236,7 @@ const g1Sections = [
     "media": {
       "module": "M25",
       "asset": "Specs + drawing + comparison table + remarks",
-      "size": "Drawing 2:1, 2712 x 1348",
+      "size": "Desktop drawing 3000 × 1500. Mobile drawing 2400 × 2400.",
       "imageText": "YES: dimension drawing in mm",
       "clearSpace": "-",
       "source": "KV / TVC cut",
@@ -1262,7 +1262,7 @@ const g1Sections = [
         "layout": "Spec table, optional dimension drawing",
         "fields": "Spec rows (, from spec sheet)",
         "imageText": "YES: dimension drawing in mm",
-        "size": "Drawing 2:1, 2712 x 1348"
+        "size": "Desktop drawing 3000 × 1500. Mobile drawing 2400 × 2400."
       },
       {
         "name": "Comparison table",
