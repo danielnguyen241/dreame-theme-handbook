@@ -596,6 +596,18 @@ function g1Reveal(key, slot) {
   scrollToHandbookSection(target);
 }
 
+function g1DetailNotes(key, team) {
+  const notes = {
+    1: {
+      content: [g1Copy.buy.giftClosedNote, g1Copy.buy.fireworkNote, g1Copy.buy.promoNote],
+    },
+    8: { design: [g1Copy.ui.crop] },
+    12: { design: [g1Copy.ui.crop] },
+    27: { content: [g1Copy.reviews.note] },
+  };
+  return notes[key]?.[team] ?? [];
+}
+
 function g1Provenance(key) {
   const id = g1USAudit.sections[String(key)];
   const note = g1Node('p', 'Liquid setting IDs for this section were not in the US page DOM on 2026-11-25, so they stay unverified. The live section element id is in Shopify fields.', 'g1-order-note');
@@ -615,6 +627,7 @@ function g1DesignDetails(section, key) {
     ['Notes', media?.note || section.note],
   ]));
   pane.append(g1Provenance(key));
+  for (const line of g1DetailNotes(key, 'design')) pane.append(g1Node('p', line, 'g1-order-note'));
   if (assets.length) {
     const rows = assets.map((asset, slot) => {
       const button = g1Node('button', asset.label, 'g3-fields__reveal');
@@ -644,6 +657,7 @@ function g1DesignDetails(section, key) {
 function g1ContentDetails(section, key) {
   const pane = g1Node('div');
   pane.append(g1Provenance(key));
+  for (const line of g1DetailNotes(key, 'content')) pane.append(g1Node('p', line, 'g1-order-note'));
   const rows = section.fields.map(field => [field.name, field.kind, field.location, field.limit]);
   if (rows.length) pane.append(g1DetailTable(['Content field', 'Type', 'Position', 'Limit'], rows));
   else pane.append(g1Node('p', 'No separate content fields in the workbook.'));

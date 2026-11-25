@@ -13,7 +13,6 @@ function g1Img(src, alt, width, height, className) {
 
 function g1Step(number, title, body, media) {
   const step = g1Node('article', '', 'g1-step');
-  step.append(g1Node('p', g1Copy.ui.scrollStep + ' ' + number, 'g1-step__kicker'));
   if (media) step.append(media);
   if (title) step.append(g1Node('h3', title));
   if (body) step.append(g1Node('p', body));
@@ -21,19 +20,7 @@ function g1Step(number, title, body, media) {
 }
 
 function g1Portrait(asset, key) {
-  const media = g1MediaElement(asset, key);
-  if (!asset || asset.desktop.url !== asset.mobile.url) return media;
-  const frame = asset.mobile.usFrame;
-  const file = asset.desktop.size;
-  if (!frame || !file.length || frame[0] !== 390 || frame[1] < 800 || file[0] <= file[1]) return media;
-  const block = g1Node('div', '', 'g1-portrait-block');
-  block.append(media);
-  const diagram = g1Node('div', '', 'g1-crop-diagram');
-  diagram.append(g1Node('span', g1Copy.ui.sourceFrame), g1Node('i'));
-  const safe = g1Node('span', g1Copy.ui.safeArea, 'g1-crop-diagram__safe');
-  diagram.append(safe);
-  block.append(diagram, g1Node('p', g1Copy.ui.crop, 'g1-crop-note'));
-  return block;
+  return g1MediaElement(asset, key);
 }
 
 function g1CopyTabs(key, assets, items) {
@@ -142,7 +129,7 @@ function g1BuyColumn() {
   const gift = g1Node('p', '', 'g1-gift');
   gift.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', buy.giftOpen.name, 32, 32));
   gift.append(g1Node('span', buy.giftOpen.name), g1Node('s', buy.giftOpen.was), g1Node('strong', buy.giftOpen.now));
-  gifts.append(gift, g1Node('p', buy.giftClosedNote, 'g1-crop-note'));
+  gifts.append(gift);
   column.append(gifts);
   const actions = g1Node('div', '', 'g1-buy__actions');
   actions.append(g1Node('span', buy.addToCart, 'g1-btn'), g1Node('span', buy.buyNow, 'g1-btn g1-btn--solid'));
@@ -161,11 +148,11 @@ function g1BuyColumn() {
   for (const label of buy.share) share.append(g1Node('span', label));
   column.append(share);
   const firework = g1Node('div', '', 'g1-firework');
-  firework.append(g1Node('h2', buy.firework));
+  firework.setAttribute('aria-label', buy.firework);
   const row = g1Node('div', '', 'g1-firework__row');
   for (let index = 0; index < 4; index += 1) row.append(g1Node('div', '', 'g1-firework__card'));
-  firework.append(row, g1Node('p', buy.fireworkNote, 'g1-crop-note'));
-  column.append(firework, g1Node('p', buy.promoNote, 'g1-crop-note'));
+  firework.append(row);
+  column.append(firework);
   return column;
 }
 
@@ -210,16 +197,12 @@ function g1Pros(assets) {
   const block = g1Node('div');
   block.append(g1Node('h2', g1Copy.pros.title, 'g3-group-heading'));
   const grid = g1Node('div', '', 'g1-expert-grid');
-  const ids = ['Q8yIdW3uoTE', '39OtFmiLcsM', '9nuiowaPHzQ'];
   g1Copy.pros.cards.forEach((card, index) => {
     const article = g1Node('article', '', 'g1-expert-card');
     article.append(g1MediaElement(assets[index * 2], '6-' + (index * 2)));
     const channel = g1Node('div', '', 'g1-expert-channel');
     channel.append(g1MediaElement(assets[index * 2 + 1], '6-' + (index * 2 + 1)), g1Node('h3', card.channel));
     article.append(channel, g1Node('p', card.subs, 'g1-subs'), g1Node('p', card.quote));
-    const link = g1Link(g1Copy.ui.watch, 'https://www.youtube.com/watch?v=' + ids[index]);
-    link.className = 'g1-review-link';
-    article.append(link);
     grid.append(article);
   });
   block.append(grid);
@@ -242,7 +225,6 @@ function g1Press(assets) {
 function g1HScroll(slides) {
   const root = g1Node('div', '', 'g1-hscroll');
   root.dataset.g1Hscroll = '';
-  root.append(g1Node('p', g1Copy.slides.kicker, 'g1-step__kicker'));
   const track = g1Node('div', '', 'g1-hscroll__track');
   track.dataset.g1Htrack = '';
   slides.forEach(slide => track.append(slide));
@@ -571,7 +553,7 @@ function g1RenderSection(key, body, assets) {
     body.append(list);
     const pages = g1Node('p', '', 'g1-review-pages');
     for (const page of ['1', '2', '3']) pages.append(g1Node('span', page));
-    body.append(pages, g1Node('p', copy.note, 'g1-crop-note'));
+    body.append(pages);
   }
 }
 
