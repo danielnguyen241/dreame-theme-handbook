@@ -420,37 +420,30 @@ function g1TextSection(key, body) {
 }
 
 function g1BuildPreview() {
-  const buy = g1Node('section', '', 'g3 g3-light-panel guide-buybox');
+  const buy = g1Node('section', '', 'g3 g3-light-panel guide-buybox g1-compact');
   buy.id = 'g1-01';
   const buyInner = g1Node('div', '', 'g3-wrap guide-buybox__inner');
-  const gallery = g1Switcher(g1Media[2].map((asset, index) => ({ asset, label: asset.label, index })), 2, true);
+  const gallery = g1Node('div', '', 'g1-slot-grid');
   gallery.id = 'g1-02';
+  (g1Media[2] || []).forEach((asset, index) => gallery.append(g1MediaElement(asset, '2-' + index)));
   const column = g1Node('div', '', 'guide-gallery-column');
   column.append(gallery);
   const text = g1Node('div', '', 'guide-buybox__text');
   text.append(g1BuyColumn());
   buyInner.append(column, text);
-  buy.append(buyInner, g1StickyAtc());
+  buy.append(buyInner);
   g1Stage.append(buy, g1Nav());
 
   for (let key = 4; key <= 27; key++) {
     const section = g1Sections[key - 1];
     const assets = g1Media[key] ?? [];
-    const block = g1Node('section', '', 'g3 g3-section g1-block');
+    const block = g1Node('section', '', 'g3 g3-section g1-block g1-compact');
     block.id = section.id.toLowerCase();
-    if (key === 4) {
-      block.className = 'g3 g3-hero';
-      const scene = g1Node('div', '', 'g3-hero__scene');
-      const copy = g1Node('div', '', 'g3-wrap g3-hero__copy');
-      copy.append(g1Node('h2', g1Copy.hero[0]), g1Node('p', g1Copy.hero[1]), g1Node('p', g1Copy.hero[2]));
-      scene.append(g1MediaElement(assets[0], '4-0'), copy);
-      block.append(scene);
-    } else {
-      if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
-      const body = g1Node('div', '', 'g3-wrap g1-block__inner');
-      g1RenderSection(key, body, assets);
-      block.append(body);
-    }
+    if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
+    const body = g1Node('div', '', 'g3-wrap g1-block__inner');
+    if (key === 4) block.classList.add('g1-compact--banner');
+    g1Compact(key, body, assets);
+    block.append(body);
     g1Stage.append(block);
   }
 }
@@ -596,6 +589,56 @@ function g1Reveal(key, slot) {
   scrollToHandbookSection(target);
 }
 
+function g1Join(items) {
+  return items.filter(Boolean).join('\n');
+}
+
+function g1SectionCopy(key) {
+  const c = g1Copy;
+  if (key === 4) return [['Hero', c.hero.join('\n')]];
+  if (key === 5) return c.highlights.map((title, index) => ['Tile ' + (index + 1), title]);
+  if (key === 6) return [['Heading', c.pros.title]].concat(c.pros.cards.map(card => [card.channel, card.subs + '\n' + card.quote]));
+  if (key === 7) return [['Heading', c.press.title]].concat(c.press.quotes.map((quote, index) => ['Quote ' + (index + 1), quote]));
+  if (key === 8) return [['Heading', c.clear.title], ['Body', c.clear.body]];
+  if (key === 9) return [['Heading', c.ledges.title]].concat(c.ledges.blocks.map(block => [block.title, block.body]));
+  if (key === 10) return c.versus.map(card => [card.title, g1Join([card.kicker, card.name, card.body])]);
+  if (key === 11) return [['Heading', c.legs.title], ['Body', c.legs.body], ['Heading', c.legs.mapTitle]].concat(c.legs.tabs.map(tab => [tab.title, tab.body]));
+  if (key === 12) return [
+    [c.avoid.obstacles.title, c.avoid.obstacles.body + '\n' + c.avoid.obstacles.stat + ' ' + c.avoid.obstacles.statLabel],
+    [c.avoid.light.title, c.avoid.light.body],
+    [c.avoid.peace.title, ''],
+    [c.avoid.turbo.title, c.avoid.turbo.body],
+    [c.avoid.hair.title, c.avoid.hair.body],
+  ];
+  if (key === 13) return [['Heading', c.brushes.title]].concat(c.brushes.tabs.map(tab => [tab.title, tab.body]));
+  if (key === 14) return [[c.reach.title, c.reach.body], [c.reach.corners, c.reach.cornersBody]].concat(c.reach.stats.map(stat => [stat[0], stat[1]]));
+  if (key === 15) return c.triple.map(card => [card.title, card.body]);
+  if (key === 16) return [[c.dock.overlay, ''], [c.dock.title, c.dock.body], [c.dock.statLabel, c.dock.stat]];
+  if (key === 17) return c.dockFeatures.items.map(item => [item.title, item.body]).concat([[c.dockFeatures.dirtTitle, c.dockFeatures.dirtBody]]);
+  if (key === 18) return c.remop.map(item => [item.title, item.body]);
+  if (key === 19) return [[c.carpetApp.overlay, c.carpetApp.line], [c.carpetApp.title, c.carpetApp.body]];
+  if (key === 20) return c.carpetModes.tabs.map(tab => [tab.title, tab.body]).concat([['End', c.carpetModes.end]]);
+  if (key === 21) return [['Heading', c.pets.title]].concat(c.pets.cards.map(card => [card.title, card.body]));
+  if (key === 22) return c.slides.items.map(item => [item.title, item.body]).concat([[c.slides.matter.title, c.slides.matter.body]]);
+  if (key === 23) return [
+    ['Heading', c.connected.title],
+    [c.connected.watch.title, c.connected.watch.body],
+    [c.connected.voice.title, c.connected.voice.body + '\n' + c.connected.voice.icons.join(', ')],
+    [c.connected.widgets.title, c.connected.widgets.body],
+    [c.connected.charge.title, c.connected.charge.body + '\n' + c.connected.charge.stats.join('\n')],
+  ];
+  if (key === 24) return [['Heading', c.box.title]];
+  if (key === 25) return [
+    ['Heading', c.specs.title],
+    [c.specs.robot, c.specs.robotDims.join('\n') + '\n' + c.specs.robotWeight],
+    [c.specs.station, c.specs.stationDims + '\n' + c.specs.stationWeight],
+    [c.specs.compareTitle, ''],
+  ].concat(c.specs.rows.map(row => [row[0], row[1] + ' | ' + row[2]])).concat(c.specs.remarks.map((line, index) => ['Remark ' + (index + 1), line]));
+  if (key === 26) return c.faq.items.map(item => [item[0], item[1]]).concat(c.faq.temps.map(line => ['Temperature', line]));
+  if (key === 27) return [[c.reviews.title, c.reviews.average + '\n' + c.reviews.based]].concat(c.reviews.items.map(item => [item[2], item[0] + ' ' + item[1] + '\n' + item[3]]));
+  return [];
+}
+
 function g1BuyCopyTable() {
   const buy = g1Copy.buy;
   const rows = [
@@ -686,6 +729,12 @@ function g1ContentDetails(section, key) {
   pane.append(g1Provenance(key));
   for (const line of g1DetailNotes(key, 'content')) pane.append(g1Node('p', line, 'g1-order-note'));
   if (key === 1) pane.append(g1BuyCopyTable());
+  const copyRows = g1SectionCopy(key);
+  if (copyRows.length) {
+    const copyTable = g1DetailTable(['US copy', 'Text'], copyRows);
+    copyTable.className = 'g1-copy-table';
+    pane.append(copyTable);
+  }
   const rows = section.fields.map(field => [field.name, field.kind, field.location, field.limit]);
   if (rows.length) pane.append(g1DetailTable(['Content field', 'Type', 'Position', 'Limit'], rows));
   else pane.append(g1Node('p', 'No separate content fields in the workbook.'));
