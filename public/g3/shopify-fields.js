@@ -127,7 +127,7 @@ function initG3ShopifyFields(sections, options = {}) {
   function fieldTable(fields, mediaSpecs, fieldIds, tableRows, reveal) {
     const table = element('table');
     const headers = table.createTHead().insertRow();
-    for (const label of ['Theme Editor label and ID', 'Z30 example or source']) {
+    for (const label of ['Theme Editor label and ID', options.exampleHeading || 'Z30 example or source']) {
       const heading = element('th', label);
       heading.scope = 'col';
       headers.append(heading);

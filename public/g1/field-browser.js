@@ -77,6 +77,15 @@ function prepareG1FieldBrowser(configs) {
       const binding = mediaBinding(key, id, assets);
       return { label, id, group, team, type: 'verified', media: binding.slots[0], info: mediaInfo(binding.slots[0], binding.viewport), ...binding };
     });
+    const usSectionId = g1USAudit.sections[String(key)];
+    if (usSectionId) {
+      const provenance = {
+        label: 'US Shopify section',
+        id: usSectionId,
+        example: 'Live PDP DOM on 2026-11-25. This is the section element id, not a Liquid setting.',
+      };
+      fields.push({ ...provenance, team: 'design' }, { ...provenance, team: 'content' });
+    }
     if (key === 1) {
       fields.push({ label: 'Product title', id: 'product.title', team: 'content', example: 'Products → Title' });
       addTargets(root, 'h1', 'product.title');
@@ -127,9 +136,7 @@ function prepareG1FieldBrowser(configs) {
     data.set(config.id, {
       fields: fields.concat(workbook),
       media: new Map(config.specs.map(spec => [spec.sel.match(/"([^"]+)"/)[1], spec])),
-      note: verified.length || [1, 2].includes(key)
-        ? 'Verified Shopify IDs are shown below each matching field.'
-        : 'Workbook fields and US media reference. Shopify schema unverified.',
+      note: 'US section element id is verified from the live PDP DOM on 2026-11-25. Liquid setting IDs were not in that DOM.',
     });
     return {
       ...config,

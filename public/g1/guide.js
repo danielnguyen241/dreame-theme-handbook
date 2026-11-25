@@ -339,6 +339,7 @@ function mountG1Controls(root) {
       if (!open) activeControl?.focus();
     });
   }
+  if (typeof g1MountExtra === 'function') g1MountExtra(root);
   for (const accordion of root.querySelectorAll('[data-g1-accordion]')) {
     accordion.addEventListener('click', event => {
       const button = event.target.closest('button[aria-controls]');
@@ -427,70 +428,27 @@ function g1BuildPreview() {
   const column = g1Node('div', '', 'guide-gallery-column');
   column.append(gallery);
   const text = g1Node('div', '', 'guide-buybox__text');
-  text.append(g1Node('h1', 'Dreame X50 Ultra Robot Vacuum'), g1Node('p', 'X Series · Matrix'), g1Link('View X50 Ultra on Dreame US', g1Reference));
+  text.append(g1BuyColumn());
   buyInner.append(column, text);
-  buy.append(buyInner);
+  buy.append(buyInner, g1StickyAtc());
   g1Stage.append(buy, g1Nav());
 
   for (let key = 4; key <= 27; key++) {
     const section = g1Sections[key - 1];
     const assets = g1Media[key] ?? [];
-    const title = g1FeatureTitles[key] ?? section.name;
     const block = g1Node('section', '', 'g3 g3-section g1-block');
     block.id = section.id.toLowerCase();
     if (key === 4) {
       block.className = 'g3 g3-hero';
       const scene = g1Node('div', '', 'g3-hero__scene');
       const copy = g1Node('div', '', 'g3-wrap g3-hero__copy');
-      copy.append(g1Node('h2', 'Dreame X50 Ultra'), g1Node('p', 'Rise up, clean beneath'));
+      copy.append(g1Node('h2', g1Copy.hero[0]), g1Node('p', g1Copy.hero[1]), g1Node('p', g1Copy.hero[2]));
       scene.append(g1MediaElement(assets[0], '4-0'), copy);
       block.append(scene);
     } else {
       if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
       const body = g1Node('div', '', 'g3-wrap g1-block__inner');
-      body.append(g1Node('h2', title, 'g3-group-heading'));
-      if (key === 6) {
-        body.append(g1ExpertCards(assets));
-      } else if (key === 7) {
-        body.append(g1PressCards(assets));
-      } else if (key === 10) {
-        body.append(g1Comparison(assets));
-      } else if (key === 14) {
-        body.append(g1SideReach(assets[0]));
-      } else if (key === 23) {
-        body.append(g1ConnectedRows(assets));
-      } else if (key === 24) {
-        body.append(g1PackList(assets));
-      } else if ([17, 18].includes(key)) {
-        body.append(g1Accordion(assets.slice(0, key === 17 ? 5 : 2), key));
-        if (key === 17) {
-          const extras = g1Node('div', '', 'g1-dock-icons');
-          assets.slice(5, 7).forEach((asset, offset) => extras.append(g1MediaElement(asset, key + '-' + (offset + 5))));
-          body.append(extras);
-          if (assets[7]) body.append(g1MediaElement(assets[7], '17-7'));
-        }
-      } else if (g1Tabs.has(key)) {
-        for (const [index, asset] of assets.entries()) body.append(g1MediaElement(asset, key + '-' + index));
-        body.append(g1Switcher(g1Tabs.get(key).map(([label, copy]) => ({ label, copy })), key));
-      } else if ([13, 20].includes(key)) {
-        const tabs = key === 20 ? assets.slice(0, 4) : assets;
-        const items = tabs.map((asset, index) => ({ label: asset.label, index, asset }));
-        body.append(g1Switcher(items, key));
-        if (key === 20 && assets[4]) body.append(g1MediaElement(assets[4], '20-4'));
-      } else if ([8, 12, 16, 19, 22, 25].includes(key)) {
-        for (const [index, asset] of assets.entries()) {
-          if (key === 22 && index > 0) body.append(g1Node('h3', asset.label, 'g1-us-chapter-title'));
-          if (key === 25 && index > 0) {
-            const icon = g1MediaElement(asset, key + '-' + index);
-            icon.classList.add('g1-comparison-icon');
-            body.append(icon);
-          } else body.append(g1MediaElement(asset, key + '-' + index));
-        }
-      } else if (assets.length) {
-        const mode = key === 21 ? 'g1-carousel' : key === 5 ? 'g1-bento' : key === 15 ? 'g1-pair' : '';
-        body.append(g1Cards(assets, key, mode));
-      }
-      g1TextSection(key, body);
+      g1RenderSection(key, body, assets);
       block.append(body);
     }
     g1Stage.append(block);
@@ -583,6 +541,7 @@ const g1FieldBrowser = initG3ShopifyFields(g1Browser.sections, {
   previewStylesheet: '/g1/guide.css',
   mountControls: mountG1Controls,
   sourceURL: g1Reference,
+  exampleHeading: 'X50 Ultra example or source',
   inline: false,
 });
 
@@ -637,20 +596,25 @@ function g1Reveal(key, slot) {
   scrollToHandbookSection(target);
 }
 
+function g1Provenance(key) {
+  const id = g1USAudit.sections[String(key)];
+  const note = g1Node('p', 'Liquid setting IDs for this section were not in the US page DOM on 2026-11-25, so they stay unverified. The live section element id is in Shopify fields.', 'g1-order-note');
+  if (id) note.dataset.usSection = id;
+  return note;
+}
+
 function g1DesignDetails(section, key) {
   const pane = g1Node('div');
   const media = section.media;
   const assets = g1Media[key] ?? [];
   pane.append(g1Facts([
     ['VN module', section.vnModules.join(' + ')],
-    ['VN workbook export size', media?.size],
+    ['US file size to order', media?.size],
     ['Text allowed in artwork', media?.imageText],
     ['Keep clear for typed text', media?.clearSpace],
     ['Notes', media?.note || section.note],
   ]));
-  if (key === 4) {
-    pane.append(g1Node('p', 'US Hero mobile artwork is 945 × 1450. Retain that ratio when matching the US layout; the workbook mobile size is 1080 × 1350.', 'g1-order-note'));
-  }
+  pane.append(g1Provenance(key));
   if (assets.length) {
     const rows = assets.map((asset, slot) => {
       const button = g1Node('button', asset.label, 'g3-fields__reveal');
@@ -677,8 +641,9 @@ function g1DesignDetails(section, key) {
   return pane;
 }
 
-function g1ContentDetails(section) {
+function g1ContentDetails(section, key) {
   const pane = g1Node('div');
+  pane.append(g1Provenance(key));
   const rows = section.fields.map(field => [field.name, field.kind, field.location, field.limit]);
   if (rows.length) pane.append(g1DetailTable(['Content field', 'Type', 'Position', 'Limit'], rows));
   else pane.append(g1Node('p', 'No separate content fields in the workbook.'));
@@ -701,7 +666,7 @@ function g1OpenDetail(button, panel, section, key) {
   teams.setAttribute('role', 'group');
   teams.setAttribute('aria-label', 'Choose a team');
   const content = g1Node('div', '', 'g3-fields__content g3-section-fields__content');
-  const panes = { design: g1DesignDetails(section, key), content: g1ContentDetails(section) };
+  const panes = { design: g1DesignDetails(section, key), content: g1ContentDetails(section, key) };
   for (const [role, pane] of Object.entries(panes)) {
     const rows = (g1ShopifyFields[key] ?? []).filter(field => field[3] === role).map(([label, id, block]) => [
       label, g1Node('code', id), block,

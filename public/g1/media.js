@@ -1115,7 +1115,7 @@ const g1Media = {
   ],
   "8": [
     {
-      "label": "Obstacle clearing",
+      "label": "First of its kind obstacle clearing for the ultimate clean.",
       "type": "Video",
       "desktop": {
         "url": "https://cdn.shopify.com/videos/c/o/v/6cc37201c3694a438f8b6d7a409e6f64.mp4",
@@ -1381,7 +1381,7 @@ const g1Media = {
   ],
   "12": [
     {
-      "label": "Obstacle avoidance · detection demo",
+      "label": "Obstacles Don't Stand a Chance",
       "type": "Video",
       "desktop": {
         "url": "https://cdn.shopify.com/videos/c/o/v/6cc37201c3694a438f8b6d7a409e6f64.mp4",
@@ -1414,7 +1414,7 @@ const g1Media = {
       "role": "Feature video"
     },
     {
-      "label": "Obstacle avoidance · structured light",
+      "label": "Light the Way",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_4.webp?v=1734401884",
@@ -1446,7 +1446,7 @@ const g1Media = {
       }
     },
     {
-      "label": "Obstacle avoidance · motion",
+      "label": "Enjoy a Peaceful, Tangle-Free Clean",
       "type": "Video",
       "desktop": {
         "url": "https://cdn.shopify.com/videos/c/o/v/4f94a8efe43b4e509c851ce50834b166.mp4",
@@ -1479,7 +1479,7 @@ const g1Media = {
       "role": "Scroll story"
     },
     {
-      "label": "Light the way",
+      "label": "Take Advantage of TurboForce 20,000Pa",
       "type": "Image",
       "desktop": {
         "url": "https://www.dreametech.com/cdn/shop/files/x50-ultra-pc-frame1_6.webp?v=1734401884",
@@ -1512,7 +1512,7 @@ const g1Media = {
       "role": "Full-width cover"
     },
     {
-      "label": "Anti-tangle hair pickup · motion",
+      "label": "Anti-Tangle Hair Like Never Before",
       "type": "Video",
       "desktop": {
         "url": "https://cdn.shopify.com/videos/c/o/v/0eb50cb6e7d7461893d1e849ee5ee101.mp4",
