@@ -61,91 +61,97 @@ function g1CopyAccordion(key, assets, items) {
   return accordion;
 }
 
+function g1Bar(kind) {
+  const bar = g1Node('span', '', 'g1-bar' + (kind ? ' g1-bar--' + kind : ''));
+  bar.setAttribute('aria-hidden', 'true');
+  return bar;
+}
+
+function g1Bars(kinds) {
+  const group = g1Node('div', '', 'g1-bars');
+  for (const kind of kinds) group.append(g1Bar(kind));
+  return group;
+}
+
 function g1BuyColumn() {
   const buy = g1Copy.buy;
   const column = g1Node('div', '', 'g1-buy');
-  column.append(g1Node('h1', buy.title));
-  column.append(g1Node('p', buy.rating, 'g1-buy__rating'));
-  const price = g1Node('p', '', 'g1-buy__price');
-  price.append(g1Node('strong', buy.price), g1Node('s', buy.compare), g1Node('span', buy.off, 'g1-buy__off'));
-  column.append(price);
-  column.append(g1Node('p', buy.hsa, 'g1-buy__hsa'));
-  const list = g1Node('ul', '', 'g1-buy__bullets');
-  for (const bullet of buy.bullets) list.append(g1Node('li', bullet));
-  column.append(list, g1Node('p', buy.compareLink, 'g1-buy__compare'));
+  column.append(g1Bars(['title', 'short', 'price', 'mid']));
+  const bullets = g1Node('div', '', 'g1-buy__bars');
+  for (let index = 0; index < buy.bullets.length; index += 1) bullets.append(g1Bar('line'));
+  column.append(bullets);
   const affirm = g1Node('p', '', 'g1-buy__affirm');
-  affirm.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', 'Affirm, Klarna and Shop Pay', 144, 23));
-  affirm.append(g1Node('span', buy.affirm), g1Node('span', buy.affirmDate, 'g1-buy__date'));
-  column.append(affirm);
-  column.append(g1Node('p', buy.option, 'g1-buy__label'));
+  affirm.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 144, 23), g1Bar('mid'));
+  column.append(affirm, g1Bar('short'));
   const bundles = g1Node('div', '', 'g1-bundles');
   for (const bundle of buy.bundles) {
     const card = g1Node('article', '', 'g1-bundle');
-    card.append(g1Img(bundle.image, bundle.title, 100, 100));
-    const text = g1Node('div');
-    text.append(g1Node('span', bundle.badge, 'g1-buy__off'), g1Node('h3', bundle.title));
-    const row = g1Node('p');
-    row.append(g1Node('strong', bundle.price), g1Node('s', bundle.compare));
-    text.append(row);
-    if (bundle.text) text.append(g1Node('p', bundle.text));
+    card.append(g1Img(bundle.image, '', 100, 100));
+    const text = g1Bars(bundle.text ? ['short', 'mid', 'line'] : ['short', 'mid']);
     card.append(text);
     bundles.append(card);
   }
   column.append(bundles);
   const models = g1Node('div', '', 'g1-picks');
-  models.append(g1Node('p', buy.model, 'g1-buy__label'));
+  models.append(g1Bar('short'));
   const modelRow = g1Node('div', '', 'g1-picks__row');
   buy.models.forEach((model, index) => {
-    const button = g1Node('button', model.name);
+    const button = g1Node('button', '', 'g1-bar g1-bar--chip');
     button.type = 'button';
     button.dataset.g1Model = String(index);
     button.setAttribute('aria-pressed', String(index === 0));
+    button.setAttribute('aria-label', model.name);
     modelRow.append(button);
   });
-  models.append(modelRow);
-  models.append(g1Node('p', buy.color, 'g1-buy__label'));
+  models.append(modelRow, g1Bar('short'));
   const colorRow = g1Node('div', '', 'g1-picks__row');
   buy.colors.forEach((color, index) => {
-    const button = g1Node('button', color);
+    const button = g1Node('button', '', 'g1-bar g1-bar--chip');
     button.type = 'button';
     button.setAttribute('aria-pressed', String(index === 0));
+    button.setAttribute('aria-label', color);
     colorRow.append(button);
   });
   models.append(colorRow);
-  column.append(models);
-  column.append(g1Node('h2', buy.together, 'g1-buy__label'));
+  column.append(models, g1Bar('mid'));
   const addons = g1Node('div', '', 'g1-addons');
   for (const addon of buy.addons) {
     const card = g1Node('article');
-    card.append(g1Img(addon.image, addon.name, 38, 38), g1Node('h3', addon.name), g1Node('p', addon.price));
+    card.append(g1Img(addon.image, '', 38, 38), g1Bars(['mid']), g1Bar('short'));
     addons.append(card);
   }
   column.append(addons);
   const gifts = g1Node('div', '', 'g1-gifts');
-  gifts.append(g1Node('h2', buy.giftTitle));
+  gifts.append(g1Bar('mid'));
   const tabs = g1Node('div', '', 'g1-gifts__tabs');
-  for (const tab of buy.giftTabs) tabs.append(g1Node('span', tab));
-  gifts.append(tabs, g1Node('p', buy.giftMessage));
+  for (const tab of buy.giftTabs) {
+    const chip = g1Bar('chip');
+    chip.setAttribute('aria-label', tab);
+    tabs.append(chip);
+  }
   const gift = g1Node('p', '', 'g1-gift');
-  gift.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', buy.giftOpen.name, 32, 32));
-  gift.append(g1Node('span', buy.giftOpen.name), g1Node('s', buy.giftOpen.was), g1Node('strong', buy.giftOpen.now));
-  gifts.append(gift);
+  gift.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 32, 32), g1Bars(['mid', 'short']));
+  gifts.append(tabs, g1Bar('line'), gift);
   column.append(gifts);
   const actions = g1Node('div', '', 'g1-buy__actions');
-  actions.append(g1Node('span', buy.addToCart, 'g1-btn'), g1Node('span', buy.buyNow, 'g1-btn g1-btn--solid'));
+  actions.append(g1Bar('btn'), g1Bar('btn g1-bar--solid'));
   column.append(actions);
   const seel = g1Node('p', '', 'g1-buy__seel');
-  seel.append(g1Img('https://static.seel.com/image/wfp-banner-icon.svg', '', 26, 26), g1Node('span', buy.seel), g1Node('strong', buy.seelBrand), g1Node('span', buy.learnMore));
+  seel.append(g1Img('https://static.seel.com/image/wfp-banner-icon.svg', '', 26, 26), g1Bar('mid'));
   column.append(seel);
   const services = g1Node('ul', '', 'g1-services');
   for (const service of buy.services) {
     const item = g1Node('li');
-    item.append(g1Img(service.src, service.label, service.w, service.h), g1Node('span', service.label));
+    item.append(g1Img(service.src, '', service.w, service.h), g1Bar('short'));
     services.append(item);
   }
   column.append(services);
   const share = g1Node('p', '', 'g1-share');
-  for (const label of buy.share) share.append(g1Node('span', label));
+  for (const label of buy.share) {
+    const chip = g1Bar('chip');
+    chip.setAttribute('aria-label', label);
+    share.append(chip);
+  }
   column.append(share);
   const firework = g1Node('div', '', 'g1-firework');
   firework.setAttribute('aria-label', buy.firework);
@@ -157,9 +163,8 @@ function g1BuyColumn() {
 }
 
 function g1StickyAtc() {
-  const buy = g1Copy.buy;
   const bar = g1Node('div', '', 'g1-sticky-atc');
-  bar.append(g1Node('strong', buy.title), g1Node('span', buy.models[0].name), g1Node('span', buy.price), g1Node('s', buy.compare), g1Node('span', '50% OFF'), g1Node('span', buy.stickyBuy, 'g1-btn g1-btn--solid'), g1Node('span', buy.stickyCart, 'g1-btn'));
+  bar.append(g1Bar('mid'), g1Bar('short'), g1Bar('btn'), g1Bar('btn g1-bar--solid'));
   return bar;
 }
 
@@ -625,11 +630,6 @@ function g1MountExtra(root) {
   }
   root.querySelectorAll('[data-g1-model]').forEach(button => {
     button.addEventListener('click', () => {
-      const model = g1Copy.buy.models[Number(button.dataset.g1Model)];
-      const price = root.querySelector('.g1-buy__price');
-      if (!price || !model) return;
-      price.querySelector('strong').textContent = model.price;
-      price.querySelector('s').textContent = model.compare;
       for (const peer of root.querySelectorAll('[data-g1-model]')) {
         peer.setAttribute('aria-pressed', String(peer === button));
       }
