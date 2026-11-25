@@ -61,111 +61,53 @@ function g1CopyAccordion(key, assets, items) {
   return accordion;
 }
 
-function g1Bar(kind) {
-  const bar = g1Node('span', '', 'g1-bar' + (kind ? ' g1-bar--' + kind : ''));
-  bar.setAttribute('aria-hidden', 'true');
-  return bar;
-}
-
-function g1Bars(kinds) {
-  const group = g1Node('div', '', 'g1-bars');
-  for (const kind of kinds) group.append(g1Bar(kind));
-  return group;
+function g1Dots(count) {
+  const dots = g1Node('div', '', 'g1-dots');
+  dots.setAttribute('aria-hidden', 'true');
+  for (let index = 0; index < count; index += 1) dots.append(g1Node('i'));
+  return dots;
 }
 
 function g1BuyColumn() {
   const buy = g1Copy.buy;
-  const column = g1Node('div', '', 'g1-buy');
-  column.append(g1Bars(['title', 'short', 'price', 'mid']));
-  const bullets = g1Node('div', '', 'g1-buy__bars');
-  for (let index = 0; index < buy.bullets.length; index += 1) bullets.append(g1Bar('line'));
-  column.append(bullets);
-  const affirm = g1Node('p', '', 'g1-buy__affirm');
-  affirm.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 144, 23), g1Bar('mid'));
-  column.append(affirm, g1Bar('short'));
-  const bundles = g1Node('div', '', 'g1-bundles');
-  for (const bundle of buy.bundles) {
-    const card = g1Node('article', '', 'g1-bundle');
-    card.append(g1Img(bundle.image, '', 100, 100));
-    const text = g1Bars(bundle.text ? ['short', 'mid', 'line'] : ['short', 'mid']);
-    card.append(text);
-    bundles.append(card);
-  }
-  column.append(bundles);
-  const models = g1Node('div', '', 'g1-picks');
-  models.append(g1Bar('short'));
-  const modelRow = g1Node('div', '', 'g1-picks__row');
-  buy.models.forEach((model, index) => {
-    const button = g1Node('button', '', 'g1-bar g1-bar--chip');
-    button.type = 'button';
-    button.dataset.g1Model = String(index);
-    button.setAttribute('aria-pressed', String(index === 0));
-    button.setAttribute('aria-label', model.name);
-    modelRow.append(button);
-  });
-  models.append(modelRow, g1Bar('short'));
-  const colorRow = g1Node('div', '', 'g1-picks__row');
-  buy.colors.forEach((color, index) => {
-    const button = g1Node('button', '', 'g1-bar g1-bar--chip');
-    button.type = 'button';
-    button.setAttribute('aria-pressed', String(index === 0));
-    button.setAttribute('aria-label', color);
-    colorRow.append(button);
-  });
-  models.append(colorRow);
-  column.append(models, g1Bar('mid'));
-  const addons = g1Node('div', '', 'g1-addons');
-  for (const addon of buy.addons) {
-    const card = g1Node('article');
-    card.append(g1Img(addon.image, '', 38, 38), g1Bars(['mid']), g1Bar('short'));
-    addons.append(card);
-  }
-  column.append(addons);
-  const gifts = g1Node('div', '', 'g1-gifts');
-  gifts.append(g1Bar('mid'));
-  const tabs = g1Node('div', '', 'g1-gifts__tabs');
-  for (const tab of buy.giftTabs) {
-    const chip = g1Bar('chip');
-    chip.setAttribute('aria-label', tab);
-    tabs.append(chip);
-  }
-  const gift = g1Node('p', '', 'g1-gift');
-  gift.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 32, 32), g1Bars(['mid', 'short']));
-  gifts.append(tabs, g1Bar('line'), gift);
-  column.append(gifts);
-  const actions = g1Node('div', '', 'g1-buy__actions');
-  actions.append(g1Bar('btn'), g1Bar('btn g1-bar--solid'));
-  column.append(actions);
-  const seel = g1Node('p', '', 'g1-buy__seel');
-  seel.append(g1Img('https://static.seel.com/image/wfp-banner-icon.svg', '', 26, 26), g1Bar('mid'));
-  column.append(seel);
-  const services = g1Node('ul', '', 'g1-services');
-  for (const service of buy.services) {
-    const item = g1Node('li');
-    item.append(g1Img(service.src, '', service.w, service.h), g1Bar('short'));
-    services.append(item);
-  }
-  column.append(services);
-  const share = g1Node('p', '', 'g1-share');
-  for (const label of buy.share) {
-    const chip = g1Bar('chip');
-    chip.setAttribute('aria-label', label);
-    share.append(chip);
-  }
-  column.append(share);
-  const firework = g1Node('div', '', 'g1-firework');
+  const column = g1Node('div', '', 'g1-buy g1-slot-row');
+  for (const bundle of buy.bundles) column.append(g1Img(bundle.image, '', 100, 100));
+  for (const addon of buy.addons) column.append(g1Img(addon.image, '', 72, 72));
+  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 72, 72));
+  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 120, 28));
+  for (const service of buy.services) column.append(g1Img(service.src, '', service.w, service.h));
+  const firework = g1Node('div', '', 'g1-firework__row');
   firework.setAttribute('aria-label', buy.firework);
-  const row = g1Node('div', '', 'g1-firework__row');
-  for (let index = 0; index < 4; index += 1) row.append(g1Node('div', '', 'g1-firework__card'));
-  firework.append(row);
+  for (let index = 0; index < 4; index += 1) firework.append(g1Node('div', '', 'g1-firework__card'));
   column.append(firework);
   return column;
 }
 
-function g1StickyAtc() {
-  const bar = g1Node('div', '', 'g1-sticky-atc');
-  bar.append(g1Bar('mid'), g1Bar('short'), g1Bar('btn'), g1Bar('btn g1-bar--solid'));
-  return bar;
+function g1Compact(key, body, assets) {
+  const tabs = { 5: 9, 9: 2, 11: 2, 13: 2, 17: 5, 18: 2, 20: 4, 22: 3 }[key] || 0;
+  if (!assets.length) {
+    if (key === 26) body.append(g1Dots(g1Copy.faq.items.length));
+    if (key === 27) {
+      const photos = g1Node('div', '', 'g1-slot-row');
+      const sources = [
+        'https://review-images.judgeme.com/dreame/1786840523__img_5911__original.jpeg?quality=80&width=160',
+        'https://review-images.judgeme.com/dreame/1771377529__img_9452__original.jpeg?quality=80&width=160',
+        'https://review-images.judgeme.com/dreame/1771377530__img_9451__original.jpeg?quality=80&width=160',
+        'https://review-images.judgeme.com/dreame/1763387753__image__original.jpg?quality=80&width=160',
+        'https://review-images.judgeme.com/dreame/1762748886__0__K7cRLdUP__31DGbJr-4xL._SY200__original.jpg?quality=80&width=160',
+        'https://review-images.judgeme.com/dreame/1760750294__image__original.jpg?quality=80&width=160',
+      ];
+      for (const src of sources) photos.append(g1Img(src, '', 72, 72));
+      body.append(photos);
+    }
+    return;
+  }
+  const wide = [4, 8, 14, 16, 19, 25].includes(key);
+  const grid = !wide && assets.length > 3;
+  const row = g1Node('div', '', grid ? 'g1-slot-grid' : 'g1-slot-row' + (wide ? ' g1-slot-row--wide' : ''));
+  assets.forEach((asset, index) => row.append(g1MediaElement(asset, key + '-' + index)));
+  body.append(row);
+  if (tabs) body.append(g1Dots(tabs));
 }
 
 function g1Highlights(assets) {

@@ -640,3 +640,105 @@
   }
   #g1-25 { overflow-x: auto; }
 }
+
+/* Compact G1 preview: media slots only, G2-like density. */
+#g1-preview .g1-compact.g3-section,
+#g1-preview .g1-compact.guide-buybox {
+  padding-block: 12px;
+}
+#g1-preview .g1-slot-grid,
+#g1-preview .g1-slot-row,
+#g1-preview .g1-buy {
+  min-width: 0;
+  max-width: 100%;
+}
+#g1-preview .g1-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+#g1-preview .g1-slot-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  align-items: stretch;
+}
+#g1-preview .g1-slot-row > .g3-media {
+  flex: 0 0 220px;
+  min-width: 0;
+}
+#g1-preview .g1-slot-row--wide > .g3-media {
+  flex: 1 1 auto;
+  width: 100%;
+}
+#g1-preview .g1-compact [data-g1-media] img,
+#g1-preview .g1-compact [data-g1-media] video {
+  width: 100%;
+  height: 124px;
+  aspect-ratio: auto;
+  object-fit: cover;
+  background: #141414;
+}
+#g1-preview .g1-slot-grid [data-g1-media] img,
+#g1-preview .g1-slot-grid [data-g1-media] video {
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+#g1-preview .g1-slot-row--wide [data-g1-media] img,
+#g1-preview .g1-slot-row--wide [data-g1-media] video {
+  height: auto;
+  aspect-ratio: 2.4 / 1;
+  max-height: 240px;
+}
+#g1-preview .g1-buy.g1-slot-row {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+#g1-preview .g1-buy.g1-slot-row > img {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f4f1ec;
+}
+#g1-preview .g1-compact .g1-firework__row {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+#g1-preview .g1-compact .g1-firework__card {
+  width: 64px;
+  height: 88px;
+  flex: 0 0 64px;
+}
+#g1-preview .g1-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+#g1-preview .g1-dots i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c8bfb2;
+}
+#g1-preview .g1-dots i:first-child { background: #211e1b; }
+@media (max-width: 850px) {
+  #g1-preview .g1-slot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #g1-preview .g1-slot-row > .g3-media { flex-basis: 168px; }
+  #g1-preview .g1-slot-row--wide > .g3-media { flex-basis: 100%; }
+  #g1-preview .g1-compact [data-g1-media] img,
+  #g1-preview .g1-compact [data-g1-media] video {
+    aspect-ratio: 1 / 1;
+    height: auto;
+    max-height: 168px;
+  }
+  #g1-preview .g1-slot-row--wide [data-g1-media] img,
+  #g1-preview .g1-slot-row--wide [data-g1-media] video {
+    aspect-ratio: 1.8 / 1;
+    max-height: 180px;
+  }
+}
