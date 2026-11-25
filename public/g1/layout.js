@@ -68,21 +68,6 @@ function g1Dots(count) {
   return dots;
 }
 
-function g1BuyColumn() {
-  const buy = g1Copy.buy;
-  const column = g1Node('div', '', 'g1-buy g1-slot-row');
-  for (const bundle of buy.bundles) column.append(g1Img(bundle.image, '', 100, 100));
-  for (const addon of buy.addons) column.append(g1Img(addon.image, '', 72, 72));
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 72, 72));
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 120, 28));
-  for (const service of buy.services) column.append(g1Img(service.src, '', service.w, service.h));
-  const firework = g1Node('div', '', 'g1-firework__row');
-  firework.setAttribute('aria-label', buy.firework);
-  for (let index = 0; index < 4; index += 1) firework.append(g1Node('div', '', 'g1-firework__card'));
-  column.append(firework);
-  return column;
-}
-
 function g1Compact(key, body, assets) {
   const tabs = { 5: 9, 9: 2, 11: 2, 13: 2, 17: 5, 18: 2, 20: 4, 22: 3 }[key] || 0;
   if (!assets.length) {

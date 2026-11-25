@@ -428,9 +428,7 @@ function g1BuildPreview() {
   (g1Media[2] || []).forEach((asset, index) => gallery.append(g1MediaElement(asset, '2-' + index)));
   const column = g1Node('div', '', 'guide-gallery-column');
   column.append(gallery);
-  const text = g1Node('div', '', 'guide-buybox__text');
-  text.append(g1BuyColumn());
-  buyInner.append(column, text);
+  buyInner.append(column);
   buy.append(buyInner);
   g1Stage.append(buy, g1Nav());
 
@@ -648,19 +646,11 @@ function g1BuyCopyTable() {
     ['HSA/FSA', buy.hsa],
     ['Bullets', buy.bullets.join('\n')],
     ['Affirm', buy.affirm + '  ' + buy.affirmDate],
+    ['Models', buy.models.map(model => model.name + '  ' + model.price).join('\n')],
+    ['Colors', buy.colors.join(', ')],
+    ['Buttons', buy.addToCart + '  ' + buy.buyNow],
+    ['Share', buy.share.join('  ')],
   ];
-  buy.bundles.forEach((bundle, index) => {
-    rows.push(['Bundle ' + (index + 1), [bundle.badge, bundle.title, bundle.price, bundle.compare, bundle.text].filter(Boolean).join('\n')]);
-  });
-  rows.push(['Models', buy.models.map(model => model.name + '  ' + model.price).join('\n')]);
-  rows.push(['Colors', buy.colors.join(', ')]);
-  rows.push(['Add-ons', buy.addons.map(addon => addon.name + '  ' + addon.price).join('\n')]);
-  rows.push(['Gift tabs', buy.giftTabs.join('  ')]);
-  rows.push(['Gift message', buy.giftMessage]);
-  rows.push(['Open gift', buy.giftOpen.name + '  ' + buy.giftOpen.was + '  ' + buy.giftOpen.now]);
-  rows.push(['Buttons', buy.addToCart + '  ' + buy.buyNow]);
-  rows.push(['Services', buy.services.map(service => service.label).join('\n')]);
-  rows.push(['Share', buy.share.join('  ')]);
   const table = g1DetailTable(['US copy', 'Text'], rows);
   table.className = 'g1-copy-table';
   return table;
@@ -668,9 +658,6 @@ function g1BuyCopyTable() {
 
 function g1DetailNotes(key, team) {
   const notes = {
-    1: {
-      content: [g1Copy.buy.giftClosedNote, g1Copy.buy.fireworkNote, g1Copy.buy.promoNote],
-    },
     8: { design: [g1Copy.ui.crop] },
     12: { design: [g1Copy.ui.crop] },
     27: { content: [g1Copy.reviews.note] },
