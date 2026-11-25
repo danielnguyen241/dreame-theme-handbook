@@ -4,7 +4,7 @@
 
 - [Vietnamese handbook](https://dreame-theme-handbook.vercel.app/g3/?lang=vi)
 - [Handbook source](public/g3)
-- [Shopify field map](https://dreame-theme-handbook.vercel.app/g3/?lang=vi&fields=g3-04) · [Mapping data](public/g3/shopify-fields-data.js)
+- Shopify fields for [Design](https://dreame-theme-handbook.vercel.app/g3/?lang=vi&fields=g3-04&team=design) and [Content](https://dreame-theme-handbook.vercel.app/g3/?lang=vi&fields=g3-04&team=content) · [Mapping data](public/g3/shopify-fields-data.js)
 - [Compare the first G3 handbook with v2](../../compare/9248cef...a000c9f)
 
 | Layout | US reference | Handbook | Download |
@@ -16,7 +16,7 @@ Choose **VI** or **EN** in either handbook. The language follows the layout link
 
 G3 has 21 reusable sections named by layout or interaction. Dreame Z30 supplies the 63 reference media slots. Both handbooks use the same toolbar, hover badges, and 390 px Mobile preview. Use **Show Media Sizes** to pin the badges and click a badge to copy its source sizes and aspect ratios. Select **Media specs** under **Jump to section** for Desktop thumbnails, original image URLs, and the CSV.
 
-Open **Shopify fields** in the toolbar or **Fields** beside a section. Hover or tap text, an image, or a video in the Desktop or Mobile preview to highlight its exact Theme Editor label and Liquid ID. Select a field name to reveal it in the preview. The map links to the Shopify schema revision it uses.
+Open **Shopify fields** in the toolbar or **Fields** beside a section. Choose **Images & video** for Design or **Text fields** for Content. Hover or tap a matching element in the Desktop or Mobile preview to highlight its exact Theme Editor label and Liquid ID. Select a field name to reveal it in the preview. The map links to the Shopify schema revision it uses.
 
 The size badges use source dimensions. The preview may load a smaller CDN variant. [Dreame US Z30](https://www.dreametech.com/products/z30-cordless-stick-vacuum)
 

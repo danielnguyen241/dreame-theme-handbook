@@ -15,6 +15,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
   let pendingField;
   let fields = [];
   const targets = new Map();
+  let enabledFields = new Set();
 
   function fit() {
     if (!frame || !canvas.clientWidth || !canvas.clientHeight) return;
@@ -31,7 +32,7 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
 
   function inspect(target) {
     const id = target?.dataset.g3PreviewField;
-    if (!id) return;
+    if (!enabledFields.has(id)) return;
     if (inspectedTarget !== target) {
       inspectedTarget?.removeAttribute('data-g3-preview-active');
       target.setAttribute('data-g3-preview-active', '');
@@ -54,7 +55,9 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
       const id = media?.id ?? target.dataset.g3Field;
       if (!id || !knownFields.has(id)) continue;
       target.dataset.g3PreviewField = id;
-      if (!target.matches('button, a, summary')) target.tabIndex = 0;
+      const enabled = enabledFields.has(id);
+      target.toggleAttribute('data-g3-preview-enabled', enabled);
+      if (!target.matches('button, a, summary')) target.tabIndex = enabled ? 0 : -1;
       if (!targets.has(id)) targets.set(id, []);
       targets.get(id).push(target);
     }
@@ -156,6 +159,13 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
     bindTargets();
   }
 
+  function setFields(ids) {
+    enabledFields = ids;
+    inspectedTarget?.removeAttribute('data-g3-preview-active');
+    inspectedTarget = null;
+    bindTargets();
+  }
+
   function clear() {
     frame?.remove();
     frame = null;
@@ -165,5 +175,5 @@ function createG3FieldPreview(canvas, onInspect, onClose) {
     targets.clear();
   }
 
-  return { mount, setViewport, reveal, clear };
+  return { mount, setViewport, setFields, reveal, clear };
 }

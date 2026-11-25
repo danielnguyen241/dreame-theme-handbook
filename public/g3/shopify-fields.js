@@ -13,6 +13,9 @@ function initG3ShopifyFields(sections) {
     () => dialog.close()
   );
   const rows = new Map();
+  const teamButtons = dialog.querySelectorAll('[data-g3-field-team]');
+  const query = new URLSearchParams(location.search);
+  let team = query.get('team') === 'content' ? 'content' : 'design';
   let inspectedId;
   let renderedLanguage;
   let viewport;
@@ -41,13 +44,35 @@ function initG3ShopifyFields(sections) {
     return field.group ? field.group + ' › ' + field.label : field.label;
   }
 
+  function fieldTeam(field) {
+    return field.media || field.id === 'product.media' || field.type === 'checkbox' ? 'design' : 'content';
+  }
+
+  function selectTeam(next) {
+    team = next;
+    inspect();
+    for (const button of teamButtons) {
+      button.setAttribute('aria-pressed', String(button.dataset.g3FieldTeam === team));
+    }
+    for (const panel of content.querySelectorAll('[data-g3-team-panel]')) {
+      panel.hidden = panel.dataset.g3TeamPanel !== team;
+    }
+    preview.setFields(new Set(Array.from(rows)
+      .filter(([, { field }]) => fieldTeam(field) === team)
+      .map(([id]) => id)));
+    content.scrollTop = 0;
+  }
+
   function inspect(id) {
-    if (id === inspectedId) return;
+    if (id && id === inspectedId) return;
     rows.get(inspectedId)?.row.classList.remove('is-inspected');
     inspectedId = id;
     const match = rows.get(id);
     if (!match) {
-      inspected.replaceChildren(element('span', 'Hover or tap text or media to find its Shopify field.'));
+      const hint = team === 'design'
+        ? 'Hover or tap an image or video to find its Shopify field.'
+        : 'Hover or tap text to find its Shopify field.';
+      inspected.replaceChildren(element('span', hint));
       return;
     }
 
@@ -140,16 +165,36 @@ function initG3ShopifyFields(sections) {
     } else {
       heading.append(element('strong', section.name));
     }
-    content.replaceChildren(heading, fieldTable(fields, media, section.fieldIds));
-
-    for (const block of mapping?.blocks ?? []) {
-      const label = element('h3');
-      label.append(element('span', 'Block'), ' · ', element('strong', block.name, true), ' ', element('code', block.type, true));
-      content.append(label, element('p', 'Repeat for each item.'), fieldTable(block.fields, media, section.fieldIds));
+    content.replaceChildren(heading);
+    for (const button of teamButtons) {
+      const targetTeam = button.dataset.g3FieldTeam;
+      const panel = element('div');
+      panel.dataset.g3TeamPanel = targetTeam;
+      const sectionFields = fields.filter(field => fieldTeam(field) === targetTeam && field.type !== 'checkbox');
+      if (sectionFields.length) panel.append(fieldTable(sectionFields, media, section.fieldIds));
+      else panel.append(element('p', targetTeam === 'design'
+        ? 'This section has no image or video fields.'
+        : 'This section has no content fields.'));
+      for (const block of mapping?.blocks ?? []) {
+        const blockFields = block.fields.filter(field => fieldTeam(field) === targetTeam);
+        if (!blockFields.length) continue;
+        const label = element('h3');
+        label.append(element('span', 'Block'), ' · ', element('strong', block.name, true), ' ', element('code', block.type, true));
+        panel.append(label, element('p', 'Repeat for each item.'), fieldTable(blockFields, media, section.fieldIds));
+      }
+      const settings = fields.filter(field => field.type === 'checkbox' && fieldTeam(field) === targetTeam);
+      if (settings.length) {
+        const disclosure = element('details');
+        disclosure.className = 'g3-fields__settings';
+        disclosure.append(element('summary', 'Preview settings'), fieldTable(settings, media, section.fieldIds));
+        panel.append(disclosure);
+      }
+      content.append(panel);
     }
+
     source.href = themeRoot + (mapping?.path ?? 'sections/main-product.liquid');
-    content.scrollTop = 0;
     preview.mount(section, fields.concat((mapping?.blocks ?? []).flatMap(block => block.fields)));
+    selectTeam(team);
   }
 
   function open(key = picker.value) {
@@ -178,6 +223,9 @@ function initG3ShopifyFields(sections) {
 
   picker.value = 'g3-04';
   picker.addEventListener('change', render);
+  for (const button of teamButtons) {
+    button.addEventListener('click', () => selectTeam(button.dataset.g3FieldTeam));
+  }
   for (const button of deviceButtons) {
     button.addEventListener('click', () => selectViewport(button.dataset.g3FieldViewport));
   }
@@ -189,7 +237,7 @@ function initG3ShopifyFields(sections) {
   });
   document.querySelector('[data-g3-open-fields]').addEventListener('click', () => open());
 
-  const requested = new URLSearchParams(location.search).get('fields');
+  const requested = query.get('fields');
   if ([...picker.options].some(option => option.value === requested) && !document.body.classList.contains('is-embed')) {
     document.addEventListener('DOMContentLoaded', () => open(requested), { once: true });
   }
