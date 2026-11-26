@@ -474,7 +474,7 @@ const g1Sections = [
     "media": {
       "module": "M12",
       "asset": "Comparison: with Dreame vs others",
-      "size": "Video 1920 × 1080. Cover desktop 870 × 720, mobile 684 × 560.",
+      "size": "Video 1920 × 1080 on desktop and mobile. No separate mobile video. Mobile shows the 684 × 560 cover whole so the disclaimer is not cropped. Desktop frame stays 436 × 360.",
       "imageText": "No",
       "clearSpace": "Top-left for the label",
       "source": "KV / TVC cut",
@@ -494,7 +494,7 @@ const g1Sections = [
         "layout": "\"With Dreame\" vs \"With others\", media + caption each",
         "fields": "Card labels, captions",
         "imageText": "No",
-        "size": "Video 1920 × 1080. Cover desktop 870 × 720, mobile 684 × 560."
+        "size": "Video 1920 × 1080 on desktop and mobile. No separate mobile video. Mobile shows the 684 × 560 cover whole so the disclaimer is not cropped. Desktop frame stays 436 × 360."
       }
     ]
   },

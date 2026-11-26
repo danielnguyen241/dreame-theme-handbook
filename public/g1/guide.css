@@ -477,6 +477,20 @@ body.hb-show-all .g1-video-cover summary { cursor: pointer; }
   .g1-block [data-g1-media] video {
     aspect-ratio: var(--g1-us-mobile-ratio, var(--g1-mobile-ratio));
   }
+  /* No separate mobile video. The disclaimer lives on the 684×560 cover, so that frame is shown whole. */
+  #g1-10 .g1-versus__frame > .g3-media video,
+  #g1-10 .g1-versus__poster,
+  #g1-10 .g1-versus__poster picture,
+  #g1-10 .g1-versus__poster img {
+    aspect-ratio: 684 / 560 !important;
+    object-fit: contain !important;
+    height: auto;
+    background: #111;
+  }
+  #g1-10 .g1-versus__frame.is-playing .g1-versus__poster {
+    opacity: 1;
+    pointer-events: none;
+  }
   .g1-bento { gap: 16px; }
   .g1-expert-grid { grid-auto-columns: 89.714%; }
   .g1-carousel { grid-auto-columns: 100%; }

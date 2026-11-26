@@ -97,7 +97,7 @@ const g1Copy = {
   },
   clear: {
     title: 'First of its kind obstacle clearing for the ultimate clean.',
-    body: "The ProLeap™ system elevates X50 Ultra 's ability to navigate your home like never before* by utilizing a wheeled robot design. It allows the robotic vacuum to traverse previously unpassable obstacles to take the next step in the future of automatic home cleaning.",
+    body: "The ProLeap™ system elevates X50 Ultra's ability to navigate your home like never before* by utilizing a wheeled robot design. It allows the robotic vacuum to traverse previously unpassable obstacles to take the next step in the future of automatic home cleaning.",
   },
   ledges: {
     title: 'Quietly Conquer Ledges and More',
@@ -115,8 +115,8 @@ const g1Copy = {
     body: 'Designed for endurance, the X50 Ultra’s Retractable Legs power through an impressive 30,000 cycles*, ensuring durability you can rely on. Tested for the long run, it’s made to tackle your cleaning tasks day after day. Plus, our complimentary warranty service* gives you extra peace of mind.',
     mapTitle: '360° Smart Mapping & Low-Profile Cleaning',
     tabs: [
-      { title: '360° Scanning', body: 'X50 Ultra ’s DToF system elevates its 360°* scanning sensor, creating a detailed, blind spot-free map for precise navigation without unnecessary spinning.' },
-      { title: 'Drops to 89mm', body: 'When the retractable DToF sensor lowers, X50 Ultra ’s height drops to 89mm*, facilitating its navigation under low furniture where other robot vacuums struggle. Using an ultra-powerful AI camera, it excels in cleaning narrow areas and avoiding obstacles, addressing dead spots that others miss.' },
+      { title: '360° Scanning', body: 'X50 Ultra’s DToF system elevates its 360°* scanning sensor, creating a detailed, blind spot-free map for precise navigation without unnecessary spinning.' },
+      { title: 'Drops to 89mm', body: 'When the retractable DToF sensor lowers, X50 Ultra’s height drops to 89mm*, facilitating its navigation under low furniture where other robot vacuums struggle. Using an ultra-powerful AI camera, it excels in cleaning narrow areas and avoiding obstacles, addressing dead spots that others miss.' },
     ],
   },
   avoid: {
