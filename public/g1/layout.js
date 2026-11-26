@@ -235,7 +235,9 @@ function g1Pros(assets) {
     article.append(g1MediaElement(assets[index * 2], '6-' + (index * 2)));
     const channel = g1Node('div', '', 'g1-expert-channel');
     channel.append(g1MediaElement(assets[index * 2 + 1], '6-' + (index * 2 + 1)), g1Node('h3', card.channel));
-    article.append(channel, g1Node('p', card.subs, 'g1-subs'), g1Node('p', card.quote));
+    const watch = g1Link(g1Copy.ui.watch, 'https://www.youtube.com/watch?v=' + ['Q8yIdW3uoTE', '39OtFmiLcsM', '9nuiowaPHzQ'][index]);
+    watch.className = 'g1-review-link';
+    article.append(channel, g1Node('p', card.subs, 'g1-subs'), g1Node('p', card.quote), watch);
     grid.append(article);
   });
   block.append(grid);
@@ -267,7 +269,65 @@ function g1HScroll(slides) {
   return root;
 }
 
+function g1Stat(value, label) {
+  const item = g1Node('p');
+  if (value) item.append(g1Node('strong', value));
+  if (label) item.append(g1Node('span', label));
+  return item;
+}
+
+function g1StoryFrame(title, bodyText, asset, mediaKey, extra) {
+  const frame = g1Node('article', '', 'g1-story-frame');
+  const stage = g1Node('div', '', 'g1-story__stage g1-bleed');
+  if (asset) stage.append(g1MediaElement(asset, mediaKey));
+  if (title) {
+    const copy = g1Node('div', '', 'g1-story__copy');
+    copy.append(g1Node('h2', title));
+    stage.append(copy);
+  }
+  frame.append(stage);
+  if (bodyText) frame.append(g1Node('p', bodyText, 'g1-story__body'));
+  if (extra) frame.append(extra);
+  return frame;
+}
+
+function g1MarkCell(value) {
+  if (value === '✓') return g1Node('span', '✓', 'g1-tick');
+  if (value === '×' || value === 'x' || value === 'X') return g1Node('span', '×', 'g1-cross');
+  return value;
+}
+
+function g1PackCaption(caption) {
+  const raw = caption.textContent.replace(/ · enlarged view$/, '');
+  const match = raw.match(/^(.*)\s+(x\d+)$/i);
+  caption.replaceChildren();
+  if (match) caption.append(g1Node('span', match[1], 'g1-pack-name'), g1Node('span', match[2], 'g1-pack-qty'));
+  else caption.append(g1Node('span', raw, 'g1-pack-name'));
+}
+
+function g1Warning() {
+  const banner = g1Node('aside', '', 'g3 g1-warning');
+  banner.id = 'g1-p65';
+  const line = g1Node('p', '', 'g3-wrap');
+  const link = g1Link(g1Copy.warning.link, 'https://www.p65warnings.ca.gov/');
+  line.append(g1Node('strong', g1Copy.warning.lead), g1Node('span', ' ' + g1Copy.warning.body + ' '), link, g1Node('span', '.'));
+  banner.append(line);
+  return banner;
+}
+
 function g1RenderSection(key, body, assets) {
+  if (key === 4) {
+    const scene = g1Node('div', '', 'g3-hero__scene');
+    if (assets[0]) scene.append(g1MediaElement(assets[0], '4-0'));
+    const copy = g1Node('div', '', 'g3-wrap g3-hero__copy');
+    copy.append(g1Node('h2', g1Copy.hero[0]));
+    const subtitle = g1Node('p');
+    subtitle.append(g1Node('span', g1Copy.hero[1]), document.createTextNode(' '), g1Node('span', g1Copy.hero[2]));
+    copy.append(subtitle);
+    scene.append(copy);
+    body.append(scene);
+    return;
+  }
   if (key === 5) {
     body.append(g1Highlights(assets));
     return;
@@ -281,10 +341,7 @@ function g1RenderSection(key, body, assets) {
     return;
   }
   if (key === 8) {
-    body.append(
-      g1Step(1, g1Copy.clear.title, '', g1Portrait(assets[0], '8-0')),
-      g1Step(2, '', g1Copy.clear.body),
-    );
+    body.append(g1StoryFrame(g1Copy.clear.title, g1Copy.clear.body, assets[0], '8-0'));
     return;
   }
   if (key === 9) {
@@ -304,10 +361,22 @@ function g1RenderSection(key, body, assets) {
     g1Copy.versus.forEach((card, index) => {
       const article = g1Node('article');
       article.append(g1Node('h3', card.title));
-      article.append(g1MediaElement(assets[index + 2], '10-' + (index + 2)));
-      article.append(g1MediaElement(assets[index], '10-' + index));
-      const line = g1Node('p');
-      if (card.kicker) line.append(g1Node('span', card.kicker + ' '), g1Node('b', card.name));
+      const media = g1MediaElement(assets[index], '10-' + index);
+      const cover = assets[index + 2];
+      const video = media.querySelector('video');
+      if (video && cover) {
+        video.poster = cover.desktop.preview;
+        video.dataset.posterDesktop = cover.desktop.preview;
+        video.dataset.posterMobile = cover.mobile.preview;
+      }
+      article.append(media);
+      if (cover) {
+        const details = g1Node('details', '', 'g1-video-cover');
+        details.append(g1Node('summary', 'Video cover'), g1MediaElement(cover, '10-' + (index + 2)));
+        article.append(details);
+      }
+      const line = g1Node('p', '', 'g1-versus-name');
+      if (card.kicker) line.append(g1Node('span', card.kicker), document.createTextNode(' '), g1Node('b', card.name));
       else line.append(g1Node('b', card.name));
       article.append(line, g1Node('p', card.body));
       pair.append(article);
@@ -327,25 +396,16 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 12) {
     const copy = g1Copy.avoid;
-    const first = g1Step(1, copy.obstacles.title, copy.obstacles.body, g1MediaElement(assets[0], '12-0'));
-    const stat = g1Node('p', '', 'g1-statline');
-    stat.append(g1Node('strong', copy.obstacles.stat), g1Node('span', copy.obstacles.statLabel));
-    first.append(stat);
-    const hair = g1Step(5, copy.hair.title, copy.hair.body, g1MediaElement(assets[4], '12-4'));
-    const stats = g1Node('div', '', 'g1-statrow');
-    for (const [value, label] of copy.hair.stats) {
-      const item = g1Node('p');
-      if (value) item.append(g1Node('strong', value));
-      item.append(g1Node('span', label));
-      stats.append(item);
-    }
-    hair.append(stats);
+    const obstacleStat = g1Node('div', '', 'g1-statrow g1-story__stats');
+    obstacleStat.append(g1Stat(copy.obstacles.stat, copy.obstacles.statLabel));
+    const hairStats = g1Node('div', '', 'g1-statrow g1-story__stats');
+    for (const [value, label] of copy.hair.stats) hairStats.append(g1Stat(value, label));
     body.append(
-      first,
-      g1Step(2, copy.light.title, copy.light.body, g1MediaElement(assets[1], '12-1')),
-      g1Step(3, copy.peace.title, '', g1Portrait(assets[2], '12-2')),
-      g1Step(4, copy.turbo.title, copy.turbo.body, g1MediaElement(assets[3], '12-3')),
-      hair,
+      g1StoryFrame(copy.obstacles.title, copy.obstacles.body, assets[0], '12-0', obstacleStat),
+      g1StoryFrame(copy.light.title, copy.light.body, assets[1], '12-1'),
+      g1StoryFrame(copy.peace.title, '', assets[2], '12-2'),
+      g1StoryFrame(copy.turbo.title, copy.turbo.body, assets[3], '12-3'),
+      g1StoryFrame(copy.hair.title, copy.hair.body, assets[4], '12-4', hairStats),
     );
     return;
   }
@@ -355,17 +415,16 @@ function g1RenderSection(key, body, assets) {
     return;
   }
   if (key === 14) {
-    const copy = g1Copy.reach;
-    body.append(g1MediaElement(assets[0], '14-0'));
-    const stats = g1Node('div', '', 'g1-statrow g1-statrow--four');
-    for (const [value, label] of copy.stats) {
-      const item = g1Node('p');
-      item.append(g1Node('strong', value), g1Node('span', label));
-      stats.append(item);
-    }
-    body.append(stats);
-    body.append(g1Node('h2', copy.title, 'g3-group-heading'), g1Node('p', copy.body));
-    body.append(g1Node('h2', copy.corners, 'g3-group-heading'), g1Node('p', copy.cornersBody));
+    const reach = g1Copy.reach;
+    const layout = g1Node('div', '', 'g1-side-reach g1-bleed');
+    if (assets[0]) layout.append(g1MediaElement(assets[0], '14-0'));
+    const copy = g1Node('div');
+    copy.append(g1Node('h2', reach.title), g1Node('p', reach.body));
+    const stats = g1Node('dl', '', 'g1-sidereach-stats');
+    for (const [value, label] of reach.stats) stats.append(g1Node('dt', label), g1Node('dd', value));
+    layout.append(copy, stats);
+    body.append(layout);
+    body.append(g1Node('h2', reach.corners, 'g3-group-heading'), g1Node('p', reach.cornersBody, 'g1-story__body'));
     return;
   }
   if (key === 15) {
@@ -380,12 +439,12 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 16) {
     const copy = g1Copy.dock;
-    const cover = g1Step(1, copy.overlay, '', g1MediaElement(assets[0], '16-0'));
-    const video = g1Step(2, copy.title, copy.body, g1MediaElement(assets[1], '16-1'));
-    const stat = g1Node('p', '', 'g1-statline');
-    stat.append(g1Node('span', copy.statLabel), g1Node('strong', copy.stat));
-    video.append(stat);
-    body.append(cover, video);
+    const stat = g1Node('div', '', 'g1-statrow g1-story__stats');
+    stat.append(g1Stat(copy.stat, copy.statLabel));
+    body.append(
+      g1StoryFrame(copy.overlay, '', assets[0], '16-0'),
+      g1StoryFrame(copy.title, copy.body, assets[1], '16-1', stat),
+    );
     return;
   }
   if (key === 17) {
@@ -408,8 +467,10 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 19) {
     const copy = g1Copy.carpetApp;
-    const first = g1Step(1, copy.overlay, copy.line, g1MediaElement(assets[0], '19-0'));
-    body.append(first, g1Step(2, copy.title, copy.body, g1MediaElement(assets[1], '19-1')));
+    body.append(
+      g1StoryFrame(copy.overlay, copy.line, assets[0], '19-0'),
+      g1StoryFrame(copy.title, copy.body, assets[1], '19-1'),
+    );
     return;
   }
   if (key === 20) {
@@ -482,9 +543,11 @@ function g1RenderSection(key, body, assets) {
       if (index >= 4) figure.classList.add('g1-pack-past-mobile');
       if (index >= 9) figure.classList.add('g1-pack-past-desktop');
     });
+    layout.querySelectorAll('figcaption').forEach(g1PackCaption);
     const more = g1Node('button', '', 'g1-pack-more');
     more.type = 'button';
     more.dataset.g1PackMore = '';
+    more.setAttribute('aria-expanded', 'false');
     const moreLabel = g1Node('span', g1Copy.box.more);
     const lessLabel = g1Node('span', g1Copy.box.less);
     lessLabel.hidden = true;
@@ -504,7 +567,7 @@ function g1RenderSection(key, body, assets) {
     ]) {
       const group = g1Node('section');
       group.append(g1Node('h3', title));
-      const list = g1Node('dl');
+      const list = g1Node('dl', '', 'g3-spec-table');
       for (const [label, value] of lines) {
         list.append(g1Node('dt', label), g1Node('dd', value));
       }
@@ -513,11 +576,15 @@ function g1RenderSection(key, body, assets) {
     }
     body.append(groups);
     body.append(g1Node('h2', copy.compareTitle, 'g3-group-heading'));
-    const head = g1Node('div', '', 'g1-compare-head');
-    if (assets[1]) head.append(g1MediaElement(assets[1], '25-1'));
-    head.append(g1Node('span', copy.newBadge, 'g1-new'), g1Node('strong', 'X50 Ultra'), g1Node('strong', 'X40 Ultra'));
-    body.append(head);
-    body.append(g1DetailTable(['', 'X50 Ultra', 'X40 Ultra'], copy.rows));
+    const table = g1DetailTable(['', 'X50 Ultra', 'X40 Ultra'], copy.rows.map(row => row.map((cell, index) => index ? g1MarkCell(cell) : cell)));
+    table.className = 'g1-compare-table';
+    const head = table.tHead.rows[0];
+    if (assets[1]) head.cells[0].append(g1MediaElement(assets[1], '25-1'));
+    ['X50 Ultra', 'X40 Ultra'].forEach((name, index) => {
+      const cell = head.cells[index + 1];
+      cell.replaceChildren(g1Node('span', copy.newBadge, 'g1-new'), g1Node('strong', name));
+    });
+    body.append(table);
     const remarks = g1Node('section', '', 'g1-remarks');
     remarks.append(g1Node('h2', copy.remarksTitle));
     for (const line of copy.remarks) remarks.append(g1Node('p', line));
@@ -529,7 +596,6 @@ function g1RenderSection(key, body, assets) {
     const faq = g1Node('div', '', 'g3-faq');
     g1Copy.faq.items.forEach((item, index) => {
       const details = g1Node('details');
-      details.open = true;
       details.append(g1Node('summary', item[0]), g1Node('p', item[1]));
       if (index === 4) {
         const temps = g1Node('ul');
@@ -547,9 +613,14 @@ function g1RenderSection(key, body, assets) {
     const summary = g1Node('div', '', 'g1-reviews__summary');
     summary.append(g1Node('strong', copy.average), g1Node('p', copy.based));
     const histogram = g1Node('div', '', 'g1-histogram');
+    const highest = Math.max(...copy.histogram.map(row => Number(row[1]))) || 1;
     for (const [star, count] of copy.histogram) {
       const row = g1Node('p');
-      row.append(g1Node('span', star), g1Node('span', count));
+      const bar = g1Node('span', '', 'g1-hist-bar');
+      const fill = g1Node('i');
+      fill.style.width = (Number(count) / highest * 100) + '%';
+      bar.append(fill);
+      row.append(g1Node('span', star), bar, g1Node('span', count));
       histogram.append(row);
     }
     summary.append(histogram);
