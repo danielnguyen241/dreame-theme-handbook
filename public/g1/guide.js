@@ -52,14 +52,23 @@ function g1MediaElement(asset, key) {
   const { desktop, mobile } = asset;
   if (asset.type === 'Video') {
     const video = g1Node('video');
-    video.controls = true;
     video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.autoplay = true;
     video.playsInline = true;
-    video.preload = 'none';
+    video.preload = 'metadata';
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
     video.setAttribute('aria-label', asset.label);
     video.dataset.g3Video = '';
     video.dataset.desktop = desktop.url;
     video.dataset.mobile = mobile.url;
+    video.src = desktop.url;
+    if (desktop.size.length) {
+      video.width = desktop.size[0];
+      video.height = desktop.size[1];
+    }
     slot.classList.add('g1-video');
     slot.append(video);
   } else {
@@ -85,6 +94,7 @@ function g1MediaElement(asset, key) {
     if (source.usFrame) slot.style.setProperty('--g1-us-' + device + '-ratio', source.usFrame.join('/'));
   }
   if (asset.role === 'Desktop feature art') slot.classList.add('g1-desktop-art');
+  if (/logo|icon/i.test(asset.role || '')) slot.classList.add('g1-mark');
   for (const [device, width] of [['desktop', 1440], ['mobile', 390]]) {
     if (asset[device].usFrame?.[0] === width) slot.classList.add('g1-full-' + device);
   }
@@ -438,11 +448,18 @@ function g1BuildPreview() {
     const assets = g1Media[key] ?? [];
     const block = g1Node('section', '', 'g3 g3-section g1-block');
     block.id = section.id.toLowerCase();
-    if ([1, 21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
+    if (key === 4) {
+      block.className = 'g3 g3-hero g1-block';
+      g1RenderSection(key, block, assets);
+      g1Stage.append(block);
+      continue;
+    }
+    if ([21, 22, 23, 24, 25, 26, 27].includes(key)) block.classList.add('g3-light-panel');
     const body = g1Node('div', '', 'g3-wrap g1-block__inner');
-    g1UsLayout(key, body, assets);
+    g1RenderSection(key, body, assets);
     block.append(body);
     g1Stage.append(block);
+    if (key === 25) g1Stage.append(g1Warning());
   }
 }
 

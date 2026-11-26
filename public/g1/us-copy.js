@@ -217,6 +217,11 @@ const g1Copy = {
     },
   },
   box: { title: "What's in the box", more: 'Learn More', less: 'Show less' },
+  warning: {
+    lead: 'CA WARNING:',
+    body: 'Risk of cancer and reproductive harm from exposure to Pb. See',
+    link: 'www.P65Warnings.ca.gov',
+  },
   specs: {
     title: 'Specifications',
     robot: 'Robot Vacuum',
