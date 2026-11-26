@@ -94,6 +94,7 @@ function g1MediaElement(asset, key) {
     if (source.usFrame) slot.style.setProperty('--g1-us-' + device + '-ratio', source.usFrame.join('/'));
   }
   if (asset.role === 'Desktop feature art') slot.classList.add('g1-desktop-art');
+  if (/logo|icon/i.test(asset.role || '')) slot.classList.add('g1-mark');
   for (const [device, width] of [['desktop', 1440], ['mobile', 390]]) {
     if (asset[device].usFrame?.[0] === width) slot.classList.add('g1-full-' + device);
   }

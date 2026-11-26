@@ -227,20 +227,39 @@ function g1Highlights(assets) {
 }
 
 function g1Pros(assets) {
-  const block = g1Node('div');
+  const block = g1Node('div', '', 'g1-pros');
   block.append(g1Node('h2', g1Copy.pros.title, 'g3-group-heading'));
   const grid = g1Node('div', '', 'g1-expert-grid');
+  const videos = ['Q8yIdW3uoTE', '39OtFmiLcsM', '9nuiowaPHzQ'];
   g1Copy.pros.cards.forEach((card, index) => {
     const article = g1Node('article', '', 'g1-expert-card');
-    article.append(g1MediaElement(assets[index * 2], '6-' + (index * 2)));
+    const frame = g1Node('div', '', 'g1-expert-thumb');
+    frame.append(g1MediaElement(assets[index * 2], '6-' + (index * 2)));
+    const play = g1Link('', 'https://www.youtube.com/watch?v=' + videos[index]);
+    play.className = 'g1-play';
+    play.setAttribute('aria-label', g1Copy.ui.watch);
+    play.append(g1Node('span', '▶', 'g1-play__icon'));
+    frame.append(play);
     const channel = g1Node('div', '', 'g1-expert-channel');
-    channel.append(g1MediaElement(assets[index * 2 + 1], '6-' + (index * 2 + 1)), g1Node('h3', card.channel));
-    const watch = g1Link(g1Copy.ui.watch, 'https://www.youtube.com/watch?v=' + ['Q8yIdW3uoTE', '39OtFmiLcsM', '9nuiowaPHzQ'][index]);
-    watch.className = 'g1-review-link';
-    article.append(channel, g1Node('p', card.subs, 'g1-subs'), g1Node('p', card.quote), watch);
+    const logo = g1MediaElement(assets[index * 2 + 1], '6-' + (index * 2 + 1));
+    logo.classList.add('g1-mark');
+    const meta = g1Node('div', '', 'g1-expert-meta');
+    meta.append(g1Node('h3', card.channel), g1Node('p', card.subs, 'g1-subs'));
+    channel.append(logo, meta);
+    article.append(frame, channel, g1Node('p', card.quote, 'g1-expert-quote'));
     grid.append(article);
   });
-  block.append(grid);
+  const wrap = g1Node('div', '', 'g1-expert-scroll');
+  const controls = g1Node('div', '', 'g3-controls');
+  for (const [dir, label] of [[-1, 'Previous review'], [1, 'Next review']]) {
+    const button = g1Node('button', dir < 0 ? '‹' : '›');
+    button.type = 'button';
+    button.dataset.g1ExpertDir = String(dir);
+    button.setAttribute('aria-label', label);
+    controls.append(button);
+  }
+  wrap.append(grid, controls);
+  block.append(wrap);
   return block;
 }
 
@@ -493,12 +512,37 @@ function g1RenderSection(key, body, assets) {
     return;
   }
   if (key === 22) {
-    const slides = g1Copy.slides.items.map((item, index) => {
-      const slide = g1Node('article', '', 'g1-hslide');
-      slide.append(g1MediaElement(assets[index], '22-' + index), g1Node('h3', item.title), g1Node('p', item.body));
-      return slide;
+    const group = g1Node('div', '', 'g3-switcher g1-switcher g1-tabs-below g1-split-tabs');
+    group.dataset.g3Switcher = '';
+    const tabs = g1Node('div', '', 'g3-switcher__tabs');
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', 'Cleaning features');
+    const panels = g1Node('div', '', 'g3-switcher__panels');
+    g1Copy.slides.items.forEach((item, index) => {
+      const id = 'g1-tab-22-' + index;
+      const button = g1Node('button', item.title);
+      button.type = 'button';
+      button.id = id;
+      button.dataset.g3Tab = '';
+      button.setAttribute('role', 'tab');
+      button.setAttribute('aria-selected', String(index === 0));
+      button.setAttribute('aria-controls', id + '-panel');
+      button.tabIndex = index === 0 ? 0 : -1;
+      const panel = g1Node('div');
+      panel.id = id + '-panel';
+      panel.dataset.g3Panel = '';
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', id);
+      panel.hidden = index !== 0;
+      const head = g1Node('div', '', 'g1-split');
+      head.append(g1Node('h3', item.title), g1Node('p', item.body));
+      panel.append(head);
+      if (assets[index]) panel.append(g1MediaElement(assets[index], '22-' + index));
+      tabs.append(button);
+      panels.append(panel);
     });
-    body.append(g1HScroll(slides));
+    group.append(tabs, panels);
+    body.append(group);
     const matter = g1Node('div', '', 'g1-matter');
     matter.append(g1Node('h2', g1Copy.slides.matter.title, 'g3-group-heading'), g1Node('p', g1Copy.slides.matter.body));
     if (assets[3]) matter.append(g1MediaElement(assets[3], '22-3'));
@@ -714,6 +758,19 @@ function g1MountExtra(root) {
       const index = [...group.querySelectorAll('[data-g3-tab]')].indexOf(tab);
       group.querySelectorAll('.g1-tab-copies p').forEach((copy, copyIndex) => {
         copy.hidden = copyIndex !== index;
+      });
+    });
+  });
+  root.querySelectorAll('.g1-expert-scroll').forEach(wrap => {
+    const track = wrap.querySelector('.g1-expert-grid');
+    wrap.addEventListener('click', event => {
+      const button = event.target.closest('[data-g1-expert-dir]');
+      if (!button || !track) return;
+      const card = track.querySelector('.g1-expert-card');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 20;
+      track.scrollBy({
+        left: Number(button.dataset.g1ExpertDir) * (card.offsetWidth + gap),
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
       });
     });
   });
