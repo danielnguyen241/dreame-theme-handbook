@@ -1041,6 +1041,8 @@ button.g1-bundle { width: 100%; border: 1px solid transparent; color: inherit; f
 .g1-bundle[aria-pressed="true"] { border-color: #211e1b; background: #fff; }
 .g1-bundle__meta { display: grid; gap: 3px; min-width: 0; }
 .g1-bundle__meta small { color: #555; font-size: 12px; }
+.g1-bundle__price { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.g1-bundle .g1-buy__off { justify-self: start; width: fit-content; }
 .g1-buy__label { margin: 18px 0 8px; font-size: 16px; }
 .g1-ref-note { margin-bottom: 10px; padding: 8px 10px; border-inline-start: 3px solid #9b7648; background: #faf3e7; color: #5c4a32; font-size: 13px; }
 .g1-gift { display: grid; grid-template-columns: 64px 1fr; gap: 8px 12px; align-items: center; }

@@ -90,7 +90,9 @@ function g1BuyColumn() {
     card.setAttribute('aria-pressed', String(index === 0));
     card.append(g1Img(bundle.image, bundle.title, 100, 100));
     const meta = g1Node('span', '', 'g1-bundle__meta');
-    meta.append(g1Node('strong', bundle.title), g1Node('span', bundle.price + ' '), g1Node('s', bundle.compare), g1Node('span', bundle.badge, 'g1-buy__off'));
+    const priceLine = g1Node('span', '', 'g1-bundle__price');
+    priceLine.append(g1Node('span', bundle.price), g1Node('s', bundle.compare), g1Node('span', bundle.badge, 'g1-buy__off'));
+    meta.append(g1Node('strong', bundle.title), priceLine);
     if (bundle.text) meta.append(g1Node('small', bundle.text));
     card.append(meta);
     bundles.append(card);
