@@ -1,17 +1,17 @@
 'use strict';
 
 const handbookLanguage = (() => {
-  const storageKey = 'dreame-handbook-language';
   const initialUrl = new URL(location.href);
   const requested = initialUrl.searchParams.get('lang');
   const supported = (language) => language === 'vi' || language === 'en';
-  let saved;
+  // A fresh visit with no ?lang=vi is English. The toggle writes ?lang; nothing is saved,
+  // and the browser language is not consulted.
   try {
-    saved = localStorage.getItem(storageKey);
+    localStorage.removeItem('dreame-handbook-language');
   } catch {
-    // A language in the URL also works with browser storage disabled.
+    // Storage can be disabled. The page still follows the URL.
   }
-  let language = supported(requested) ? requested : supported(saved) ? saved : 'en';
+  let language = requested === 'vi' ? 'vi' : 'en';
   document.documentElement.lang = language;
 
   const textSources = new WeakMap();
@@ -77,17 +77,11 @@ const handbookLanguage = (() => {
     }
   }
 
-  function save(next, share) {
-    try {
-      localStorage.setItem(storageKey, next);
-    } catch {
-      // The switch and share links still work without storage.
-    }
-    if (share) {
-      const url = new URL(location.href);
-      url.searchParams.set('lang', next);
-      history.replaceState(history.state, '', url);
-    }
+  function share(next) {
+    const url = new URL(location.href);
+    if (next === 'vi') url.searchParams.set('lang', 'vi');
+    else url.searchParams.delete('lang');
+    history.replaceState(history.state, '', url);
   }
 
   function set(next) {
@@ -110,13 +104,12 @@ const handbookLanguage = (() => {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (supported(requested) && initialUrl.searchParams.get('embed') !== '1') save(requested, false);
     set(language);
     for (const button of document.querySelectorAll('[data-hb-language]')) {
       button.addEventListener('click', () => {
         const next = button.dataset.hbLanguage;
         if (next === language) return;
-        save(next, true);
+        share(next);
         set(next);
       });
     }

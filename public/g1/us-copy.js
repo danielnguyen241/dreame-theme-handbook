@@ -62,7 +62,7 @@ const g1Copy = {
     stickyCart: 'Add to Cart',
     firework: 'Firework UGC',
     fireworkNote: 'Row video carousel. Firework embed channel dreame, playlist oBWQrR, mode row. Clip files load from Firework and were not in the page HTML.',
-    promoNote: 'Prices, bundles, Affirm dates and gifts were on the live US page on 2026-11-25 and can change.',
+    promoNote: 'US reference. Prices, bundles, Affirm dates and gifts were on the live US page on 2026-11-25 and can change.',
   },
   hero: ['Dreame X50 Ultra', 'Rise up,', 'clean beneath'],
   highlights: [
@@ -124,7 +124,7 @@ const g1Copy = {
     light: { title: 'Light the Way', body: 'Built-in LED lights guide X50 Ultra , enabling early detection of obstacles and disruptions. These start in dim environments, such as rainy days, nights, and low dark places, to assist navigation and obstacle avoidance.' },
     peace: { title: 'Enjoy a Peaceful, Tangle-Free Clean' },
     turbo: { title: 'Take Advantage of TurboForce 20,000Pa', body: 'X50 Ultra kicks cleaning up a notch with its high-powered suction up to 20,000Pa that practically inhales dirt. No mess stands a chance—whether hidden in deep carpet fibers, trapped between tiles, or sitting on sleek marble floors. With five cleaning modes, you get the right power punch for every surface, leaving barely a speck behind.' },
-    hair: { title: 'Anti-Tangle Hair Like Never Before', body: 'HyperStream™ Detangling DuoBrush delivers 100% anti-entanglement*, expertly managing hair up to 30cm* long without tangles. Its unique air duct design lifts hair while ensuring a smooth, continuous clean. Compared to a single brush, two brushes double the cleaning power* and are suitable for cleaning in different scenarios, such as floors and carpets. This innovative design enhances cleaning efficiency and keeps noise levels low, leaving your spaces immaculate.', stats: [['100%', 'Large Particle Pickup'], ['0%', 'Tangled Hair'], ['', 'Hair Pickup']] },
+    hair: { title: 'Anti-Tangle Hair Like Never Before', body: 'HyperStream™ Detangling DuoBrush delivers 100% anti-entanglement*, expertly managing hair up to 30cm* long without tangles. Its unique air duct design lifts hair while ensuring a smooth, continuous clean. Compared to a single brush, two brushes double the cleaning power* and are suitable for cleaning in different scenarios, such as floors and carpets. This innovative design enhances cleaning efficiency and keeps noise levels low, leaving your spaces immaculate.', stats: [['100%', 'Large Particle Pickup'], ['0%', 'Tangled Hair'], ['100%', 'Hair Pickup']] },
   },
   brushes: {
     title: 'Double the Brushes, Double the Results',

@@ -70,30 +70,63 @@ function g1Dots(count) {
 
 function g1BuyColumn() {
   const buy = g1Copy.buy;
-  const column = g1Node('div', '', 'g1-buy-images');
-  const bundles = g1Node('div', '', 'g1-us-bundles');
-  for (const bundle of buy.bundles) bundles.append(g1Img(bundle.image, '', 100, 100));
+  const column = g1Node('div', '', 'g1-buy');
+  column.append(g1Node('p', buy.promoNote, 'g1-ref-note'));
+  column.append(g1Node('h1', buy.title));
+  column.append(g1Node('p', buy.rating, 'g1-buy__rating'));
+  const price = g1Node('p', '', 'g1-buy__price');
+  price.append(g1Node('span', buy.price), g1Node('s', buy.compare), g1Node('span', buy.off, 'g1-buy__off'));
+  column.append(price);
+  column.append(g1Node('p', buy.affirm, 'g1-buy__affirm'));
+  const bullets = g1Node('ul', '', 'g1-buy__bullets');
+  for (const line of buy.bullets) bullets.append(g1Node('li', line));
+  column.append(bullets);
+  column.append(g1Node('h2', buy.option, 'g1-buy__label'));
+  const bundles = g1Node('div', '', 'g1-bundles');
+  buy.bundles.forEach((bundle, index) => {
+    const card = g1Node('button', '', 'g1-bundle');
+    card.type = 'button';
+    card.dataset.g1Bundle = String(index);
+    card.setAttribute('aria-pressed', String(index === 0));
+    card.append(g1Img(bundle.image, bundle.title, 100, 100));
+    const meta = g1Node('span', '', 'g1-bundle__meta');
+    meta.append(g1Node('strong', bundle.title), g1Node('span', bundle.price + ' '), g1Node('s', bundle.compare), g1Node('span', bundle.badge, 'g1-buy__off'));
+    if (bundle.text) meta.append(g1Node('small', bundle.text));
+    card.append(meta);
+    bundles.append(card);
+  });
   column.append(bundles);
-  const addons = g1Node('div', '', 'g1-us-addons');
-  for (const addon of buy.addons) addons.append(g1Img(addon.image, '', 38, 38));
+  column.append(g1Node('h2', buy.together, 'g1-buy__label'));
+  const addons = g1Node('div', '', 'g1-addons');
+  for (const addon of buy.addons) {
+    const card = g1Node('article');
+    card.append(g1Img(addon.image, addon.name, 38, 38), g1Node('h3', addon.name), g1Node('span', addon.price));
+    addons.append(card);
+  }
   column.append(addons);
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', '', 64, 64));
-  column.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/bf-26-2-product-flashsale-icon.webp?v=1794196414', '', 144, 23));
+  const gift = g1Node('div', '', 'g1-gift');
+  gift.append(g1Node('h2', buy.giftTitle, 'g1-buy__label'), g1Node('p', buy.giftMessage));
+  gift.append(g1Img('https://cdn.shopify.com/s/files/1/0553/1320/3405/files/Dreame_Gift_Card_30.webp?v=1794564399', buy.giftOpen.name, 64, 64));
+  gift.append(g1Node('p', buy.giftOpen.name + ' ' + buy.giftOpen.now));
+  column.append(gift);
+  const actions = g1Node('div', '', 'g1-buy__actions');
+  actions.append(g1Node('span', buy.addToCart, 'g1-btn g1-btn--solid'), g1Node('span', buy.buyNow, 'g1-btn'));
+  column.append(actions);
   const services = g1Node('ul', '', 'g1-services');
   for (const service of buy.services) {
     const item = g1Node('li');
-    item.append(g1Img(service.src, '', service.w, service.h));
+    item.append(g1Img(service.src, '', service.w, service.h), g1Node('span', service.label));
     services.append(item);
   }
   column.append(services);
+  column.append(g1Node('h2', buy.firework, 'g1-buy__label'));
   const firework = g1Node('div', '', 'g1-firework__row');
-  firework.dataset.g1Firework = '';
   const posters = [
     'https://cdn7.fireworktv.com/medias/2025/4/24/1745478904-prvqygnz/transcoded/240x400/X50Ultra.jpg.62.jpg',
     'https://cdn5.fireworktv.com/medias/2025/5/27/1748336641-zhiyptuj/transcoded/240x400/UnboxingthenewDreameX50Ultrawithlila_drila.jpg.62.jpg',
     'https://cdn4.fireworktv.com/medias/2025/7/30/1753860229-toupylrs/transcoded/240x400/X50Ultra.jpg.62.jpg',
   ];
-  for (const src of posters) firework.append(g1Img(src, '', 108, 168));
+  for (const src of posters) firework.append(g1Img(src, buy.firework, 108, 168));
   column.append(firework);
   return column;
 }
@@ -295,19 +328,52 @@ function g1Stat(value, label) {
   return item;
 }
 
-function g1StoryFrame(title, bodyText, asset, mediaKey, extra) {
-  const frame = g1Node('article', '', 'g1-story-frame');
-  const stage = g1Node('div', '', 'g1-story__stage g1-bleed');
-  if (asset) stage.append(g1MediaElement(asset, mediaKey));
-  if (title) {
-    const copy = g1Node('div', '', 'g1-story__copy');
-    copy.append(g1Node('h2', title));
-    stage.append(copy);
-  }
-  frame.append(stage);
-  if (bodyText) frame.append(g1Node('p', bodyText, 'g1-story__body'));
-  if (extra) frame.append(extra);
-  return frame;
+function g1PinStory(steps) {
+  const story = g1Node('div', '', 'g1-pin');
+  story.dataset.g1Pin = '';
+  story.style.setProperty('--g1-steps', String(Math.max(steps.length, 1)));
+  const stage = g1Node('div', '', 'g1-pin__stage');
+  const media = g1Node('div', '', 'g1-pin__media');
+  const copy = g1Node('div', '', 'g1-pin__copy');
+  steps.forEach((step, index) => {
+    if (step.asset) {
+      const frame = g1MediaElement(step.asset, step.mediaKey);
+      frame.classList.add('g1-pin__frame');
+      frame.dataset.g1Step = String(index);
+      frame.hidden = index !== 0;
+      media.append(frame);
+    }
+    const text = g1Node('div', '', 'g1-pin__step');
+    text.dataset.g1Step = String(index);
+    text.hidden = index !== 0;
+    if (step.title) text.append(g1Node('h2', step.title));
+    if (step.body) text.append(g1Node('p', step.body));
+    if (step.stats) {
+      const row = g1Node('div', '', 'g1-pin__stats');
+      for (const [value, label] of step.stats) row.append(g1Stat(value, label));
+      text.append(row);
+    }
+    copy.append(text);
+  });
+  stage.append(media, g1Node('div', '', 'g1-pin__mask'), copy);
+  story.append(stage);
+  return story;
+}
+
+function g1CoverCopy(asset, key, ...nodes) {
+  const wrap = g1Node('div', '', 'g1-cover-copy');
+  wrap.append(g1MediaElement(asset, key));
+  const text = g1Node('div', '', 'g1-cover-copy__text');
+  for (const node of nodes) text.append(node);
+  wrap.append(text);
+  return wrap;
+}
+
+function g1FeatureMedia(asset, key, chip) {
+  const wrap = g1Node('div', '', 'g1-feature');
+  wrap.append(g1MediaElement(asset, key));
+  if (chip) wrap.append(chip);
+  return wrap;
 }
 
 function g1MarkCell(value) {
@@ -360,7 +426,10 @@ function g1RenderSection(key, body, assets) {
     return;
   }
   if (key === 8) {
-    body.append(g1StoryFrame(g1Copy.clear.title, g1Copy.clear.body, assets[0], '8-0'));
+    body.append(g1PinStory([
+      { title: g1Copy.clear.title, asset: assets[0], mediaKey: '8-0' },
+      { body: g1Copy.clear.body },
+    ]));
     return;
   }
   if (key === 9) {
@@ -378,26 +447,26 @@ function g1RenderSection(key, body, assets) {
   if (key === 10) {
     const pair = g1Node('div', '', 'g1-compare-pair');
     g1Copy.versus.forEach((card, index) => {
-      const article = g1Node('article');
-      article.append(g1Node('h3', card.title));
+      const article = g1Node('article', '', 'g1-versus');
+      const frame = g1Node('div', '', 'g1-versus__frame');
       const media = g1MediaElement(assets[index], '10-' + index);
       const cover = assets[index + 2];
       const video = media.querySelector('video');
-      if (video && cover) {
+      if (cover && video) {
         video.poster = cover.desktop.preview;
         video.dataset.posterDesktop = cover.desktop.preview;
         video.dataset.posterMobile = cover.mobile.preview;
       }
-      article.append(media);
+      frame.append(media);
       if (cover) {
-        const details = g1Node('details', '', 'g1-video-cover');
-        details.append(g1Node('summary', 'Video cover'), g1MediaElement(cover, '10-' + (index + 2)));
-        article.append(details);
+        const poster = g1MediaElement(cover, '10-' + (index + 2));
+        poster.classList.add('g1-versus__poster');
+        frame.append(poster);
       }
-      const line = g1Node('p', '', 'g1-versus-name');
-      if (card.kicker) line.append(g1Node('span', card.kicker), document.createTextNode(' '), g1Node('b', card.name));
-      else line.append(g1Node('b', card.name));
-      article.append(line, g1Node('p', card.body));
+      const badge = g1Node('p', '', 'g1-versus__badge');
+      badge.append(g1Node('span', card.kicker || 'with'), g1Node('b', card.name));
+      frame.append(badge);
+      article.append(frame, g1Node('p', card.body, 'g1-versus__caption'));
       pair.append(article);
     });
     body.append(pair);
@@ -415,16 +484,24 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 12) {
     const copy = g1Copy.avoid;
-    const obstacleStat = g1Node('div', '', 'g1-statrow g1-story__stats');
-    obstacleStat.append(g1Stat(copy.obstacles.stat, copy.obstacles.statLabel));
-    const hairStats = g1Node('div', '', 'g1-statrow g1-story__stats');
+    const intro = g1Node('div', '', 'g1-twotext');
+    const head = g1Node('div', '', 'g1-twotext__head');
+    head.append(g1Node('h2', copy.obstacles.title), g1Node('p', copy.obstacles.body, 'g1-twotext__desk'));
+    const chip = g1Node('p', '', 'g1-stat-chip');
+    chip.append(g1Node('strong', copy.obstacles.stat), g1Node('span', copy.obstacles.statLabel));
+    intro.append(head, g1FeatureMedia(assets[0], '12-0', chip), g1Node('p', copy.obstacles.body, 'g1-twotext__mob'));
+    const light = g1CoverCopy(assets[1], '12-1', g1Node('h2', copy.light.title), g1Node('p', copy.light.body));
+    const turbo = g1CoverCopy(assets[3], '12-3', g1Node('h2', copy.turbo.title), g1Node('p', copy.turbo.body));
+    const hairStats = g1Node('div', '', 'g1-hair-stats');
     for (const [value, label] of copy.hair.stats) hairStats.append(g1Stat(value, label));
+    const hair = g1Node('div', '', 'g1-hair');
+    hair.append(g1Node('h2', copy.hair.title), g1FeatureMedia(assets[4], '12-4', hairStats), g1Node('p', copy.hair.body));
     body.append(
-      g1StoryFrame(copy.obstacles.title, copy.obstacles.body, assets[0], '12-0', obstacleStat),
-      g1StoryFrame(copy.light.title, copy.light.body, assets[1], '12-1'),
-      g1StoryFrame(copy.peace.title, '', assets[2], '12-2'),
-      g1StoryFrame(copy.turbo.title, copy.turbo.body, assets[3], '12-3'),
-      g1StoryFrame(copy.hair.title, copy.hair.body, assets[4], '12-4', hairStats),
+      intro,
+      light,
+      g1PinStory([{ title: copy.peace.title, asset: assets[2], mediaKey: '12-2' }]),
+      turbo,
+      hair,
     );
     return;
   }
@@ -458,12 +535,13 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 16) {
     const copy = g1Copy.dock;
-    const stat = g1Node('div', '', 'g1-statrow g1-story__stats');
-    stat.append(g1Stat(copy.stat, copy.statLabel));
-    body.append(
-      g1StoryFrame(copy.overlay, '', assets[0], '16-0'),
-      g1StoryFrame(copy.title, copy.body, assets[1], '16-1', stat),
-    );
+    const chip = g1Node('p', '', 'g1-stat-chip');
+    chip.append(g1Node('span', copy.statLabel), g1Node('strong', copy.stat));
+    const follow = g1Node('div', '', 'g1-follow g1-follow--dark');
+    const inner = g1Node('div', '', 'g1-follow__inner');
+    inner.append(g1Node('h2', copy.title), g1Node('p', copy.body), g1FeatureMedia(assets[1], '16-1', chip));
+    follow.append(inner);
+    body.append(g1PinStory([{ title: copy.overlay, asset: assets[0], mediaKey: '16-0' }]), follow);
     return;
   }
   if (key === 17) {
@@ -486,9 +564,13 @@ function g1RenderSection(key, body, assets) {
   }
   if (key === 19) {
     const copy = g1Copy.carpetApp;
+    const follow = g1Node('div', '', 'g1-follow');
+    const inner = g1Node('div', '', 'g1-follow__inner');
+    inner.append(g1Node('h2', copy.title), g1Node('p', copy.body), g1FeatureMedia(assets[1], '19-1'));
+    follow.append(inner);
     body.append(
-      g1StoryFrame(copy.overlay, copy.line, assets[0], '19-0'),
-      g1StoryFrame(copy.title, copy.body, assets[1], '19-1'),
+      g1PinStory([{ title: copy.overlay, body: copy.line, asset: assets[0], mediaKey: '19-0' }]),
+      follow,
     );
     return;
   }
@@ -758,6 +840,63 @@ function g1MountExtra(root) {
       const index = [...group.querySelectorAll('[data-g3-tab]')].indexOf(tab);
       group.querySelectorAll('.g1-tab-copies p').forEach((copy, copyIndex) => {
         copy.hidden = copyIndex !== index;
+      });
+    });
+  });
+  root.querySelectorAll('[data-g1-pin]').forEach(pin => {
+    const stage = pin.querySelector('.g1-pin__stage');
+    const mask = pin.querySelector('.g1-pin__mask');
+    const steps = [...pin.querySelectorAll('.g1-pin__step')];
+    const frames = [...pin.querySelectorAll('.g1-pin__frame')];
+    let current = -1;
+    const show = (index, progress) => {
+      if (index !== current) {
+        current = index;
+        steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== index; });
+        let frameIndex = 0;
+        frames.forEach((frame, position) => {
+          if (Number(frame.dataset.g1Step) <= index) frameIndex = position;
+        });
+        frames.forEach((frame, position) => {
+          const active = position === frameIndex;
+          frame.hidden = !active;
+          const video = frame.querySelector('video');
+          if (!video) return;
+          if (active) video.play().catch(() => {});
+          else video.pause();
+        });
+      }
+      const active = steps[index];
+      if (active) active.style.opacity = steps.length === 1 ? String(0.2 + progress * 0.8) : '1';
+      if (mask) mask.style.transform = 'translateY(' + ((1 - progress) * 100) + '%)';
+    };
+    const update = () => {
+      const top = stage.getBoundingClientRect().top;
+      const pinTop = pin.getBoundingClientRect().top;
+      const travel = Math.max(pin.offsetHeight - stage.offsetHeight, 1);
+      const progress = Math.min(1, Math.max(0, (top - pinTop) / travel));
+      show(Math.min(steps.length - 1, Math.floor(progress * steps.length * 0.999)), progress);
+    };
+    pin._g1Update = update;
+    update();
+  });
+  const pinView = root.ownerDocument.defaultView;
+  if (pinView && !pinView.__g1PinBound) {
+    pinView.__g1PinBound = true;
+    const onScroll = () => pinView.document.querySelectorAll('[data-g1-pin]').forEach(pin => pin._g1Update?.());
+    pinView.addEventListener('scroll', onScroll, { passive: true });
+    pinView.addEventListener('resize', onScroll);
+  }
+  root.querySelectorAll('.g1-versus video').forEach(video => {
+    const frame = video.closest('.g1-versus__frame');
+    const reveal = () => frame?.classList.add('is-playing');
+    video.addEventListener('playing', reveal);
+    if (video.readyState >= 2 && !video.paused) reveal();
+  });
+  root.querySelectorAll('[data-g1-bundle]').forEach(button => {
+    button.addEventListener('click', () => {
+      button.parentElement.querySelectorAll('[data-g1-bundle]').forEach(peer => {
+        peer.setAttribute('aria-pressed', String(peer === button));
       });
     });
   });
