@@ -1208,10 +1208,10 @@ const g1Media = {
         ],
         "ratio": "16:9",
         "usFrame": [
-          347,
-          280
+          684,
+          560
         ],
-        "usFrameRatio": "≈1.24:1"
+        "usFrameRatio": "≈1.22:1"
       }
     },
     {
@@ -1240,10 +1240,10 @@ const g1Media = {
         ],
         "ratio": "16:9",
         "usFrame": [
-          347,
-          280
+          684,
+          560
         ],
-        "usFrameRatio": "≈1.24:1"
+        "usFrameRatio": "≈1.22:1"
       }
     },
     {

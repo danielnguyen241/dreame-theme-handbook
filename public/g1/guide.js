@@ -65,6 +65,19 @@ function g1MediaElement(asset, key) {
     video.dataset.desktop = desktop.url;
     video.dataset.mobile = mobile.url;
     video.src = desktop.url;
+    const posterFor = (file) => {
+      const id = String(file).match(/\/([a-f0-9]{32})\.mp4/i);
+      return id
+        ? 'https://www.dreametech.com/cdn/shop/files/preview_images/' + id[1] + '.thumbnail.0000000000.jpg?width=1280'
+        : '';
+    };
+    const desktopPoster = posterFor(desktop.url);
+    const mobilePoster = posterFor(mobile.url) || desktopPoster;
+    if (desktopPoster) {
+      video.poster = desktopPoster;
+      video.dataset.posterDesktop = desktopPoster;
+      video.dataset.posterMobile = mobilePoster;
+    }
     if (desktop.size.length) {
       video.width = desktop.size[0];
       video.height = desktop.size[1];
